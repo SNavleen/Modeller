@@ -29,30 +29,30 @@ DrawMesh::~DrawMesh(){
 void DrawShape::drawCube(){
 }
 /*DrawShape drawSphere();*/
-void drawSphere(){
+void DrawShape::drawSphere(){
 }
 /*DrawShape drawCone();*/
-void drawCone(){
+void DrawShape::drawCone(){
 }
 /*DrawShape drawCylinder();*/
-void drawCylinder(){
+void DrawShape::drawCylinder(){
 }
 /*DrawShape drawTorus();*/
-void drawTorus(){
+void DrawShape::drawTorus(){
 }
 /*DrawShape drawTeapot();*/
-void drawTeapot(){
+void DrawShape::drawTeapot(){
 }
 /*DrawShape drawTetrahedron();*/
-void drawTetrahedron(){
+void DrawShape::drawTetrahedron(){
 }
 /*DrawShape drawOctahedron();*/
-void drawOctahedron(){
+void DrawShape::drawOctahedron(){
 }
 /*DrawShape drawDodecahedron();*/
-void drawDodecahedron(){
+void DrawShape::drawDodecahedron(){
 }
 /*DrawShape drawIcosahedron();*/
-void drawIcosahedron(){
+void DrawShape::drawIcosahedron(){
 }
 

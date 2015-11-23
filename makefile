@@ -2,6 +2,7 @@ LDFLAGS = -lGL -lGLU -lglut
 CFLAGS=-g -Wall -std=c++11
 CC=g++
 EXEEXT=
+RM=rm
 PROGRAM_NAME= Modeller
 
 # Windows (cygwin)
@@ -20,8 +21,7 @@ endif
 run: $(PROGRAM_NAME) clean
 
 clean:
-	rm $(PROGRAM_NAME)$(EXEEXT)
-	rm *.o
+	$(RM) *.o $(PROGRAM_NAME)$(EXEEXT)
 
 $(PROGRAM_NAME): Modeller.o Window.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)

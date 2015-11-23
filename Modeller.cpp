@@ -64,25 +64,25 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 
 	if(key == '1'){//Cube
-		drawShape.drawCube();
+		objDrawShape.drawCube();
 	}else if(key == '2'){//Sphere
-		drawShape.drawSphere();
+		objDrawShape.drawSphere();
 	}else if(key == '3'){//Cone
-		drawShape.drawCone();
+		objDrawShape.drawCone();
 	}else if(key == '4'){//Cylinder
-		drawShape.drawCylinder();
+		objDrawShape.drawCylinder();
 	}else if(key == '5'){//Torus
-		drawShape.drawTorus();
+		objDrawShape.drawTorus();
 	}else if(key == '6'){//Teapot
-		drawShape.drawTeapot();
+		objDrawShape.drawTeapot();
 	}else if(key == '7'){//Tetrahedron
-		drawShape.drawTetrahedron();
+		objDrawShape.drawTetrahedron();
 	}else if(key == '8'){//Octahedron
-		drawShape.drawOctahedron();
+		objDrawShape.drawOctahedron();
 	}else if(key == '9'){//Dodecahedron
-		drawShape.drawDodecahedron();
+		objDrawShape.drawDodecahedron();
 	}else if(key == '0'){//Icosahedron
-		drawShape.drawIcosahedron();
+		objDrawShape.drawIcosahedron();
 	}
 }
 
