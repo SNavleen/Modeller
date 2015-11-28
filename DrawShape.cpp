@@ -16,11 +16,11 @@
 using namespace std;
 
 //Constructors
-DrawMesh::DrawMesh(){
+DrawShape::DrawShape(){
 }
 
 //Deconstructor
-DrawMesh::~DrawMesh(){
+DrawShape::~DrawShape(){
 }
 
 //Public function
