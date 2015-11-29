@@ -25,6 +25,22 @@ DrawShape::~DrawShape(){
 
 //Public function
 
+void DrawShape::drawAxis(){
+	glBegin(GL_LINES);
+		glColor3f(1, 0, 0);
+		glVertex3f(0,0,0);
+		glVertex3f(100,0,0);
+
+		glColor3f(0,1,0);
+		glVertex3f(0,0,0);
+		glVertex3f(0,100,0);
+
+		glColor3f(0,0,1);
+		glVertex3f(0,0,0);
+		glVertex3f(0,0,100);
+	glEnd();
+}
+
 /*DrawShape drawCube();*/
 void DrawShape::drawCube(){
 }

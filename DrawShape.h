@@ -11,6 +11,7 @@ class DrawShape{
 
         //Public variables
         //Public function
+        void drawAxis();
         /*DrawShape drawCube();*/
         void drawCube();
         /*DrawShape drawSphere();*/

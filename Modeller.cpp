@@ -21,6 +21,8 @@ using namespace std;
 Window objWindow("perspective");
 DrawShape objDrawShape;
 
+float camPos[] = {2.5, 2.5, 0.5};
+
 
 //Window size
 void CreateDisplayWindow(int width, int height){
@@ -41,13 +43,17 @@ void CreateDisplayWindow(int width, int height){
  *  it displays a spinning cube
  */
  void Display(){
- 	//clear the screen
- 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 	//clear the screenglClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1, 1, 0.9, 0.5);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+	objDrawShape.drawAxis();
 
  	//swap buffers - rendering is done to the back buffer, bring it forward to display
  	glutSwapBuffers();
- 	//force a redisplay, to keep the animation running
- 	glutPostRedisplay();
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -88,15 +94,24 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
 void KeyBoardSpecial(int key, int x, int y){
 	if(key == GLUT_KEY_LEFT){
+		camPos[0]-=0.1;
 	}else if(key == GLUT_KEY_RIGHT){
+		camPos[0]+=0.1;
 	}
 	if(key == GLUT_KEY_UP){
+		camPos[2]-=0.1;
 	}else if(key == GLUT_KEY_DOWN){
+		camPos[2]+=0.1;
+	}
+	if(key == GLUT_KEY_END){
+		camPos[1]-=0.1;
+	}else if(key == GLUT_KEY_HOME){
+		camPos[1]+=0.1;
 	}
 	glutPostRedisplay();
 }
 void MouseClickAction(int button, int state, int posX, int posY){
-	switch(button){
+	/*switch(button){
 		case GLUT_LEFT_BUTTON:
 			break;
 
@@ -105,7 +120,7 @@ void MouseClickAction(int button, int state, int posX, int posY){
 
 		default:
 			break;
-	}
+	}*/
 }
 
 //Init
