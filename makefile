@@ -23,6 +23,6 @@ run: $(PROGRAM_NAME) clean
 clean:
 	$(RM) *.o $(PROGRAM_NAME)$(EXEEXT)
 
-$(PROGRAM_NAME): Modeller.o Window.o DrawShape.o
+$(PROGRAM_NAME): Modeller.o Window.o DrawShape.o sceneGraph.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 	./$(PROGRAM_NAME)$(EXEEXT)
