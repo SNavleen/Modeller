@@ -22,6 +22,10 @@ Window objWindow("perspective");
 DrawShape objDrawShape;
 
 float camPos[] = {2.5, 2.5, 0.5};
+bool cube = false, sphere = false, cone = false, 
+	cylinder = false, torus = false, teapot = false, 
+	tetrahedron = false, octahedron = false, dodecahedron = false,
+	icosahedron = false;
 
 
 //Window size
@@ -70,7 +74,8 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 
 	if(key == '1'){//Cube
-		objDrawShape.drawCube();
+		//objDrawShape.drawCube();
+		//cude = true;
 	}else if(key == '2'){//Sphere
 		objDrawShape.drawSphere();
 	}else if(key == '3'){//Cone
