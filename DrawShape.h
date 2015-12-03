@@ -16,7 +16,7 @@
 class DrawShape:public Node{
     public:
         //Constructors
-        DrawShape(char *modelType);
+        DrawShape(char *modelType, int red, int green, int blue);
 
         //Deconstructor
         ~DrawShape();
@@ -29,6 +29,7 @@ class DrawShape:public Node{
     private:
 
         char *modelType;
+        float red, green, blue;
 
         /*DrawShape drawCube();*/
         void drawCube();

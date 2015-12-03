@@ -17,7 +17,6 @@
 #include "structs.h"
 #include "sceneGraph.h"
 #include "nodeGroup.h"
-//#include "nodeModel.h"
 #include "nodeTransform.h"
 #include "Window.h"
 #include "DrawShape.h"
@@ -26,12 +25,15 @@ using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
-DrawShape objDrawShape("");
+DrawShape objDrawShape("", 255, 255, 255);
 SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
 float pos[] = {0,1,0};
 float angle = 0.0f;
+
+bool blRed = false, blGreen = false, blBlue = false;
+int red = 255, green = 255, blue = 255;
 
 //node ids
 int masterID = 0;
@@ -85,7 +87,17 @@ void CreateDisplayWindow(int width, int height){
 
 	glutSwapBuffers();
 }
+int decreaseColour(int colour){
+	if(colour>0)
+		return --colour;
+	return colour;
+}
 
+int increaseColour(int colour){
+	if(colour<256)
+		return ++colour;
+	return colour;
+}
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
  *  x and y - mouse x and y coordinates at the time the function is called
@@ -97,14 +109,40 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == 'r' || key == 'R'){
 	}else if(key == 's' || key == 'S'){
 	}else if(key == 'l' || key == 'L'){
+	}else if(key == ','){//Select the red colour to change
+		blRed = true;
+		blGreen = false;
+		blBlue = false;
+	}else if(key == '.'){//Select the green colour to change
+		blRed = false;
+		blGreen = true;
+		blBlue = false;
+	}else if(key == '/'){//Select the blue colour to change
+		blRed = false;
+		blGreen = false;
+		blBlue = true;
+	}else if(key == '-'){//Subtract 1 from the colour
+		if(blRed)
+			red = decreaseColour(red);
+		else if(blGreen)
+			green = decreaseColour(green);
+		else if(blBlue)
+			blue = decreaseColour(blue);
+	}else if(key == '='){//Add 1 to the colour
+		if(blRed)
+			red = increaseColour(red);
+		else if(blGreen)
+			red = increaseColour(green);
+		else if(blBlue)
+			blue = increaseColour(blue);
 	}
 
 	if(key == '1'){//Cube
-		DrawShape *drawCude = new DrawShape("Cube");
+		DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
 		SG->insertChildNodeHere(drawCude);
 		//cude = true;
 	}else if(key == '2'){//Sphere
-		DrawShape *drawSphere = new DrawShape("Sphere");
+		DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
 		SG->insertChildNodeHere(drawSphere);
 	}else if(key == '3'){//Cone
 		//objDrawShape.drawCone();
@@ -113,7 +151,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == '5'){//Torus
 		//objDrawShape.drawTorus();
 	}else if(key == '6'){//Teapot
-		DrawShape *drawTeapot = new DrawShape("Teapot");
+		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
 	}else if(key == '7'){//Tetrahedron
 		//objDrawShape.drawTetrahedron();

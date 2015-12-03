@@ -17,7 +17,10 @@
 using namespace std;
 
 //Constructors
-DrawShape::DrawShape(char *modelType){
+DrawShape::DrawShape(char *modelType, int red, int green, int blue){
+	this->red = red/255;
+	this->green = green/255;
+	this->blue = blue/255;
 	nodeType = model;
 	this->modelType = modelType;
 	isDrawable = true;
@@ -46,7 +49,7 @@ void DrawShape::drawAxis(){
 }
 
 void DrawShape::nodeSpecificCodeDown(){
-	glColor3f(0,0,1);
+	glColor3f(red, green, blue);
 	if(modelType == "Cube"){
 		glutSolidCube(1);
 	}
