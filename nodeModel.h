@@ -13,19 +13,14 @@
 #	include <windows.h>
 #endif
 
-enum ModelType{
-	Sphere,
-	Cube,
-	Teapot,
-	Custom
-};
-
 class NodeModel:public Node{
-public:
-	NodeModel(ModelType whatType);	//constructor
-	ModelType modelType;
+	public:
+		NodeModel(char *modelType);	//constructor
 
-	virtual void nodeSpecificCodeDown();
+		virtual void nodeSpecificCodeDown();
+
+	private:
+		char *modelType;
 };
 
 #endif

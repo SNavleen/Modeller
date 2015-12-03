@@ -15,18 +15,18 @@
 #include <iostream>
 
 #include "structs.h"
-
-//sceneGraph
 #include "sceneGraph.h"
 #include "nodeGroup.h"
-#include "nodeModel.h"
+//#include "nodeModel.h"
 #include "nodeTransform.h"
 #include "Window.h"
+#include "DrawShape.h"
 
 using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
+DrawShape objDrawShape("");
 SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
@@ -61,48 +61,12 @@ void CreateDisplayWindow(int width, int height){
 }
 
 //function which will populate a sample graph 
-void initGraph(){
-	//temporary place which holds out values
-	Vector3D tempVec3;
+/*void initGraph(){
 
-
-	//TRANSFORMATION
-	//a tranlation transformation node
-	//how much translation
-	tempVec3.x = 1;
-	tempVec3.y = 1;
-	tempVec3.z = 1;
-	//add the node as a child of root node
-	NodeTransform *T1 = new NodeTransform(Translate, tempVec3);
-	//insert the node into the graph
-	SG->insertChildNodeHere(T1);
-	//go to the child node
-	SG->goToChild(0);
-
-
-	//MODEL
-	//we will now add a teapot model to the graph as a child of the
-	//transformation node
 	NodeModel *M1 = new NodeModel(Teapot);
 	//insert the node into the graph
 	SG->insertChildNodeHere(M1);
-}
-
-void drawAxis(){
-	glBegin(GL_LINES);
-		glColor3f(1, 0, 0);
-		glVertex3f(0,0,0);
-		glVertex3f(100,0,0);
-
-		glColor3f(0,1,0);
-		glVertex3f(0,0,0);
-		glVertex3f(0,100,0);
-
-		glColor3f(0,0,1);
-		glVertex3f(0,0,0);
-		glVertex3f(0,0,100);
-	glEnd();
-}
+}*/
 
 
  void Display(){
@@ -116,7 +80,7 @@ void drawAxis(){
 	glColor3f(1,1,1);
 
 	//draw the sceneGraph
-	drawAxis();
+	objDrawShape.drawAxis();
 	SG->draw();
 
 	glutSwapBuffers();
@@ -136,10 +100,12 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 
 	if(key == '1'){//Cube
-		//objDrawShape.drawCube();
+		DrawShape *drawCude = new DrawShape("Cube");
+		SG->insertChildNodeHere(drawCude);
 		//cude = true;
 	}else if(key == '2'){//Sphere
-		//objDrawShape.drawSphere();
+		DrawShape *drawSphere = new DrawShape("Sphere");
+		SG->insertChildNodeHere(drawSphere);
 	}else if(key == '3'){//Cone
 		//objDrawShape.drawCone();
 	}else if(key == '4'){//Cylinder
@@ -147,7 +113,8 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == '5'){//Torus
 		//objDrawShape.drawTorus();
 	}else if(key == '6'){//Teapot
-		//objDrawShape.drawTeapot();
+		DrawShape *drawTeapot = new DrawShape("Teapot");
+		SG->insertChildNodeHere(drawTeapot);
 	}else if(key == '7'){//Tetrahedron
 		//objDrawShape.drawTetrahedron();
 	}else if(key == '8'){//Octahedron
@@ -210,7 +177,7 @@ void init(void){
 
 	//add various nodes
 	//initializing our world
-	initGraph();
+	//initGraph();
 }
 
 int main(int argc, char** argv){

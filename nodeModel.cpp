@@ -11,16 +11,16 @@
 #	include <windows.h>
 #endif
 
-NodeModel::NodeModel(ModelType whatType){	//constructor
+NodeModel::NodeModel(char *modelType){	//constructor
 	nodeType = model;
-	modelType = whatType;
+	this->modelType = modelType;
 	isDrawable = true;
 }
 
 //as the node moves down through it, we want to perform down action
 //which in this case means drawing the model
 void NodeModel::nodeSpecificCodeDown(){
-	switch (modelType){
+	/*switch (modelType){
 	case Sphere:
 		glutSolidSphere(1, 12, 10);
 		break;
@@ -33,5 +33,5 @@ void NodeModel::nodeSpecificCodeDown(){
 	case Custom:
 		//own mesh thing
 		break;
-	}
+	}*/
 }
