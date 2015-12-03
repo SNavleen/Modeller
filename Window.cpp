@@ -78,8 +78,8 @@ void Window::viewDisplay(){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(view == "ortho"){
-        glOrtho(-2.5, 2.5, -2.5, 2.5, -2.5, 2.5);
+        //glOrtho(-2.5, 2.5, -2.5, 2.5, -2.5, 2.5);
     }else if(view == "perspective"){
-        gluPerspective(45, 1, 1, 5000);
+        gluPerspective(45, 1, 1, 100);
     }
 }

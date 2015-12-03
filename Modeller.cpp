@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-
 #ifdef __APPLE__
 #  	include <OpenGL/gl.h>
 #  	include <OpenGL/glu.h>
@@ -13,19 +9,40 @@
 #	include <windows.h>
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+
+#include "structs.h"
+
+//sceneGraph
+#include "sceneGraph.h"
+#include "nodeGroup.h"
+#include "nodeModel.h"
+#include "nodeTransform.h"
 #include "Window.h"
-#include "DrawShape.h"
+
 using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
-DrawShape objDrawShape;
+SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
-bool cube = false, sphere = false, cone = false, 
+float pos[] = {0,1,0};
+float angle = 0.0f;
+
+//node ids
+int masterID = 0;
+int getID(){
+	return masterID++;
+}
+
+/*bool cube = false, sphere = false, cone = false, 
 	cylinder = false, torus = false, teapot = false, 
 	tetrahedron = false, octahedron = false, dodecahedron = false,
-	icosahedron = false;
+	icosahedron = false;*/
 
 
 //Window size
@@ -43,21 +60,66 @@ void CreateDisplayWindow(int width, int height){
 	//glutCreateWindow("3D Terrain");
 }
 
-/*  display() - the OpenGL display function, this draws the screen
- *  it displays a spinning cube
- */
+//function which will populate a sample graph 
+void initGraph(){
+	//temporary place which holds out values
+	Vector3D tempVec3;
+
+
+	//TRANSFORMATION
+	//a tranlation transformation node
+	//how much translation
+	tempVec3.x = 1;
+	tempVec3.y = 1;
+	tempVec3.z = 1;
+	//add the node as a child of root node
+	NodeTransform *T1 = new NodeTransform(Translate, tempVec3);
+	//insert the node into the graph
+	SG->insertChildNodeHere(T1);
+	//go to the child node
+	SG->goToChild(0);
+
+
+	//MODEL
+	//we will now add a teapot model to the graph as a child of the
+	//transformation node
+	NodeModel *M1 = new NodeModel(Teapot);
+	//insert the node into the graph
+	SG->insertChildNodeHere(M1);
+}
+
+void drawAxis(){
+	glBegin(GL_LINES);
+		glColor3f(1, 0, 0);
+		glVertex3f(0,0,0);
+		glVertex3f(100,0,0);
+
+		glColor3f(0,1,0);
+		glVertex3f(0,0,0);
+		glVertex3f(0,100,0);
+
+		glColor3f(0,0,1);
+		glVertex3f(0,0,0);
+		glVertex3f(0,0,100);
+	glEnd();
+}
+
+
  void Display(){
- 	//clear the screenglClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1, 1, 0.9, 0.5);
+	float origin[3] = {0,0,0};
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
-	objDrawShape.drawAxis();
+	glColor3f(1,1,1);
 
- 	//swap buffers - rendering is done to the back buffer, bring it forward to display
- 	glutSwapBuffers();
+	//draw the sceneGraph
+	drawAxis();
+	SG->draw();
+
+	glutSwapBuffers();
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -77,23 +139,23 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		//objDrawShape.drawCube();
 		//cude = true;
 	}else if(key == '2'){//Sphere
-		objDrawShape.drawSphere();
+		//objDrawShape.drawSphere();
 	}else if(key == '3'){//Cone
-		objDrawShape.drawCone();
+		//objDrawShape.drawCone();
 	}else if(key == '4'){//Cylinder
-		objDrawShape.drawCylinder();
+		//objDrawShape.drawCylinder();
 	}else if(key == '5'){//Torus
-		objDrawShape.drawTorus();
+		//objDrawShape.drawTorus();
 	}else if(key == '6'){//Teapot
-		objDrawShape.drawTeapot();
+		//objDrawShape.drawTeapot();
 	}else if(key == '7'){//Tetrahedron
-		objDrawShape.drawTetrahedron();
+		//objDrawShape.drawTetrahedron();
 	}else if(key == '8'){//Octahedron
-		objDrawShape.drawOctahedron();
+		//objDrawShape.drawOctahedron();
 	}else if(key == '9'){//Dodecahedron
-		objDrawShape.drawDodecahedron();
+		//objDrawShape.drawDodecahedron();
 	}else if(key == '0'){//Icosahedron
-		objDrawShape.drawIcosahedron();
+		//objDrawShape.drawIcosahedron();
 	}
 }
 
@@ -135,6 +197,22 @@ void glutCallbacks(){
 	glutSpecialFunc(KeyBoardSpecial);
 	glutMouseFunc(MouseClickAction);
 }
+void init(void){	
+	GLuint id = 1;
+
+	glEnable(GLUT_DEPTH);
+
+	glClearColor(0, 0, 0, 0);
+	glColor3f(1, 1, 1);
+
+	//init our scenegraph
+	SG = new SceneGraph();
+
+	//add various nodes
+	//initializing our world
+	initGraph();
+}
+
 int main(int argc, char** argv){
 
 	//glut initialization stuff:
@@ -146,8 +224,10 @@ int main(int argc, char** argv){
 	//Creates the Terrain window
 	glutCreateWindow("Modeller");
 	glutCallbacks();
+	init();
+
 	//enable Z buffer test, otherwise things appear in the order they're drawn
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	objWindow.viewDisplay();
 	
 	glutMainLoop();
