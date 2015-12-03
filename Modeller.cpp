@@ -39,8 +39,8 @@ int getID(){
 	return masterID++;
 }
 
-/*bool cube = false, sphere = false, cone = false, 
-	cylinder = false, torus = false, teapot = false, 
+/*bool cube = false, sphere = false, cone = false,
+	cylinder = false, torus = false, teapot = false,
 	tetrahedron = false, octahedron = false, dodecahedron = false,
 	icosahedron = false;*/
 
@@ -60,7 +60,7 @@ void CreateDisplayWindow(int width, int height){
 	//glutCreateWindow("3D Terrain");
 }
 
-//function which will populate a sample graph 
+//function which will populate a sample graph
 void initGraph(){
 	//temporary place which holds out values
 	Vector3D tempVec3;
@@ -197,7 +197,7 @@ void glutCallbacks(){
 	glutSpecialFunc(KeyBoardSpecial);
 	glutMouseFunc(MouseClickAction);
 }
-void init(void){	
+void init(void){
 	GLuint id = 1;
 
 	glEnable(GLUT_DEPTH);
@@ -214,7 +214,6 @@ void init(void){
 }
 
 int main(int argc, char** argv){
-
 	//glut initialization stuff:
 	// set the window size, display mode, and create the window
 	glutInit(&argc, argv);
@@ -229,7 +228,7 @@ int main(int argc, char** argv){
 	//enable Z buffer test, otherwise things appear in the order they're drawn
 	//glEnable(GL_DEPTH_TEST);
 	objWindow.viewDisplay();
-	
+
 	glutMainLoop();
 
 	return 0;
