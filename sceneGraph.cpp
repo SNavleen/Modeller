@@ -5,7 +5,6 @@
 SceneGraph::SceneGraph(){
 	rootNode = new Node();
 	currentNode = rootNode;
-	printf("scene graph init done\n");
 }
 
 //Scene Graph Navigation

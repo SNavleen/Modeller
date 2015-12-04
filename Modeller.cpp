@@ -41,12 +41,6 @@ int getID(){
 	return masterID++;
 }
 
-/*bool cube = false, sphere = false, cone = false, 
-	cylinder = false, torus = false, teapot = false, 
-	tetrahedron = false, octahedron = false, dodecahedron = false,
-	icosahedron = false;*/
-
-
 //Window size
 void CreateDisplayWindow(int width, int height){
 	objWindow.setWidth(width);
@@ -62,16 +56,7 @@ void CreateDisplayWindow(int width, int height){
 	//glutCreateWindow("3D Terrain");
 }
 
-//function which will populate a sample graph 
-/*void initGraph(){
-
-	NodeModel *M1 = new NodeModel(Teapot);
-	//insert the node into the graph
-	SG->insertChildNodeHere(M1);
-}*/
-
-
- void Display(){
+void Display(){
 	float origin[3] = {0,0,0};
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -145,11 +130,14 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
 		SG->insertChildNodeHere(drawSphere);
 	}else if(key == '3'){//Cone
-		//objDrawShape.drawCone();
+		DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
+		SG->insertChildNodeHere(drawCone);
 	}else if(key == '4'){//Cylinder
-		//objDrawShape.drawCylinder();
+		DrawShape *drawCylinder = new DrawShape("Cylinder", red, green, blue);
+		SG->insertChildNodeHere(drawCylinder);
 	}else if(key == '5'){//Torus
-		//objDrawShape.drawTorus();
+		DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
+		SG->insertChildNodeHere(drawTorus);
 	}else if(key == '6'){//Teapot
 		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
