@@ -1,12 +1,12 @@
 #ifdef __APPLE__
-#  	include <OpenGL/gl.h>
-#  	include <OpenGL/glu.h>
-#  	include <GLUT/glut.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
+#  include <GLUT/glut.h>
 #else
-#  	include <GL/gl.h>
-#  	include <GL/glu.h>
-#   include <GL/freeglut.h>
-#	include <windows.h>
+#  include <GL/gl.h>
+#  include <GL/glu.h>
+#  include <GL/freeglut.h>
+#  include <windows.h>
 #endif
 
 #include <stdio.h>
@@ -38,6 +38,10 @@ int masterID = 0;
 int getID(){
 	return masterID++;
 }
+
+// start and end of the region
+/* double start[] ={0,0,0}, end[]={1,1,1}; */
+
 
 /*bool cube = false, sphere = false, cone = false,
 	cylinder = false, torus = false, teapot = false,
@@ -159,35 +163,114 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 }
 
+
+
+void getMouseRay(int x, int y, Vector3D * start, Vector3D * end){
+ printf("%i, %i\n", x, y);
+
+  //allocate matricies memory
+  double matModelView[16], matProjection[16];
+  int viewport[4];
+
+  //vectors
+
+  //grab the matricies
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+  glGetDoublev(GL_PROJECTION_MATRIX, matProjection);
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  //unproject the values
+  double winX = (double)x;
+  double winY = viewport[3] - (double)y;
+
+  // get point on the 'near' plane (third param is set to 0.0)
+  gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
+      &start->x, &start->y, &start->z);
+
+  // get point on the 'far' plane (third param is set to 1.0)
+  gluUnProject(winX, winY, 1.0, matModelView, matProjection,
+      viewport, &end->x, &end->y, &end->z);
+
+  Vector3D startRegion = {0,0,0};
+  Vector3D endRegion = {1,1,1};
+
+  // print out the near and far stuff
+  printf("near point: %f,%f,%f\n", start->x, start->y, start->z);
+  printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
+}
+//function which preforms intersection test
+bool Intersect(int x, int y){
+  Vector3D start = {0,0,0};
+  Vector3D end ={1,1,1};
+  getMouseRay(x,y,&start, &end); // get the ray for the mouse
+
+  double A, B, C;
+  double R0x, R0y, R0z;
+  double Rdx, Rdy, Rdz;
+
+  Rdx = end.x - start.x; //end[0] - start[0];
+  Rdy = end.y - start.y; //end[1] - start[1];
+  Rdz = end.z - start.z;  //end[2] - start[2];
+
+  //magnitude!
+  double M = sqrt(Rdx*Rdx + Rdy*Rdy + Rdz* Rdz);
+
+  //unit vector!
+  Rdx /= M;
+  Rdy /= M;
+  Rdz /= M;
+
+  //A = Rd dot Rd
+  A = Rdx*Rdx + Rdy*Rdy + Rdz*Rdz;
+  double Btempx, Btempy, Btempz;
+  Btempx = R0x;
+  Btempy =  R0y;
+  Btempz =  R0z;
+  B = Btempx * Rdx + Btempy * Rdy + Btempz *Rdz;
+  B *= 2.0;
+  C = R0x*R0x + R0y*R0y + R0z* R0z - 1;
+
+  double sq = B*B  - 4*A*C;
+  double t0 = 0, t1 = 0;
+  if(sq < 0) printf("no Intersection!!!\n");
+  else{
+    t0 = ((-1) * B + sqrt(sq))/(2*A);
+    t1 = ((-1) * B - sqrt(sq))/(2*A);
+
+    printf("Intersection at: t = %f, and t = %f\n", t0, t1);
+  }
+  // else returns false
+  return (sq<0);
+}
+
 void KeyBoardSpecial(int key, int x, int y){
-	if(key == GLUT_KEY_LEFT){
-		camPos[0]-=0.1;
-	}else if(key == GLUT_KEY_RIGHT){
-		camPos[0]+=0.1;
-	}
-	if(key == GLUT_KEY_UP){
-		camPos[2]-=0.1;
-	}else if(key == GLUT_KEY_DOWN){
-		camPos[2]+=0.1;
-	}
-	if(key == GLUT_KEY_END){
-		camPos[1]-=0.1;
-	}else if(key == GLUT_KEY_HOME){
-		camPos[1]+=0.1;
-	}
-	glutPostRedisplay();
+  if(key == GLUT_KEY_LEFT){
+    camPos[0]-=0.1;
+  }else if(key == GLUT_KEY_RIGHT){
+    camPos[0]+=0.1;
+  }
+  if(key == GLUT_KEY_UP){
+    camPos[2]-=0.1;
+  }else if(key == GLUT_KEY_DOWN){
+    camPos[2]+=0.1;
+  }
+  if(key == GLUT_KEY_END){
+    camPos[1]-=0.1;
+  }else if(key == GLUT_KEY_HOME){
+    camPos[1]+=0.1;
+  }
+  glutPostRedisplay();
 }
 void MouseClickAction(int button, int state, int posX, int posY){
-	/*switch(button){
-		case GLUT_LEFT_BUTTON:
-			break;
-
-		case GLUT_RIGHT_BUTTON:
-			break;
-
-		default:
-			break;
-	}*/
+  switch(button){
+    case GLUT_LEFT_BUTTON:
+      Intersect(posX, posY);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      break;
+    default:
+      break;
+  }
 }
 
 //Init
