@@ -164,10 +164,8 @@ void KeyBoardAction(unsigned char key, int x, int y){
 }
 
 
-
 void getMouseRay(int x, int y, Vector3D * start, Vector3D * end){
- printf("%i, %i\n", x, y);
-
+  printf("%i, %i\n", x, y);
   //allocate matricies memory
   double matModelView[16], matProjection[16];
   int viewport[4];
@@ -199,7 +197,7 @@ void getMouseRay(int x, int y, Vector3D * start, Vector3D * end){
   printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
 }
 //function which preforms intersection test
-bool Intersect(int x, int y){
+bool sphereIntersection(int x, int y){
   Vector3D start = {0,0,0};
   Vector3D end ={1,1,1};
   getMouseRay(x,y,&start, &end); // get the ray for the mouse
@@ -242,6 +240,37 @@ bool Intersect(int x, int y){
   // else returns false
   return (sq<0);
 }
+bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){
+  return (minx < xp && xp < maxx && miny < yp && yp < maxy);
+}
+//function which preforms intersection test
+bool planeIntersection(int x, int y){
+  // check if denomenator is 0, n * Rd = 0
+    // if yes no intersection because plane is at a 90 degree angle
+  // otherwise intersection point is at P = R0 + t * Rd
+  Vector3D start = {0,0,0};
+  Vector3D end ={1,1,1};
+  getMouseRay(x,y,&start, &end); // get the ray for the mouse
+  Vector3D n = {};
+  Vector3D r0 = {};
+  Vector3D rd = {};
+  double D = 0;
+  double denom = n.dotProduct(rd); // get the denomenator of the equation
+  // may have some double == 0 errors
+  if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection
+  if(fabs(denom) < 0.0001) return false; // because the plane is at 90 degrees so there is no intersection
+
+  // t = -(N * R0 + D) / (N * Rd);
+  Vector3D tvector = ((n.dotProduct(r0)).addScaler(D).multiplyScaler(-1)) / (denom);
+  Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd));
+
+  // check if that point is inside the bounds of the plane
+  /* if(isPointInsideBox()) return true; */
+  /* if(isPointInsideBox()) return true; */
+  /* if(isPointInsideBox()) return true; */
+  return false;
+}
+￼
 
 void KeyBoardSpecial(int key, int x, int y){
   if(key == GLUT_KEY_LEFT){
@@ -264,7 +293,8 @@ void KeyBoardSpecial(int key, int x, int y){
 void MouseClickAction(int button, int state, int posX, int posY){
   switch(button){
     case GLUT_LEFT_BUTTON:
-      Intersect(posX, posY);
+      /* Intersect(posX, posY); */
+      sphereIntersection(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
       break;
