@@ -26,6 +26,9 @@ class DrawShape:public Node{
         virtual void nodeSpecificCodeDown();
         void drawAxis();  // draws the axis
         void drawWireFrame(); // this draws the wireframe of the object
+        virtual void nodeSpecificCodeUp();
+        void lighting();
+        void material();
 
     private:
 
@@ -44,14 +47,6 @@ class DrawShape:public Node{
         void drawTorus();
         /*DrawShape drawTeapot();*/
         void drawTeapot();
-        /*DrawShape drawTetrahedron();*/
-        void drawTetrahedron();
-        /*DrawShape drawOctahedron();*/
-        void drawOctahedron();
-        /*DrawShape drawDodecahedron();*/
-        void drawDodecahedron();
-        /*DrawShape drawIcosahedron();*/
-        void drawIcosahedron();
 };
 
 #endif
