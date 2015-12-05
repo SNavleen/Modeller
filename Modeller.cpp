@@ -197,9 +197,11 @@ void drawWireFrameObject(){
 
 
   // this is just a temp fix
+  printf("going to select the first node \n");
   SG->goToRoot();
   SG->goToChild(0);
   SG->selectCurrentNode();
+  printf("done selecting the first node\n");
 }
 
 void MouseClickAction(int button, int state, int posX, int posY){

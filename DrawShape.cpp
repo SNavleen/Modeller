@@ -74,8 +74,10 @@ void DrawShape::nodeSpecificCodeDown(){
 void DrawShape::nodeSpecificCodeUp(){}
 
 void DrawShape::drawWireFrame(){
+  printf("drawing the wire frame\n");
   glColor3f(0.0f,1.0f,0.0f);
   if(modelType == "Cube"){
+    printf("going to draw the wireframe of the cube\n");
     glutWireCube(2);
   }
 }
