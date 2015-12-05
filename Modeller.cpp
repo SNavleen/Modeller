@@ -142,14 +142,6 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == '6'){//Teapot
 		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
-	}else if(key == '7'){//Tetrahedron
-		//objDrawShape.drawTetrahedron();
-	}else if(key == '8'){//Octahedron
-		//objDrawShape.drawOctahedron();
-	}else if(key == '9'){//Dodecahedron
-		//objDrawShape.drawDodecahedron();
-	}else if(key == '0'){//Icosahedron
-		//objDrawShape.drawIcosahedron();
 	}
 }
 
@@ -274,10 +266,6 @@ bool planeIntersection(int x, int y, Vector3D normalVector){
 //drawCylinder();     //
 //drawTorus();        //
 //drawTeapot();       //
-//drawTetrahedron();  //
-//drawOctahedron();   //
-//drawDodecahedron(); //
-//drawIcosahedron();  //
 
 void KeyBoardSpecial(int key, int x, int y){
   if(key == GLUT_KEY_LEFT){
@@ -327,10 +315,6 @@ void init(void){
 
 	//init our scenegraph
 	SG = new SceneGraph();
-
-	//add various nodes
-	//initializing our world
-	//initGraph();
 }
 
 int main(int argc, char** argv){

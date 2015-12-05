@@ -96,16 +96,4 @@ void DrawShape::drawTorus(){
 void DrawShape::drawTeapot(){
 	glutSolidTeapot(1);
 }
-/*DrawShape drawTetrahedron();*/
-void DrawShape::drawTetrahedron(){
-}
-/*DrawShape drawOctahedron();*/
-void DrawShape::drawOctahedron(){
-}
-/*DrawShape drawDodecahedron();*/
-void DrawShape::drawDodecahedron(){
-}
-/*DrawShape drawIcosahedron();*/
-void DrawShape::drawIcosahedron(){
-}
 

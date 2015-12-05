@@ -43,14 +43,6 @@ class DrawShape:public Node{
         void drawTorus();
         /*DrawShape drawTeapot();*/
         void drawTeapot();
-        /*DrawShape drawTetrahedron();*/
-        void drawTetrahedron();
-        /*DrawShape drawOctahedron();*/
-        void drawOctahedron();
-        /*DrawShape drawDodecahedron();*/
-        void drawDodecahedron();
-        /*DrawShape drawIcosahedron();*/
-        void drawIcosahedron();
 };
 
 #endif
