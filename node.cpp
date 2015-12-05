@@ -1,3 +1,15 @@
+
+#ifdef __APPLE__
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glu.h>
+#   include <GLUT/glut.h>
+#else
+#   include <GL/gl.h>
+#   include <GL/glu.h>
+#   include <GL/freeglut.h>
+#   include <windows.h>
+#endif
+
 #include "node.h"
 #include <stdio.h>
 
@@ -29,7 +41,7 @@ void Node::draw(){
 }
 
 //====================================================================
-//FUNCTION THAT DOES THE ACTUAL STUFF IN 
+//FUNCTION THAT DOES THE ACTUAL STUFF IN
 //DERIVED CLASSES
 
 //TO BE OVERRIDDEN IN CHILD CLASSES AS NEEDED
@@ -38,3 +50,9 @@ void Node::nodeSpecificCodeDown(){}
 
 //code where we add what the node will do when moving up the tree
 void Node::nodeSpecificCodeUp(){}
+
+
+void Node::drawWireFrame(){
+
+  glutWireCube(1);
+}

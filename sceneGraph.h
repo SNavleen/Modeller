@@ -13,6 +13,7 @@ public:
 	void goToParent();
 	void insertChildNodeHere(Node *node);
 	void deleteThisNode();
+    void selectCurrentNode();
 
 	//Scene Graph Draw
 	void draw();
@@ -20,6 +21,7 @@ public:
 private:
 	Node *currentNode;
 	Node *rootNode;
+    Node *selectedNode;
 };
 
 #endif

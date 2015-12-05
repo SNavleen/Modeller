@@ -5,6 +5,7 @@
 SceneGraph::SceneGraph(){
 	rootNode = new Node();
 	currentNode = rootNode;
+    selectedNode = NULL;
 }
 
 //Scene Graph Navigation
@@ -18,7 +19,7 @@ void SceneGraph::goToChild(int i){
 	if (i < currentNode->children->size() && i >= 0)
 		currentNode = currentNode->children->at(i);
 	else
-		printf("child out of range");
+		printf("child out of range\n");
 }
 
 void SceneGraph::goToParent(){
@@ -36,7 +37,13 @@ void SceneGraph::deleteThisNode(){
 	//TODO
 }
 
+void SceneGraph::selectCurrentNode(){
+   selectedNode = currentNode;
+}
+
 //draw the scenegraph
 void SceneGraph::draw(){
 	rootNode->draw();
+    /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
+    if(selectedNode != NULL) selectedNode->drawWireFrame();
 }

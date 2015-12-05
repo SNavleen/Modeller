@@ -24,7 +24,8 @@ class DrawShape:public Node{
         //Public variables
         //Public function
         virtual void nodeSpecificCodeDown();
-        void drawAxis();
+        void drawAxis();  // draws the axis
+        void drawWireFrame(); // this draws the wireframe of the object
 
     private:
 
