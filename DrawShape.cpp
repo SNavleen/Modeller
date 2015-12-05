@@ -51,13 +51,22 @@ void DrawShape::drawAxis(){
 void DrawShape::nodeSpecificCodeDown(){
 	glColor3f(red, green, blue);
 	if(modelType == "Cube"){
-		glutSolidCube(1);
+		drawCube();
 	}
 	if(modelType == "Sphere"){
-		glutSolidSphere(1, 12, 10);
+		drawSphere();
+	}
+	if(modelType == "Cone"){
+		drawCone();
+	}
+	if(modelType == "Cylinder"){
+		drawCylinder();
+	}
+	if(modelType == "Torus"){
+		drawTorus();
 	}
 	if(modelType == "Teapot"){
-		glutSolidTeapot(1);
+		drawTeapot();
 	}
 }
 
@@ -73,12 +82,15 @@ void DrawShape::drawSphere(){
 }
 /*DrawShape drawCone();*/
 void DrawShape::drawCone(){
+	glutSolidCone(1,2,40,1);
 }
 /*DrawShape drawCylinder();*/
 void DrawShape::drawCylinder(){
+	glutSolidCone(1,3,30, 10);
 }
 /*DrawShape drawTorus();*/
 void DrawShape::drawTorus(){
+	glutSolidTorus(0.5,1,30, 30);
 }
 /*DrawShape drawTeapot();*/
 void DrawShape::drawTeapot(){
