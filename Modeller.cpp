@@ -272,7 +272,16 @@ bool planeIntersection(int x, int y, Vector3D normalVector){
   return false;
 }
 // end of mouse Intersection stuff
-
+//drawCube();         //
+//drawSphere();       //
+//drawCone();         //
+//drawCylinder();     //
+//drawTorus();        //
+//drawTeapot();       //
+//drawTetrahedron();  //
+//drawOctahedron();   //
+//drawDodecahedron(); //
+//drawIcosahedron();  //
 
 void KeyBoardSpecial(int key, int x, int y){
   if(key == GLUT_KEY_LEFT){
