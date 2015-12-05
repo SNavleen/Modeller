@@ -105,6 +105,7 @@ int increaseColour(int colour){
  *  x and y - mouse x and y coordinates at the time the function is called
  */
 void KeyBoardAction(unsigned char key, int x, int y){
+	//Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
 	//if the "q" key is pressed, quit the program
 	if(key == 'q' || key == 'Q'){
 		exit(0);
@@ -118,7 +119,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		}else{
 			showlight = true;
 		}
-	}else if(key == ','){//Select the red colour to change
+	}
+
+	//Keys to select a colour
+	if(key == ','){//Select the red colour to change
 		blRed = true;
 		blGreen = false;
 		blBlue = false;
@@ -130,7 +134,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		blRed = false;
 		blGreen = false;
 		blBlue = true;
-	}else if(key == '-'){//Subtract 1 from the colour
+	}
+
+	//Keys for increasing and decreasing selected colour
+	if(key == '-'){//Subtract 1 from the colour
 		if(blRed)
 			red = decreaseColour(red);
 		else if(blGreen)
@@ -146,6 +153,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 			blue = increaseColour(blue);
 	}
 
+	//Keys to draw a shpae
 	if(key == '1'){//Cube
 		DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
 		SG->insertChildNodeHere(drawCude);
@@ -166,6 +174,22 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
 	}
+
+	//Keys for what axis the transformation will be applied to
+	if(key == 'z' || key == 'Z'){
+	}else if(key == 'x' || key == 'X'){
+	}else if(key == 'y' || key == 'Y'){
+	}/*else if(key == 'x' || key == 'X'){
+	}else if(key == 'y' || key == 'Y'){
+	}else if(key == 'y' || key == 'Y'){
+	}*/
+
+	//Keys for what type of transformation will be applied
+	/*if(key == 'a' || key == 'A'){
+	}else if(key == '' || key == 'R'){
+	}else if(key == 's' || key == 'S'){
+	}*/
+
 	Display();
 }
 
@@ -355,19 +379,32 @@ int main(int argc, char** argv){
 	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
 	cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
 	cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
-	cout << "w/W KEY -------------------------- TOGGLE LIGHTING" << endl;
+	cout << "w/W KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
 	cout << "l/L KEY -------------------------- LOAD SAVED SECNE" << endl;
 	cout << "s/S KEY -------------------------- SAVE SECNE INTO FILE" << endl;
 	cout << "r/R KEY -------------------------- RESET SECNE" << endl;
 	cout << "q -------------------------- EXIT" << endl;
+	cout << "" << endl;
 
-	cout << "-------------------------- SHAPE DRAWING BUTTONS  --------------------------" << endl;
+	cout << "-------------------------- DRAWING SHAPE COMMANDS --------------------------" << endl;
 	cout << "1 KEY -------------------------- CUBE" << endl;
 	cout << "2 KEY -------------------------- SPHERE" << endl;
 	cout << "3 KEY -------------------------- CONE" << endl;
 	cout << "4 KEY -------------------------- CYLINDER" << endl;
 	cout << "5 KEY -------------------------- TORUS" << endl;
 	cout << "6 KEY -------------------------- TEAPOT" << endl;
+	cout << "" << endl;
+
+	cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
+	cout << "z/Z KEY -------------------------- SELECT Z AXIS" << endl;
+	cout << "x/X KEY -------------------------- SELECT X AXIS" << endl;
+	cout << "y/Y KEY -------------------------- SELECT Y AXIS" << endl;
+	cout << "SHIFT z/Z KEY -------------------------- SELECT X AND Y AXIS" << endl;
+	cout << "SHIFT x/X KEY -------------------------- SELECT Z AND Y AXIS" << endl;
+	cout << "SHIFT y/Y KEY -------------------------- SELECT X AND Z AXIS" << endl;
+	cout << "SHIFT s/S KEY -------------------------- SCALE" << endl;
+	cout << "SHIFT r/R KEY -------------------------- ROTATE" << endl;
+	cout << "SHIFT t/T KEY -------------------------- TRANSLATE" << endl;
 
 
 	CreateDisplayWindow(600, 600);
