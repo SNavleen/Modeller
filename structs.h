@@ -1,11 +1,20 @@
 #ifndef __STRUCTS_H__	//guard against cyclic dependancy
 #define __STRUCTS_H__
 
-typedef struct{
-	float x, y, z;
-}Vector3D;
+/* typedef struct{ */
+/*   double x, y, z; */
+/*   void multiplyScaler(double scalerValue){ x = scalerValue * x; y = scalerValue * y; z = scalerValue * z; } */
+/*   void divideScaler(double scalerValue){ x/= scalerValue; y/=scalerValue; z/=scalerValue;} */
+/*   void addScaler(double scalerValue){ x+= scalerValue; y+=scalerValue; z+=scalerValue;} */
+/*   void subScaler(double scalerValue){ x-= scalerValue; y-=scalerValue; z-=scalerValue;} */
+
+/*   //add and dot product a vector */
+/*   void addProduct(Vector3D *other){ x+= other->x; y+=other->y; z+=other->z;} */
+/*   int dotProduct(Vector3D *other){ return x*other->x + y * other->y + z * other->z; } */
+/* } Vector3D; */
+
 
 typedef struct{
-	float x, y, z, w;
+  float x, y, z, w;
 }Vector4D;
 #endif

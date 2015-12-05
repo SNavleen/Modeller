@@ -1,12 +1,12 @@
 #ifdef __APPLE__
-#  	include <OpenGL/gl.h>
-#  	include <OpenGL/glu.h>
-#  	include <GLUT/glut.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
+#  include <GLUT/glut.h>
 #else
-#  	include <GL/gl.h>
-#  	include <GL/glu.h>
-#   include <GL/freeglut.h>
-#	include <windows.h>
+#  include <GL/gl.h>
+#  include <GL/glu.h>
+#  include <GL/freeglut.h>
+#  include <windows.h>
 #endif
 
 #include <stdio.h>
@@ -14,7 +14,8 @@
 #include <math.h>
 #include <iostream>
 
-#include "structs.h"
+/* #include "structs.h" */
+#include "vector3d.h"
 #include "sceneGraph.h"
 #include "nodeGroup.h"
 #include "nodeTransform.h"
@@ -41,8 +42,12 @@ int getID(){
 	return masterID++;
 }
 
-/*bool cube = false, sphere = false, cone = false, 
-	cylinder = false, torus = false, teapot = false, 
+// start and end of the region
+/* double start[] ={0,0,0}, end[]={1,1,1}; */
+
+
+/*bool cube = false, sphere = false, cone = false,
+	cylinder = false, torus = false, teapot = false,
 	tetrahedron = false, octahedron = false, dodecahedron = false,
 	icosahedron = false;*/
 
@@ -62,7 +67,28 @@ void CreateDisplayWindow(int width, int height){
 	//glutCreateWindow("3D Terrain");
 }
 
-//function which will populate a sample graph 
+//function which will populate a sample graph
+//<<<<<<< HEAD
+////function which will populate a sample graph
+//void initGraph(){
+//	//temporary place which holds out values
+//	Vector3D tempVec3;
+//
+//
+//	//TRANSFORMATION
+//	//a tranlation transformation node
+//	//how much translation
+//	tempVec3.x = 1;
+//	tempVec3.y = 1;
+//	tempVec3.z = 1;
+//	//add the node as a child of root node
+//	NodeTransform *T1 = new NodeTransform(Translate, tempVec3);
+//	//insert the node into the graph
+//	SG->insertChildNodeHere(T1);
+//	//go to the child node
+//	SG->goToChild(0);
+
+//function which will populate a sample graph
 /*void initGraph(){
 
 	NodeModel *M1 = new NodeModel(Teapot);
@@ -164,35 +190,161 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 }
 
+// mouse Intersection stuff
+void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
+  printf("%i, %i\n", x, y);
+  //allocate matricies memory
+  double matModelView[16], matProjection[16];
+  int viewport[4];
+
+  //vectors
+
+  //grab the matricies
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+  glGetDoublev(GL_PROJECTION_MATRIX, matProjection);
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  //unproject the values
+  double winX = (double)x;
+  double winY = viewport[3] - (double)y;
+
+  // get point on the 'near' plane (third param is set to 0.0)
+  gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
+      &start->x, &start->y, &start->z);
+
+  // get point on the 'far' plane (third param is set to 1.0)
+  gluUnProject(winX, winY, 1.0, matModelView, matProjection,
+      viewport, &end->x, &end->y, &end->z);
+
+  // print out the near and far stuff
+  printf("near point: %f,%f,%f\n", start->x, start->y, start->z);
+  printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
+}
+//function which preforms intersection test
+bool sphereIntersection(int x, int y){
+  //Vector3D start = {0,0,0};
+  //Vector3D end ={1,1,1};
+  Vector3D start = Vector3D(0,0,0);
+  Vector3D end = Vector3D(1,1,1);
+  getMouseRay(x,y,&start, &end); // get the ray for the mouse
+
+  double A, B, C;
+  double R0x, R0y, R0z;
+  double Rdx, Rdy, Rdz;
+
+  Rdx = end.x - start.x; //end[0] - start[0];
+  Rdy = end.y - start.y; //end[1] - start[1];
+  Rdz = end.z - start.z;  //end[2] - start[2];
+
+  //magnitude!
+  double M = sqrt(Rdx*Rdx + Rdy*Rdy + Rdz* Rdz);
+
+  //unit vector!
+  Rdx /= M;
+  Rdy /= M;
+  Rdz /= M;
+
+  //A = Rd dot Rd
+  A = Rdx*Rdx + Rdy*Rdy + Rdz*Rdz;
+  double Btempx, Btempy, Btempz;
+  Btempx = R0x;
+  Btempy =  R0y;
+  Btempz =  R0z;
+  B = Btempx * Rdx + Btempy * Rdy + Btempz *Rdz;
+  B *= 2.0;
+  C = R0x*R0x + R0y*R0y + R0z* R0z - 1;
+
+  double sq = B*B  - 4*A*C;
+  double t0 = 0, t1 = 0;
+  if(sq < 0) printf("no Intersection!!!\n");
+  else{
+    t0 = ((-1) * B + sqrt(sq))/(2*A);
+    t1 = ((-1) * B - sqrt(sq))/(2*A);
+
+    printf("Intersection at: t = %f, and t = %f\n", t0, t1);
+  }
+  // else returns false
+  return (sq<0);
+}
+bool isPointInsideBoxInPlane(Vector3D point, Vector3D planenormal, Vector3D minPoint, Vector3D maxPoint){
+  return false;
+}
+bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){ return (minx < xp && xp < maxx && miny < yp && yp < maxy); }
+//function which preforms intersection test
+bool planeIntersection(int x, int y, Vector3D normalVector){
+  // check if denomenator is 0, n * Rd = 0
+    // if yes no intersection because plane is at a 90 degree angle
+  // otherwise intersection point is at P = R0 + t * Rd
+  /* Vector3D start = {0,0,0}; */
+  /* Vector3D end ={1,1,1}; */
+  Vector3D start = Vector3D(0,0,0);
+  Vector3D end  = Vector3D(0,0,0);
+  getMouseRay(x,y,&start, &end); // get the ray for the mouse
+  /* Vector3D n = {}; */
+  /* Vector3D r0 = {}; */
+  /* Vector3D rd = {}; */
+  Vector3D n = Vector3D();
+  Vector3D r0 = Vector3D();
+  Vector3D rd = Vector3D();
+  double D = 0;
+  double denom = n.dotVector3D(rd); // get the denomenator of the equation
+  // may have some double == 0 errors
+  if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection
+  if(fabs(denom) < 0.0001) return false; // because the plane is at 90 degrees so there is no intersection
+
+  // t = -(N * R0 + D) / (N * Rd);
+  /* Vector3D tvector = ((n.dotProduct(r0)).addScaler(D).multiplyScaler(-1)) / (denom); */
+  /* Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd)); */
+  Vector3D tvector = (((n.dotVector3D(r0)) + D) * -1) / (denom);
+  Vector3D intersectingPoint = r0 + (tvector.dotVector3D(rd));
+
+  // check if that point is inside the bounds of the plane
+  /* if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true; */
+  /* if(isPointInsideBoxInPlane()) return true; */
+  /* if(isPointInsideBoxInPlane()) return true; */
+  return false;
+}
+// end of mouse Intersection stuff
+//drawCube();         //
+//drawSphere();       //
+//drawCone();         //
+//drawCylinder();     //
+//drawTorus();        //
+//drawTeapot();       //
+//drawTetrahedron();  //
+//drawOctahedron();   //
+//drawDodecahedron(); //
+//drawIcosahedron();  //
+
 void KeyBoardSpecial(int key, int x, int y){
-	if(key == GLUT_KEY_LEFT){
-		camPos[0]-=0.1;
-	}else if(key == GLUT_KEY_RIGHT){
-		camPos[0]+=0.1;
-	}
-	if(key == GLUT_KEY_UP){
-		camPos[2]-=0.1;
-	}else if(key == GLUT_KEY_DOWN){
-		camPos[2]+=0.1;
-	}
-	if(key == GLUT_KEY_END){
-		camPos[1]-=0.1;
-	}else if(key == GLUT_KEY_HOME){
-		camPos[1]+=0.1;
-	}
-	glutPostRedisplay();
+  if(key == GLUT_KEY_LEFT){
+    camPos[0]-=0.1;
+  }else if(key == GLUT_KEY_RIGHT){
+    camPos[0]+=0.1;
+  }
+  if(key == GLUT_KEY_UP){
+    camPos[2]-=0.1;
+  }else if(key == GLUT_KEY_DOWN){
+    camPos[2]+=0.1;
+  }
+  if(key == GLUT_KEY_END){
+    camPos[1]-=0.1;
+  }else if(key == GLUT_KEY_HOME){
+    camPos[1]+=0.1;
+  }
+  glutPostRedisplay();
 }
 void MouseClickAction(int button, int state, int posX, int posY){
-	/*switch(button){
-		case GLUT_LEFT_BUTTON:
-			break;
-
-		case GLUT_RIGHT_BUTTON:
-			break;
-
-		default:
-			break;
-	}*/
+  switch(button){
+    case GLUT_LEFT_BUTTON:
+      /* Intersect(posX, posY); */
+      sphereIntersection(posX, posY);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      break;
+    default:
+      break;
+  }
 }
 
 //Init
@@ -202,7 +354,7 @@ void glutCallbacks(){
 	glutSpecialFunc(KeyBoardSpecial);
 	glutMouseFunc(MouseClickAction);
 }
-void init(void){	
+void init(void){
 	GLuint id = 1;
 
 	glEnable(GLUT_DEPTH);
@@ -219,7 +371,6 @@ void init(void){
 }
 
 int main(int argc, char** argv){
-
 	//glut initialization stuff:
 	// set the window size, display mode, and create the window
 	glutInit(&argc, argv);
@@ -234,7 +385,7 @@ int main(int argc, char** argv){
 	//enable Z buffer test, otherwise things appear in the order they're drawn
 	//glEnable(GL_DEPTH_TEST);
 	objWindow.viewDisplay();
-	
+
 	glutMainLoop();
 
 	return 0;
