@@ -164,13 +164,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == '3'){//Cone
 		DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
 		SG->insertChildNodeHere(drawCone);
-	}else if(key == '4'){//Cylinder
-		DrawShape *drawCylinder = new DrawShape("Cylinder", red, green, blue);
-		SG->insertChildNodeHere(drawCylinder);
-	}else if(key == '5'){//Torus
+	}else if(key == '4'){//Torus
 		DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
 		SG->insertChildNodeHere(drawTorus);
-	}else if(key == '6'){//Teapot
+	}else if(key == '5'){//Teapot
 		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
 	}
@@ -390,9 +387,8 @@ int main(int argc, char** argv){
 	cout << "1 KEY -------------------------- CUBE" << endl;
 	cout << "2 KEY -------------------------- SPHERE" << endl;
 	cout << "3 KEY -------------------------- CONE" << endl;
-	cout << "4 KEY -------------------------- CYLINDER" << endl;
-	cout << "5 KEY -------------------------- TORUS" << endl;
-	cout << "6 KEY -------------------------- TEAPOT" << endl;
+	cout << "4 KEY -------------------------- TORUS" << endl;
+	cout << "5 KEY -------------------------- TEAPOT" << endl;
 	cout << "" << endl;
 
 	cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;

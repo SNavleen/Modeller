@@ -59,9 +59,6 @@ void DrawShape::nodeSpecificCodeDown(){
 	if(modelType == "Cone"){
 		drawCone();
 	}
-	if(modelType == "Cylinder"){
-		drawCylinder();
-	}
 	if(modelType == "Torus"){
 		drawTorus();
 	}
@@ -113,19 +110,15 @@ void DrawShape::drawCube(){
 }
 /*DrawShape drawSphere();*/
 void DrawShape::drawSphere(){
-	glutSolidSphere(1, 12, 10);
+	glutSolidSphere(1, 10, 10);
 }
 /*DrawShape drawCone();*/
 void DrawShape::drawCone(){
-	glutSolidCone(1,2,40,1);
-}
-/*DrawShape drawCylinder();*/
-void DrawShape::drawCylinder(){
-	glutSolidCone(1,3,30, 10);
+	glutSolidCone(0.5, 1, 20, 1);
 }
 /*DrawShape drawTorus();*/
 void DrawShape::drawTorus(){
-	glutSolidTorus(0.5,1,30, 30);
+	glutSolidTorus(0.25, 1, 40, 40);
 }
 /*DrawShape drawTeapot();*/
 void DrawShape::drawTeapot(){

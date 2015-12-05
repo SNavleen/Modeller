@@ -42,8 +42,6 @@ class DrawShape:public Node{
         void drawSphere();
         /*DrawShape drawCone();*/
         void drawCone();
-        /*DrawShape drawCylinder();*/
-        void drawCylinder();
         /*DrawShape drawTorus();*/
         void drawTorus();
         /*DrawShape drawTeapot();*/
