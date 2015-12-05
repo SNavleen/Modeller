@@ -33,8 +33,8 @@ float camPos[] = {2.5, 2.5, 0.5};
 float pos[] = {0,1,0};
 float angle = 0.0f;
 
-bool blRed = false, blGreen = false, blBlue = false;
-int red = 255, green = 255, blue = 255;
+bool blRed = false, blGreen = false, blBlue = false, showlight = true;
+int red = 255, green = 255, blue = 255, lightCounter = 1;
 
 //node ids
 int masterID = 0;
@@ -56,6 +56,20 @@ void CreateDisplayWindow(int width, int height){
 	glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
 	//glutCreateWindow("3D Terrain");
 }
+void LightingAndMaterial(){
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	if(showlight){
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+	}else{
+		glDisable(GL_LIGHTING);
+	}
+
+	objDrawShape.lighting();
+
+	objDrawShape.material();
+}
 
 void Display(){
 	float origin[3] = {0,0,0};
@@ -63,6 +77,8 @@ void Display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	LightingAndMaterial();
 
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
 	glColor3f(1,1,1);
@@ -95,6 +111,12 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == 'r' || key == 'R'){
 	}else if(key == 's' || key == 'S'){
 	}else if(key == 'l' || key == 'L'){
+		lightCounter++;
+		if (lightCounter % 2 == 0){
+			showlight = false;
+		}else{
+			showlight = true;
+		}
 	}else if(key == ','){//Select the red colour to change
 		blRed = true;
 		blGreen = false;
@@ -143,6 +165,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
 		SG->insertChildNodeHere(drawTeapot);
 	}
+	Display();
 }
 
 // mouse Intersection stuff

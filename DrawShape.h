@@ -24,7 +24,12 @@ class DrawShape:public Node{
         //Public variables
         //Public function
         virtual void nodeSpecificCodeDown();
+        virtual void nodeSpecificCodeUp();
         void drawAxis();
+        /*DrawShape lighting();*/
+        void lighting();
+        /*DrawShape material();*/
+        void material();
 
     private:
 
