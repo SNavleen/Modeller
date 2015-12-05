@@ -163,7 +163,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 }
 
-
+// mouse Intersection stuff
 void getMouseRay(int x, int y, Vector3D * start, Vector3D * end){
   printf("%i, %i\n", x, y);
   //allocate matricies memory
@@ -240,11 +240,12 @@ bool sphereIntersection(int x, int y){
   // else returns false
   return (sq<0);
 }
-bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){
-  return (minx < xp && xp < maxx && miny < yp && yp < maxy);
+bool isPointInsideBoxInPlane(Vector3D point, Vector3D planenormal, Vector3D minPoint, Vector3D maxPoint){
+  return false;
 }
+bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){ return (minx < xp && xp < maxx && miny < yp && yp < maxy); }
 //function which preforms intersection test
-bool planeIntersection(int x, int y){
+bool planeIntersection(int x, int y, Vector3D normalVector){
   // check if denomenator is 0, n * Rd = 0
     // if yes no intersection because plane is at a 90 degree angle
   // otherwise intersection point is at P = R0 + t * Rd
@@ -265,12 +266,13 @@ bool planeIntersection(int x, int y){
   Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd));
 
   // check if that point is inside the bounds of the plane
-  /* if(isPointInsideBox()) return true; */
-  /* if(isPointInsideBox()) return true; */
-  /* if(isPointInsideBox()) return true; */
+  if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true;
+  /* if(isPointInsideBoxInPlane()) return true; */
+  /* if(isPointInsideBoxInPlane()) return true; */
   return false;
 }
-￼
+// end of mouse Intersection stuff
+
 
 void KeyBoardSpecial(int key, int x, int y){
   if(key == GLUT_KEY_LEFT){
