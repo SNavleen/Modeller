@@ -322,6 +322,18 @@ int main(int argc, char** argv){
 	// set the window size, display mode, and create the window
 	glutInit(&argc, argv);
 
+	cout << "------------------------ MENU COMMANDS ------------------------" << endl;
+	cout << "ARROW KEYS ------------------------ ROTATE CAMERA" << endl;
+	cout << "END KEY ------------------------ DECREASE THE HIGHT OF THE CAMERA" << endl;
+	cout << "HOME KEY ------------------------ INCREASE THE HIGHT OF THE CAMERA" << endl;
+	cout << ", ------------------------ SELECT THE COLOUR RED" << endl;
+	cout << ". ------------------------ SELECT THE COLOUR GREEN" << endl;
+	cout << "/ ------------------------ SELECT THE COLOUR BLUE" << endl;
+	cout << "- ------------------------ DECREASE THE SELECTED COLOUR" << endl;
+	cout << "= ------------------------ INCREASE THE SELECTED COLOUR" << endl;
+	cout << "l/L KEY ------------------------ TOGGLE LIGHTING" << endl;
+	cout << "q ------------------------ EXIT" << endl;
+
 
 	CreateDisplayWindow(600, 600);
 	//Creates the Terrain window
