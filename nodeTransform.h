@@ -3,6 +3,8 @@
 
 #include "node.h"
 #include "structs.h"
+#include "Vector3D.h"
+
 enum transformType{
 	Translate,
 	Rotate,
