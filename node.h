@@ -31,7 +31,7 @@ public:
 	int currentChild;
 
 	void draw();
-    void drawWireFrame();
+    virtual void drawWireFrame();
 	virtual void nodeSpecificCodeDown();
 	virtual void nodeSpecificCodeUp();
 };

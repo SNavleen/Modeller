@@ -50,6 +50,7 @@ void DrawShape::drawAxis(){
 }
 
 void DrawShape::nodeSpecificCodeDown(){
+  glColor3f(this->red,this->green,this->blue);
 	glColor3f(red, green, blue);
 	if(modelType == "Cube"){
 		drawCube();
@@ -72,7 +73,8 @@ void DrawShape::nodeSpecificCodeDown(){
 }
 
 void DrawShape::drawWireFrame(){
-  glutWireCube(1);
+  glColor3f(0.0f,1.0f,0.0f);
+  glutWireCube(2);
 }
 
 //Private
