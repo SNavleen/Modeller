@@ -14,24 +14,27 @@
 #include <math.h>
 #include <iostream>
 
-#include "structs.h"
-
-//sceneGraph
+/* #include "structs.h" */
+#include "vector3d.h"
 #include "sceneGraph.h"
 #include "nodeGroup.h"
-#include "nodeModel.h"
 #include "nodeTransform.h"
 #include "Window.h"
+#include "DrawShape.h"
 
 using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
+DrawShape objDrawShape("", 255, 255, 255);
 SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
 float pos[] = {0,1,0};
 float angle = 0.0f;
+
+bool blRed = false, blGreen = false, blBlue = false;
+int red = 255, green = 255, blue = 255;
 
 //node ids
 int masterID = 0;
@@ -64,49 +67,33 @@ void CreateDisplayWindow(int width, int height){
 	//glutCreateWindow("3D Terrain");
 }
 
+//<<<<<<< HEAD
+////function which will populate a sample graph
+//void initGraph(){
+//	//temporary place which holds out values
+//	Vector3D tempVec3;
+//
+//
+//	//TRANSFORMATION
+//	//a tranlation transformation node
+//	//how much translation
+//	tempVec3.x = 1;
+//	tempVec3.y = 1;
+//	tempVec3.z = 1;
+//	//add the node as a child of root node
+//	NodeTransform *T1 = new NodeTransform(Translate, tempVec3);
+//	//insert the node into the graph
+//	SG->insertChildNodeHere(T1);
+//	//go to the child node
+//	SG->goToChild(0);
+
 //function which will populate a sample graph
-void initGraph(){
-	//temporary place which holds out values
-	Vector3D tempVec3;
+/*void initGraph(){
 
-
-	//TRANSFORMATION
-	//a tranlation transformation node
-	//how much translation
-	tempVec3.x = 1;
-	tempVec3.y = 1;
-	tempVec3.z = 1;
-	//add the node as a child of root node
-	NodeTransform *T1 = new NodeTransform(Translate, tempVec3);
-	//insert the node into the graph
-	SG->insertChildNodeHere(T1);
-	//go to the child node
-	SG->goToChild(0);
-
-
-	//MODEL
-	//we will now add a teapot model to the graph as a child of the
-	//transformation node
 	NodeModel *M1 = new NodeModel(Teapot);
 	//insert the node into the graph
 	SG->insertChildNodeHere(M1);
-}
-
-void drawAxis(){
-	glBegin(GL_LINES);
-		glColor3f(1, 0, 0);
-		glVertex3f(0,0,0);
-		glVertex3f(100,0,0);
-
-		glColor3f(0,1,0);
-		glVertex3f(0,0,0);
-		glVertex3f(0,100,0);
-
-		glColor3f(0,0,1);
-		glVertex3f(0,0,0);
-		glVertex3f(0,0,100);
-	glEnd();
-}
+}*/
 
 
  void Display(){
@@ -120,12 +107,22 @@ void drawAxis(){
 	glColor3f(1,1,1);
 
 	//draw the sceneGraph
-	drawAxis();
+	objDrawShape.drawAxis();
 	SG->draw();
 
 	glutSwapBuffers();
 }
+int decreaseColour(int colour){
+	if(colour>0)
+		return --colour;
+	return colour;
+}
 
+int increaseColour(int colour){
+	if(colour<256)
+		return ++colour;
+	return colour;
+}
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
  *  x and y - mouse x and y coordinates at the time the function is called
@@ -137,13 +134,41 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == 'r' || key == 'R'){
 	}else if(key == 's' || key == 'S'){
 	}else if(key == 'l' || key == 'L'){
+	}else if(key == ','){//Select the red colour to change
+		blRed = true;
+		blGreen = false;
+		blBlue = false;
+	}else if(key == '.'){//Select the green colour to change
+		blRed = false;
+		blGreen = true;
+		blBlue = false;
+	}else if(key == '/'){//Select the blue colour to change
+		blRed = false;
+		blGreen = false;
+		blBlue = true;
+	}else if(key == '-'){//Subtract 1 from the colour
+		if(blRed)
+			red = decreaseColour(red);
+		else if(blGreen)
+			green = decreaseColour(green);
+		else if(blBlue)
+			blue = decreaseColour(blue);
+	}else if(key == '='){//Add 1 to the colour
+		if(blRed)
+			red = increaseColour(red);
+		else if(blGreen)
+			red = increaseColour(green);
+		else if(blBlue)
+			blue = increaseColour(blue);
 	}
 
 	if(key == '1'){//Cube
-		//objDrawShape.drawCube();
+		DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
+		SG->insertChildNodeHere(drawCude);
 		//cude = true;
 	}else if(key == '2'){//Sphere
-		//objDrawShape.drawSphere();
+		DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
+		SG->insertChildNodeHere(drawSphere);
 	}else if(key == '3'){//Cone
 		//objDrawShape.drawCone();
 	}else if(key == '4'){//Cylinder
@@ -151,7 +176,8 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == '5'){//Torus
 		//objDrawShape.drawTorus();
 	}else if(key == '6'){//Teapot
-		//objDrawShape.drawTeapot();
+		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
+		SG->insertChildNodeHere(drawTeapot);
 	}else if(key == '7'){//Tetrahedron
 		//objDrawShape.drawTetrahedron();
 	}else if(key == '8'){//Octahedron
@@ -266,7 +292,7 @@ bool planeIntersection(int x, int y, Vector3D normalVector){
   Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd));
 
   // check if that point is inside the bounds of the plane
-  if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true;
+  /* if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true; */
   /* if(isPointInsideBoxInPlane()) return true; */
   /* if(isPointInsideBoxInPlane()) return true; */
   return false;
@@ -334,7 +360,7 @@ void init(void){
 
 	//add various nodes
 	//initializing our world
-	initGraph();
+	//initGraph();
 }
 
 int main(int argc, char** argv){

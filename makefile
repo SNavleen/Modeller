@@ -1,15 +1,9 @@
-#please use 'make clean' to clean the directory of intermediate build files and the executable
-#simply typing 'make' will compile all source code files to object files .o, and then link all
-#object files into an executable
-#we are using a lot of makefile macros
-
-#changing platform dependant stuff, do not change this
-# Linux (default)
 LDFLAGS = -lGL -lGLU -lglut
 CFLAGS=-g -Wall -std=c++11
 CC=g++
 EXEEXT=
 RM=rm
+PROGRAM_NAME= Modeller
 
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
@@ -24,20 +18,11 @@ else
 	endif
 endif
 
-#change the 't1' name to the name you want to call your application
-PROGRAM_NAME= Modeller
-
-#run target to compile and build, and then launch the executable
-run: $(PROGRAM_NAME)
-	./$(PROGRAM_NAME)$(EXEEXT)
-
-#when adding additional source files, such as boilerplateClass.cpp
-#or yourFile.cpp, add the filename with an object extension below
-#ie. boilerplateClass.o and yourFile.o
-#make will automatically know that the objectfile needs to be compiled
-#form a cpp source file and find it itself :)
-$(PROGRAM_NAME): Modeller.o Window.o node.o nodeGroup.o nodeModel.o nodeTransform.o sceneGraph.o
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+run: $(PROGRAM_NAME) clean
 
 clean:
 	$(RM) *.o $(PROGRAM_NAME)$(EXEEXT)
+
+$(PROGRAM_NAME): Modeller.o Window.o DrawShape.o node.o nodeGroup.o nodeTransform.o sceneGraph.o
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+	./$(PROGRAM_NAME)$(EXEEXT)

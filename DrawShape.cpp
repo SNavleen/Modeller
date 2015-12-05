@@ -13,10 +13,17 @@
 #endif
 
 #include "DrawShape.h"
+
 using namespace std;
 
 //Constructors
-DrawShape::DrawShape(){
+DrawShape::DrawShape(char *modelType, int red, int green, int blue){
+	this->red = red/255;
+	this->green = green/255;
+	this->blue = blue/255;
+	nodeType = model;
+	this->modelType = modelType;
+	isDrawable = true;
 }
 
 //Deconstructor
@@ -41,11 +48,28 @@ void DrawShape::drawAxis(){
 	glEnd();
 }
 
+void DrawShape::nodeSpecificCodeDown(){
+	glColor3f(red, green, blue);
+	if(modelType == "Cube"){
+		glutSolidCube(1);
+	}
+	if(modelType == "Sphere"){
+		glutSolidSphere(1, 12, 10);
+	}
+	if(modelType == "Teapot"){
+		glutSolidTeapot(1);
+	}
+}
+
+//Private
+
 /*DrawShape drawCube();*/
 void DrawShape::drawCube(){
+	glutSolidCube(1);
 }
 /*DrawShape drawSphere();*/
 void DrawShape::drawSphere(){
+	glutSolidSphere(1, 12, 10);
 }
 /*DrawShape drawCone();*/
 void DrawShape::drawCone(){
@@ -58,6 +82,7 @@ void DrawShape::drawTorus(){
 }
 /*DrawShape drawTeapot();*/
 void DrawShape::drawTeapot(){
+	glutSolidTeapot(1);
 }
 /*DrawShape drawTetrahedron();*/
 void DrawShape::drawTetrahedron(){
