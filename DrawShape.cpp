@@ -76,10 +76,7 @@ void DrawShape::drawWireFrame(){
   printf("going to draw the wireframe of the cube\n");
   double minX=-1,minY=-1,minZ=-1;
   double maxX=1,maxY=1,maxZ=1;
-  if(modelType == "Sphere"){
-  }else if(modelType == "Cube"){
-    /* minX=-2;minY=-2;minZ=-2; */
-    /* maxX=2;maxY=2;maxZ=2; */
+  if(modelType == "Cube"){
   }else if(modelType == "Teapot"){
     minX=-1.5;minY=-1;minZ=-1;
     maxX=1.5;maxY=1;maxZ=1;
@@ -87,10 +84,9 @@ void DrawShape::drawWireFrame(){
     minX=-0.5;minY=-0.5;minZ=-0;
     maxX=0.5;maxY=0.5;maxZ=1;
   }else if(modelType == "Torus"){
-
+    minX=-1.2,minY=-1.2,minZ=-0.5;
+    maxX=1.2,maxY=1.2,maxZ=0.5;
   }
-  //glutWireCube(size);
-
   // get min value
   Vector3D v1 = Vector3D(maxX,maxY,maxZ);
   Vector3D v2 = Vector3D(maxX,minY,maxZ);
