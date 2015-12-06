@@ -73,10 +73,71 @@ void DrawShape::nodeSpecificCodeUp(){}
 void DrawShape::drawWireFrame(){
   printf("drawing the wire frame\n");
   glColor3f(0.0f,1.0f,0.0f);
-  if(modelType == "Cube"){
-    printf("going to draw the wireframe of the cube\n");
-    glutWireCube(2);
+  printf("going to draw the wireframe of the cube\n");
+  double minX=-1,minY=-1,minZ=-1;
+  double maxX=1,maxY=1,maxZ=1;
+  if(modelType == "Sphere"){
+  }else if(modelType == "Cube"){
+    /* minX=-2;minY=-2;minZ=-2; */
+    /* maxX=2;maxY=2;maxZ=2; */
+  }else if(modelType == "Teapot"){
+    minX=-1.5;minY=-1;minZ=-1;
+    maxX=1.5;maxY=1;maxZ=1;
+  }else if(modelType == "Cone"){
+    minX=-0.5;minY=-0.5;minZ=-0;
+    maxX=0.5;maxY=0.5;maxZ=1;
+  }else if(modelType == "Torus"){
+
   }
+  //glutWireCube(size);
+
+  // get min value
+  Vector3D v1 = Vector3D(maxX,maxY,maxZ);
+  Vector3D v2 = Vector3D(maxX,minY,maxZ);
+  Vector3D v3 = Vector3D(minX,minY,maxZ);
+  Vector3D v4 = Vector3D(minX,maxY,maxZ);
+  Vector3D v5 = Vector3D(maxX,maxY,minZ);
+  Vector3D v6 = Vector3D(maxX,minY,minZ);
+  Vector3D v7 = Vector3D(minX,minY,minZ);
+  Vector3D v8 = Vector3D(minX,maxY,minZ);
+
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+  glBegin(GL_POLYGON); // begin drawing
+    glVertex3f(v1.x,v1.y,v1.z);
+    glVertex3f(v2.x,v2.y,v2.z);
+    glVertex3f(v3.x,v3.y,v3.z);
+    glVertex3f(v4.x,v4.y,v4.z);
+  glEnd();
+
+  glBegin(GL_POLYGON); // begin drawing
+    glVertex3f(v5.x,v5.y,v5.z);
+    glVertex3f(v6.x,v6.y,v6.z);
+    glVertex3f(v7.x,v7.y,v7.z);
+    glVertex3f(v8.x,v8.y,v8.z);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(v1.x,v1.y,v1.z);
+  glVertex3f(v5.x,v5.y,v5.z);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(v2.x,v2.y,v2.z);
+  glVertex3f(v6.x,v6.y,v6.z);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(v3.x,v3.y,v3.z);
+  glVertex3f(v7.x,v7.y,v7.z);
+  glEnd();
+
+  glBegin(GL_LINES);
+  glVertex3f(v4.x,v4.y,v4.z);
+  glVertex3f(v8.x,v8.y,v8.z);
+  glEnd();
+
+  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
 
 /*DrawShape lighting();*/
