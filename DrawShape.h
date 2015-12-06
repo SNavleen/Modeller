@@ -30,6 +30,8 @@ class DrawShape:public Node{
         virtual void nodeSpecificCodeUp();
         void lighting();
         void material();
+        void rayIntersection(vector<Node*> *listOfnodes, Vector3D *rayStart, Vector3D *rayEnd);
+
 
     private:
 

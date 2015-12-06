@@ -22,3 +22,7 @@ void NodeGroup::nodeSpecificCodeDown(){
 void NodeGroup::nodeSpecificCodeUp(){
 	glPopMatrix();
 }
+
+
+void rayIntersection(vector<Node*> listOfnodes, Vector3D *rayStart, Vector3D *rayEnd){
+}

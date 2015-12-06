@@ -40,6 +40,7 @@ void Node::draw(){
 	nodeSpecificCodeUp();
 }
 
+
 //====================================================================
 //FUNCTION THAT DOES THE ACTUAL STUFF IN
 //DERIVED CLASSES
@@ -53,3 +54,14 @@ void Node::nodeSpecificCodeUp(){}
 
 // code where it draws the wireframe of the object being selected
 void Node::drawWireFrame(){}
+
+// handle the ray intersection
+void Node::rayIntersection(vector<Node*> *listOfnodes, Vector3D *rayStart, Vector3D *rayEnd){
+  printf("  inside the ray intersection for the node. going to run it for all the children\n");
+  for(int i =0; i < this->children->size(); i++){
+    this->children->at(i)->rayIntersection(listOfnodes, rayStart, rayEnd);
+  }
+  if(this->children->size()==0) printf("  there are no children\n");
+  printf("  done for this node, going up the scene graph\n");
+}
+

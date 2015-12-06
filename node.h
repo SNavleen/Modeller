@@ -4,7 +4,7 @@
 //Node Class.
 //should act as a template class for other sub-types of
 //Nodes
-
+#include "Vector3D.h"
 #include <vector>
 using namespace std;
 
@@ -34,6 +34,7 @@ public:
     virtual void drawWireFrame();
 	virtual void nodeSpecificCodeDown();
 	virtual void nodeSpecificCodeUp();
+    virtual void rayIntersection(vector<Node*> *listOfnodes, Vector3D *rayStart, Vector3D *rayEnd);
 };
 
 #endif
