@@ -281,41 +281,44 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, Vector3D *rayStart, 
 }
 
 
-/* bool isPointInsideBoxInPlane(Vector3D point, Vector3D planenormal, Vector3D minPoint, Vector3D maxPoint){ */
-/*   return false; */
-/* } */
-/* bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){ return (minx < xp && xp < maxx && miny < yp && yp < maxy); } */
-/* //function which preforms intersection test */
-/* bool planeIntersection(int x, int y, Vector3D normalVector){ */
-/*   // check if denomenator is 0, n * Rd = 0 */
-/*     // if yes no intersection because plane is at a 90 degree angle */
-/*   // otherwise intersection point is at P = R0 + t * Rd */
-/*   /1* Vector3D start = {0,0,0}; *1/ */
-/*   /1* Vector3D end ={1,1,1}; *1/ */
-/*   Vector3D start = Vector3D(0,0,0); */
-/*   Vector3D end  = Vector3D(0,0,0); */
-/*   getMouseRay(x,y,&start, &end); // get the ray for the mouse */
-/*   /1* Vector3D n = {}; *1/ */
-/*   /1* Vector3D r0 = {}; *1/ */
-/*   /1* Vector3D rd = {}; *1/ */
-/*   Vector3D n = Vector3D(); */
-/*   Vector3D r0 = Vector3D(); */
-/*   Vector3D rd = Vector3D(); */
-/*   double D = 0; */
-/*   double denom = n.dotVector3D(rd); // get the denomenator of the equation */
-/*   // may have some double == 0 errors */
-/*   if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection */
-/*   if(fabs(denom) < 0.0001) return false; // because the plane is at 90 degrees so there is no intersection */
+bool isPointInsideBoxInPlane(Vector3D point, Vector3D planenormal, Vector3D minPoint, Vector3D maxPoint){
+  return false;
+}
+bool isPointInsideBox(double xp, double yp, double minx, double maxx, double miny, double maxy){ return (minx < xp && xp < maxx && miny < yp && yp < maxy); }
+//function which preforms intersection test
+bool planeIntersection(int x, int y, Vector3D normalVector){
+  // check if denomenator is 0, n * Rd = 0
+    // if yes no intersection because plane is at a 90 degree angle
+  // otherwise intersection point is at P = R0 + t * Rd
+  /* Vector3D start = {0,0,0}; */
+  /* Vector3D end ={1,1,1}; */
+  Vector3D start = Vector3D(0,0,0);
+  Vector3D end  = Vector3D(0,0,0);
+  /* getMouseRay(x,y,&start, &end); // get the ray for the mouse */
+  /* Vector3D n = {}; */
+  /* Vector3D r0 = {}; */
+  /* Vector3D rd = {}; */
+  Vector3D n = Vector3D();
+  Vector3D r0 = Vector3D();
+  Vector3D rd = Vector3D();
+  double D = 0;
+  double denom = n.dotVector3D(rd); // get the denomenator of the equation
+  // may have some double == 0 errors
+  if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection
+  if(fabs(denom) < 0.0001) return false; // because the plane is at 90 degrees so there is no intersection
 
-/*   // t = -(N * R0 + D) / (N * Rd); */
-/*   /1* Vector3D tvector = ((n.dotProduct(r0)).addScaler(D).multiplyScaler(-1)) / (denom); *1/ */
-/*   /1* Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd)); *1/ */
-/*   Vector3D tvector = (((n.dotVector3D(r0)) + D) * -1) / (denom); */
-/*   Vector3D intersectingPoint = r0 + (tvector.dotVector3D(rd)); */
+  // t = -(N * R0 + D) / (N * Rd);
+  /* Vector3D tvector = ((n.dotProduct(r0)).addScaler(D).multiplyScaler(-1)) / (denom); */
+  /* Vector3D intersectingPoint = r0.addScaler(tvector.dotProduct(rd)); */
+  Vector3D tvector = (((n.dotVector3D(r0)) + D) * -1) / (denom);
+  Vector3D intersectingPoint = r0 + (tvector.dotVector3D(rd));
 
-/*   // check if that point is inside the bounds of the plane */
-/*   /1* if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true; *1/ */
-/*   /1* if(isPointInsideBoxInPlane()) return true; *1/ */
-/*   /1* if(isPointInsideBoxInPlane()) return true; *1/ */
-/*   return false; */
-/* } */
+  // check if that point is inside the bounds of the plane
+  /* if(isPointInsideBoxInPlane(intersectingPoint, normalVector, )) return true; */
+  /* if(isPointInsideBoxInPlane()) return true; */
+  /* if(isPointInsideBoxInPlane()) return true; */
+  return false;
+}
+
+
+
