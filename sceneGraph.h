@@ -13,7 +13,6 @@ public:
 	void goToParent();
 	void insertChildNodeHere(Node *node);
 	void deleteThisNode();
-    void selectCurrentNode();
 
     //get the selected node
     void selectnodeAtPos(int x,int y);
