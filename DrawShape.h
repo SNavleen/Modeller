@@ -2,6 +2,7 @@
 #define __DRAWSHAPE_H__
 
 #include "node.h"
+
 #ifdef __APPLE__
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>

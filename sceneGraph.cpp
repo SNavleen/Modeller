@@ -1,7 +1,6 @@
 #include "sceneGraph.h"
 #include "node.h"
 #include "Vector3D.h"
-#include <limits>
 #include <stdio.h>
 
 #ifdef __APPLE__
@@ -49,7 +48,9 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   printf("near point: %f,%f,%f\n", start->x, start->y, start->z);
   printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
 }
-bool rayBoxIntersection(){
+bool rayBoxIntersection(int x, int y, Vector3D *rayStart, Vector3D * rayEnd){
+
+
   return false;
 }
 //function which preforms intersection test
@@ -139,6 +140,30 @@ bool planeIntersection(int x, int y, Vector3D normalVector){
 
 //---------------------------------mouse ray intersection stuff--------------------------------------
 
+void SceneGraph::selectnodeAtPos(int x, int y){
+  Vector3D start; // this is the point of the ray vector at the front
+  Vector3D end;  // this is the point of the ray vector at the end
+  getMouseRay(x,y,&start,&end); // actually calculate the following values
+
+  Node *curnodeLocal = rootNode;// go to the root node
+  Node *closestToScreenIntersection = NULL; // this is the node that is closest to the screen
+  double closestToScreenZValue = start.z;
+  // go to all the children checking if they had got the collision
+  for(int i = 0; i < currentNode->children->size(); i++){
+    if(rayBoxIntersection(x,y,&start,&end)){
+      Node *node =  curnodeLocal->children->at(i);
+      /* if(closestToScreenZValue < node.getZValue){ */
+        /* closestToScreenZValue=node.getZValue; */
+        node = closestToScreenIntersection;
+      /* } */
+      /* curnodeLocal.getPosition(); */
+      // compare the closesttoscreenintersection's z value with the new found value and store
+    }
+  }
+  // make the selected node equal to the node that is closest to the screen and intersects the ray
+  selectedNode = closestToScreenIntersection;
+}
+
 
 
 SceneGraph::SceneGraph(){
@@ -174,28 +199,6 @@ void SceneGraph::insertChildNodeHere(Node *node){
 //deletes the current node, relinking the children as necessary
 void SceneGraph::deleteThisNode(){
 	//TODO
-}
-
-void SceneGraph::selectnodeAtPos(int x, int y){
-  // go to the root node
-  // go to all the children checking if they had got the collision
-  Node *curnodeLocal = rootNode;
-  Node *closestToScreenIntersection = NULL; // this is the node that is closest to the screen
-  double closestToScreenZValue = std::numeric_limits<double>::lowest();
-  for(int i = 0; i < currentNode->children->size(); i++){
-    if(rayBoxIntersection()){
-      Node *node =  curnodeLocal->children->at(i);
-      /* if(closestToScreenZValue < node.getZValue){ */
-        /* closestToScreenZValue=node.getZValue; */
-        node = closestToScreenIntersection;
-      /* } */
-      /* curnodeLocal.getPosition(); */
-      // compare the closesttoscreenintersection's z value with the new found value and store
-    }
-  }
-
-  // make the selected node equal to the node that is closest to the screen and intersects the ray
-  selectedNode = closestToScreenIntersection;
 }
 
 //draw the scenegraph
