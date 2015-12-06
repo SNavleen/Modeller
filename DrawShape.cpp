@@ -248,37 +248,37 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D *rayStart, Vecto
   return (sq>=0);
 }
 bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3){
-  printf("t0:(%f,%f,%f) t1:(%f,%f,%f) t2:(%f,%f,%f) t3:(%f,%f,%f)\n",t0.x,t0.y,t0.z,  t1.x,t1.y,t1.z,  t2.x,t2.y,t2.z,  t3.x,t3.y,t3.z);
+  /* printf("p0:(%f,%f,%f) p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f) point:(%f,%f,%f)\n",p0.x,p0.y,p0.z,  p1.x,p1.y,p1.z,  p2.x,p2.y,p2.z,  p3.x,p3.y,p3.z, point.x,point.y,point.z); */
   Vector3D v0 = p0 - p3;
   Vector3D v1 = p1 - p0;
   Vector3D v2 = p2 - p1;
   Vector3D v3 = p3 - p2;
 
   //line 1
-  printf("first \n");
+  /* printf("first, "); */
   Vector3D pToP2 = point -p2;
   double result = v2.dotVector3D(pToP2);
   if(result > 0) return false;
 
   //line 2
-  printf("second \n");
+  /* printf("second, "); */
   Vector3D pToP1 = point - p1;
   result = v1.dotVector3D(pToP1);
   if(result > 0) return false;
 
   //line 3
-  printf("third \n");
+  /* printf("third, "); */
   Vector3D pToP3 = point - p3;
-  result = v3.dotVector3D(pToP1);
+  result = v3.dotVector3D(pToP3);
   if(result > 0) return false;
 
   //line 4
-  printf("fourth \n");
+  /* printf("fourth, "); */
   Vector3D pToP0 = point - p0;
   result = v0.dotVector3D(pToP0);
   if(result > 0) return false;
 
-  printf("done everything, returning true\n");
+  /* printf("done everything, returning true\n"); */
   return true;
 }
 //function which preforms intersection test
