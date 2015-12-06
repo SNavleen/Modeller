@@ -3,6 +3,10 @@
 #include "Vector3D.h"
 #include <stdio.h>
 
+/* //temporary */
+/* #include "nodeTransform.h" */
+/* #include "DrawShape.h" */
+
 #ifdef __APPLE__
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>
@@ -86,6 +90,11 @@ SceneGraph::SceneGraph(){
 	rootNode = new Node();
 	currentNode = rootNode;
     selectedNode = NULL;
+
+	/* DrawShape *drawSphere = new DrawShape("Sphere", 255,255,255); */
+    /* NodeTransform * transformnode = new NodeTransform(Scale, Vector3D(2,2,2)); */
+    /* transformnode->children->push_back(drawSphere); */
+    /* rootNode->children->push_back(transformnode); */
 }
 
 //Scene Graph Navigation
