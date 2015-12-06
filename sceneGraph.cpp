@@ -37,6 +37,23 @@ void SceneGraph::deleteThisNode(){
 	//TODO
 }
 
+void SceneGraph::selectnodeAtPos(int x, int y){
+  // TODO
+
+  // go to the root node
+
+
+  // go to all the children checking if they had got the collision
+
+
+  // this is just a temp fix
+  printf("going to select the first node \n");
+  this->goToRoot();
+  this->goToChild(0);
+  this->selectCurrentNode();
+  printf("done selecting the first node\n");
+}
+
 void SceneGraph::selectCurrentNode(){
    selectedNode = currentNode;
 }

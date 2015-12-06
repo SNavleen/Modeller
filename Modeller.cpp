@@ -209,27 +209,10 @@ void KeyBoardSpecial(int key, int x, int y){
   glutPostRedisplay();
 }
 
-void drawWireFrameObject(){
-  // TODO
-
-  // go to the root node
-
-
-  // go to all the children checking if they had got the collision
-
-
-  // this is just a temp fix
-  printf("going to select the first node \n");
-  SG->goToRoot();
-  SG->goToChild(0);
-  SG->selectCurrentNode();
-  printf("done selecting the first node\n");
-}
-
 void MouseClickAction(int button, int state, int posX, int posY){
   switch(button){
     case GLUT_LEFT_BUTTON:
-      if(state==0) drawWireFrameObject();
+      if(state==0) SG->selectnodeAtPos(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
       break;

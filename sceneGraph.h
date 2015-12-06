@@ -15,6 +15,8 @@ public:
 	void deleteThisNode();
     void selectCurrentNode();
 
+    //get the selected node
+    void selectnodeAtPos(int x,int y);
 	//Scene Graph Draw
 	void draw();
 
