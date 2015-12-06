@@ -3,9 +3,9 @@
 #include "Vector3D.h"
 #include <stdio.h>
 
-/* //temporary */
-/* #include "nodeTransform.h" */
-/* #include "DrawShape.h" */
+//temporary
+#include "nodeTransform.h"
+#include "DrawShape.h"
 
 #ifdef __APPLE__
 #   include <OpenGL/gl.h>
@@ -63,25 +63,28 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   printf("get the mouse ray\n");
 
   vector<Node*> listOfnodes = vector<Node*>();
+  vector<double> listOfIntersectionDistances = vector<double>();
   Node *curnodeLocal = rootNode;// go to the root node
   printf("starting the for loop with all the children\n");
   // go to all the children checking if they had got the collision
   for(int i = 0; i < curnodeLocal->children->size(); i++){
-    /* if(this->rayBoxIntersection(x,y,&start,&end)){ */
     printf("going to the child at i:%i\n",i);
-      Node *node =  curnodeLocal->children->at(i);
-      node->rayIntersection(&listOfnodes,&start,&end);
-    /* } */
+    Node *node =  curnodeLocal->children->at(i);
+    node->rayIntersection(&listOfnodes,&listOfIntersectionDistances,&start,&end);
   }
   printf("done the selectnodeatpos\n\n");
 
+  printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size());
   // go through the list to find the smallset element
-  /* for(){ */
-
-  /* } */
+  if(listOfIntersectionDistances.size()==0) return; // if there are no elements then just end the function
+  int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
+  for(int i = 1; i < listOfIntersectionDistances.size();i++){
+    if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex)) minDistanceIndex = i;
+  }
 
   // make the selected node equal to the node that is closest to the screen and intersects the ray
-  /* selectedNode = closestToScreenIntersection; */
+  selectedNode = listOfnodes.at(minDistanceIndex);
+  printf("the selected node is at a distance of %f\n",  listOfIntersectionDistances.at(minDistanceIndex));
 }
 
 
@@ -93,8 +96,11 @@ SceneGraph::SceneGraph(){
 
 	/* DrawShape *drawSphere = new DrawShape("Sphere", 255,255,255); */
     /* NodeTransform * transformnode = new NodeTransform(Scale, Vector3D(2,2,2)); */
+    /* NodeTransform * translatenode = new NodeTransform(Translate, Vector3D(5,0,0)); */
+    /* translatenode->children->push_back(transformnode); */
     /* transformnode->children->push_back(drawSphere); */
-    /* rootNode->children->push_back(transformnode); */
+    /* /1* rootNode->children->push_back(transformnode); *1/ */
+    /* rootNode->children->push_back(translatenode); */
 }
 
 //Scene Graph Navigation
