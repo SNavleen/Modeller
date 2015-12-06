@@ -36,6 +36,9 @@ float angle = 0.0f;
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
 int red = 255, green = 255, blue = 255, lightCounter = 1;
 
+bool blnZ = false, blnX = false, blnY = false;
+float Z = 255, X = 255, Y = 255;
+
 //node ids
 int masterID = 0;
 int getID(){
@@ -100,11 +103,60 @@ int increaseColour(int colour){
 		return ++colour;
 	return colour;
 }
+void decreasAxies(){
+	if(blnZ)
+		Z=-0.01;
+	if(blnX)
+		X=-0.01;
+	if(blnY)
+		Y=-0.01;
+	printf("decrease: %f, %f, %f\n", X, Y, Z);
+}
+void increaseAxies(){
+	if(blnZ)
+		Z=+0.01;
+	if(blnX)
+		X=+0.01;
+	if(blnY)
+		Y=+0.01;
+	printf("increase: %f, %f, %f\n", X, Y, Z);
+}
+
+void transformationv3(char *transformation, Vector3D v3){
+	v3.x = X;
+	v3.y = Y;
+	v3.z = Z;
+	NodeTransform *transform;
+	//printf("%s: %f, %f, %f\n", transformation, X, Y, Z);
+
+	if(transformation == "Translate")
+		transform = new NodeTransform(Translate, v3);
+	else if(transformation == "Scale")
+		transform = new NodeTransform(Scale, v3);
+	SG->insertChildNodeHere(transform);
+	SG->goToChild(0);
+}
+
+void transformationv4(char *transformation, Vector4D v4){
+	//v4.w = 1;
+	v4.x = X;
+	v4.y = Y;
+	v4.z = Z;
+	NodeTransform *transform;
+	//printf("%s: %f, %f, %f\n", transformation, X, Y, Z);
+
+	if(transformation == "Rotate")
+		transform = new NodeTransform(Rotate, v4);
+	SG->insertChildNodeHere(transform);
+	SG->goToChild(0);
+}
+
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
  *  x and y - mouse x and y coordinates at the time the function is called
  */
 void KeyBoardAction(unsigned char key, int x, int y){
+	int mod = glutGetModifiers();
 	//Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
 	//if the "q" key is pressed, quit the program
 	if(key == 'q' || key == 'Q'){
@@ -174,18 +226,59 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
 	//Keys for what axis the transformation will be applied to
 	if(key == 'z' || key == 'Z'){
+		blnZ = true;
+		blnX = false;
+		blnY = false;
 	}else if(key == 'x' || key == 'X'){
+		blnZ = false;
+		blnX = true;
+		blnY = false;
 	}else if(key == 'y' || key == 'Y'){
-	}/*else if(key == 'x' || key == 'X'){
-	}else if(key == 'y' || key == 'Y'){
-	}else if(key == 'y' || key == 'Y'){
-	}*/
+		blnZ = false;
+		blnX = false;
+		blnY = true;
+	}else if(mod == 1 && (key == 'z' || key == 'Z')){
+		blnZ = false;
+		blnX = true;
+		blnY = true;
+	}else if(mod == 1 && (key == 'x' || key == 'X')){
+		blnZ = true;
+		blnX = false;
+		blnY = true;
+	}else if(mod == 1 && (key == 'y' || key == 'Y')){
+		blnZ = true;
+		blnX = true;
+		blnY = false;
+	}
+	
+	Vector3D v3;
+	Vector4D v4;
 
 	//Keys for what type of transformation will be applied
-	/*if(key == 'a' || key == 'A'){
-	}else if(key == '' || key == 'R'){
-	}else if(key == 's' || key == 'S'){
-	}*/
+	if(mod == 1){
+		if(key == 's' || key == 'S'){
+			increaseAxies();
+			transformationv3("Scale", v3);
+		}else if(key == 'r' || key == 'R'){
+			increaseAxies();
+			transformationv4("Rotate", v4);
+		}else if(key == 't' || key == 'T'){
+			increaseAxies();
+			transformationv3("Translate", v3);
+		}
+	}else if(mod == 4){
+		if(key == 's' || key == 'S'){
+			decreasAxies();
+			transformationv3("Scale", v3);
+		}else if(key == 'r' || key == 'R'){
+			decreasAxies();
+			transformationv4("Rotate", v4);
+		}else if(key == 't' || key == 'T'){
+			decreasAxies();
+			transformationv3("Translate", v3);
+		}
+	}
+
 
 	Display();
 }
@@ -293,9 +386,12 @@ int main(int argc, char** argv){
 	cout << "SHIFT z/Z KEY -------------------------- SELECT X AND Y AXIS" << endl;
 	cout << "SHIFT x/X KEY -------------------------- SELECT Z AND Y AXIS" << endl;
 	cout << "SHIFT y/Y KEY -------------------------- SELECT X AND Z AXIS" << endl;
-	cout << "SHIFT s/S KEY -------------------------- SCALE" << endl;
-	cout << "SHIFT r/R KEY -------------------------- ROTATE" << endl;
-	cout << "SHIFT t/T KEY -------------------------- TRANSLATE" << endl;
+	cout << "ALT s/S KEY -------------------------- DECREASE SCALE" << endl;
+	cout << "ALT r/R KEY -------------------------- DECREASE ROTATE" << endl;
+	cout << "ALT t/T KEY -------------------------- DECREASE TRANSLATE" << endl;
+	cout << "SHIFT s/S KEY -------------------------- INCREASE SCALE" << endl;
+	cout << "SHIFT r/R KEY -------------------------- INCREASE ROTATE" << endl;
+	cout << "SHIFT t/T KEY -------------------------- INCREASE TRANSLATE" << endl;
 
 
 	CreateDisplayWindow(600, 600);
