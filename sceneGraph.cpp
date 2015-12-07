@@ -19,9 +19,6 @@
 #endif
 
 
-
-//---------------------------------mouse ray intersection stuff--------------------------------------
-
 // mouse Intersection stuff
 void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   printf("%i, %i\n", x, y);
@@ -52,8 +49,6 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   printf("near point: %f,%f,%f\n", start->x, start->y, start->z);
   printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
 }
-
-//---------------------------------mouse ray intersection stuff--------------------------------------
 
 void SceneGraph::selectnodeAtPos(int x, int y){
   printf("\n\nstarting the select node at pos\n");
@@ -90,13 +85,13 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
 
 SceneGraph::SceneGraph(){
-	rootNode = new Node();
-	currentNode = rootNode;
-    selectedNode = NULL;
-    useCustomSettings();
+  rootNode = new Node();
+  currentNode = rootNode;
+  selectedNode = NULL;
+  /* useCustomSettings(); */
 }
-void SceneGraph::useCustomSettings(){
 
+void SceneGraph::useCustomSettings(){
   // this is just a plane to test if plane intersection is working
   DrawShape *plane = new DrawShape("Plane", 255,255, 255);
   rootNode->children->push_back(plane);
@@ -117,38 +112,38 @@ void SceneGraph::selectFirstnode()
 //Scene Graph Navigation
 //resets the current node to the root of the graph
 void SceneGraph::goToRoot(){
-	currentNode = rootNode;
+  currentNode = rootNode;
 }
 
 //moves to a child node i
 void SceneGraph::goToChild(int i){
-	if (i < currentNode->children->size() && i >= 0)
-		currentNode = currentNode->children->at(i);
-	else
-		printf("child out of range\n");
+  if (i < currentNode->children->size() && i >= 0)
+    currentNode = currentNode->children->at(i);
+  else
+    printf("child out of range\n");
 }
 
 void SceneGraph::goToParent(){
-	if (currentNode->parent != 0)
-		currentNode = currentNode->parent;
+  if (currentNode->parent != 0)
+    currentNode = currentNode->parent;
 }
 
 //inserts a child node into the current node
 void SceneGraph::insertChildNodeHere(Node *node){
-	currentNode->children->push_back(node);
+  currentNode->children->push_back(node);
 }
 
 //deletes the current node, relinking the children as necessary
 void SceneGraph::deleteThisNode(){
-	//TODO
+  //TODO
 }
 
 //draw the scenegraph
 void SceneGraph::draw(){
-	rootNode->draw();
-    /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
-    printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL));
-    if(selectedNode != NULL) selectedNode->drawWireFrame();
+  rootNode->draw();
+  /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
+  printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL));
+  if(selectedNode != NULL) selectedNode->drawWireFrame();
 }
 
 

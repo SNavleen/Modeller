@@ -65,7 +65,7 @@ void DrawShape::nodeSpecificCodeDown(){
 	}
 	if(modelType == "Teapot"){
 		drawTeapot();
-    }else{
+    }else if(modelType == "Plane"){
       glBegin(GL_QUADS);
         glVertex3f(0,0,0);
         glVertex3f(1,0,0);
@@ -203,6 +203,8 @@ void DrawShape::drawTeapot(){
 
 
 
+//---------------------------------mouse ray intersection stuff--------------------------------------
+
 //function which preforms intersection test
 bool sphereIntersection(vector<double> *listOfDoubles, Vector3D *rayStart, Vector3D *rayEnd){
   printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart->x,rayStart->y, rayStart->z,rayEnd->x, rayEnd->y, rayEnd->z);
@@ -311,16 +313,18 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
   Vector3D planeNormal = (p1-p0).crossVector3D(p2-p1);
   Vector3D r0 = rayStart;
   Vector3D rd = rayEnd-rayStart;
-  double D = 0;
+  // D = -A*x - B * y - C * z, where (A,B,C) is the normal of the plane
+  double D = -1 * p0.x * planeNormal.x - planeNormal.y * p0.y - planeNormal.z * p0.z;
   double denom = planeNormal.dotVector3D(rd); // get the denomenator of the equation
   // may have some double == 0 errors
   if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection
   if(fabs(denom) < 0.001) return false; // because the plane is at 90 degrees so there is no intersection
 
-  // t = -(N * R0 + D) / (N * Rd);
+  // t = -(N . R0 + D) / (N . Rd);
   double t = (((planeNormal.dotVector3D(r0)) + D) * -1) / (denom);
   Vector3D intersectingPoint = r0 + (rd * t);
-  printf("the point intersects the plane, going to the isPointInsideBoxInPlane function\n");
+  printf("checking if the intersection point is on the plane: normal:(%f,%f,%f), intersectingPoint:(%f,%f,%f),  pointOnPlane:(%f,%f,%f), result:%f\n", planeNormal.x,planeNormal.y,planeNormal.z, intersectingPoint.x,intersectingPoint.y,intersectingPoint.z, p1.x,p1.y,p1.z, (planeNormal.dotVector3D(p1-intersectingPoint)));
+  printf("the point intersects the plane at (%f,%f,%f), going to the isPointInsideBoxInPlane function\n", intersectingPoint.x, intersectingPoint.y, intersectingPoint.z);
   if(!isPointInsideBoxInPlane(intersectingPoint, p0,p1,p2,p3)) return false;
   printf("going to put t inside the vector %f\n",t);
   listOfDistances->push_back(t);
@@ -375,14 +379,14 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
 
   printf("p\n");
   int beforeSize = 0;
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd)) printf("got an intersection 1\n"); // front
-  if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, *rayStart, *rayEnd)) printf("got an intersection 2\n"); // back
-  if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, *rayStart, *rayEnd)) printf("got an intersection 3\n"); // bottom
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, *rayStart, *rayEnd)) printf("got an intersection 4\n"); // top
-  if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, *rayStart, *rayEnd)) printf("got an intersection 5\n"); // left
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, *rayStart, *rayEnd)) printf("got an intersection 6\n"); // right
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd)) printf("got an intersection front\n"); // front
+  if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, *rayStart, *rayEnd)) printf("got an intersection back\n"); // back
+  if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, *rayStart, *rayEnd)) printf("got an intersection bottom\n"); // bottom
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, *rayStart, *rayEnd)) printf("got an intersection top\n"); // top
+  if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, *rayStart, *rayEnd)) printf("got an intersection left\n"); // left
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, *rayStart, *rayEnd)) printf("got an intersection right\n"); // right
 
   printf("done finding intersection\n");
 }
 
-
+//---------------------------------mouse ray intersection stuff--------------------------------------
