@@ -65,7 +65,14 @@ void DrawShape::nodeSpecificCodeDown(){
 	}
 	if(modelType == "Teapot"){
 		drawTeapot();
-	}
+    }else{
+      glBegin(GL_QUADS);
+        glVertex3f(0,0,0);
+        glVertex3f(1,0,0);
+        glVertex3f(1,1,0);
+        glVertex3f(0,1,0);
+      glEnd();
+    }
 }
 //code where we add what the node will do when moving up the tree
 void DrawShape::nodeSpecificCodeUp(){}
@@ -326,6 +333,15 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   /* printf("calling the stupid plane intersection\n"); */
   /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
   /* printf("done testing the plane intersection \n"); */
+
+  if(modelType =="Plane"){
+    Vector3D p0 = Vector3D(0,1,0);
+    Vector3D p1 = Vector3D(1,1,0);
+    Vector3D p2 = Vector3D(1,0,0);
+    Vector3D p3 = Vector3D(0,0,0);
+    planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd);
+    return;
+  }
 
   printf("  1. rayintersection in the draw shape \n");
   if(modelType=="Sphere"){

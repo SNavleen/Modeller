@@ -93,15 +93,26 @@ SceneGraph::SceneGraph(){
 	rootNode = new Node();
 	currentNode = rootNode;
     selectedNode = NULL;
-
-	/* DrawShape *drawSphere = new DrawShape("Sphere", 255,255,255); */
-    /* NodeTransform * transformnode = new NodeTransform(Scale, Vector3D(2,2,2)); */
-    /* NodeTransform * translatenode = new NodeTransform(Translate, Vector3D(5,0,0)); */
-    /* translatenode->children->push_back(transformnode); */
-    /* transformnode->children->push_back(drawSphere); */
-    /* /1* rootNode->children->push_back(transformnode); *1/ */
-    /* rootNode->children->push_back(translatenode); */
+    useCustomSettings();
 }
+void SceneGraph::useCustomSettings(){
+
+  // this is just a plane to test if plane intersection is working
+  DrawShape *plane = new DrawShape("Plane", 255,255, 255);
+  rootNode->children->push_back(plane);
+
+
+  // this is the transformed sphere
+  /* DrawShape *drawSphere = new DrawShape("Sphere", 255,255,255); */
+  /* NodeTransform * transformnode = new NodeTransform(Scale, Vector3D(2,2,2)); */
+  /* NodeTransform * translatenode = new NodeTransform(Translate, Vector3D(5,0,0)); */
+  /* translatenode->children->push_back(transformnode); */
+  /* transformnode->children->push_back(drawSphere); */
+  /* /1* rootNode->children->push_back(transformnode); *1/ */
+  /* rootNode->children->push_back(translatenode); */
+}
+void SceneGraph::selectFirstnode()
+{ if(rootNode->children->size() > 0) selectedNode = rootNode->children->at(0);}
 
 //Scene Graph Navigation
 //resets the current node to the root of the graph

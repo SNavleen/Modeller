@@ -183,9 +183,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
     if(key=='m'){
       printf("selecting the first node\n");
        //select the first object
-      SG->goToRoot();
-      SG->goToChild(0);
-      SG->selectedNode = SG->currentNode;
+      SG->selectFirstnode();
     }
 
 	//Keys for what type of transformation will be applied
