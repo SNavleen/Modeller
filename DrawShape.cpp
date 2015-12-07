@@ -207,7 +207,7 @@ void DrawShape::drawTeapot(){
 
 //function which preforms intersection test
 bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector3D rayEnd){
-  printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart.x,rayStart.y, rayStart.z,rayEnd.x, rayEnd.y, rayEnd.z);
+  /* printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart.x,rayStart.y, rayStart.z,rayEnd.x, rayEnd.y, rayEnd.z); */
   //just to check if it this method works
   double A, B, C;
   double R0x, R0y, R0z;
@@ -220,7 +220,7 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector
   Rdx = rayEnd.x - rayStart.x;
   Rdy = rayEnd.y - rayStart.y;
   Rdz = rayEnd.z - rayStart.z;
-  printf("  2. rdx:%f rdy:%f rdz:%f\n",Rdx,Rdy,Rdz);
+  /* printf("  2. rdx:%f rdy:%f rdz:%f\n",Rdx,Rdy,Rdz); */
 
   //magnitude!
   double M = sqrt(Rdx*Rdx + Rdy*Rdy + Rdz* Rdz);
@@ -229,25 +229,25 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector
   Rdx /= M;
   Rdy /= M;
   Rdz /= M;
-  printf("  2. unit vector rdx:%f rdy:%f rdz:%f\n",Rdx,Rdy,Rdz);
+  /* printf("  2. unit vector rdx:%f rdy:%f rdz:%f\n",Rdx,Rdy,Rdz); */
 
 
   //A = Rd dot Rd
   A = Rdx*Rdx + Rdy*Rdy + Rdz*Rdz;
-  printf("  2. a) A: %f\n", A);
+  /* printf("  2. a) A: %f\n", A); */
   double Btempx, Btempy, Btempz;
   Btempx = R0x;
   Btempy = R0y;
   Btempz = R0z;
-  printf("  2. b) btempx:%f btempy:%f btempz:%f\n",Btempx, Btempy, Btempz);
+  /* printf("  2. b) btempx:%f btempy:%f btempz:%f\n",Btempx, Btempy, Btempz); */
   B = Btempx * Rdx + Btempy * Rdy + Btempz *Rdz;
   B *= 2.0;
   C = R0x*R0x + R0y*R0y + R0z* R0z - 1;
-  printf("  2. c) B:%f C:%f\n",B,C);
+  /* printf("  2. c) B:%f C:%f\n",B,C); */
 
   double sq = B*B  - 4*A*C;
   double t0 = 0, t1 = 0;
-  printf("sq: %f\n",sq);
+  /* printf("sq: %f\n",sq); */
   if(sq < 0) printf("no Intersection!!!\n");
   else{
     t0 = ((-1) * B + sqrt(sq))/(2*A);
@@ -260,32 +260,32 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector
   return (sq>=0);
 }
 bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3){
-  printf("p0:(%f,%f,%f) p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f) point:(%f,%f,%f)\n",p0.x,p0.y,p0.z,  p1.x,p1.y,p1.z,  p2.x,p2.y,p2.z,  p3.x,p3.y,p3.z, point.x,point.y,point.z);
+  /* printf("p0:(%f,%f,%f) p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f) point:(%f,%f,%f)\n",p0.x,p0.y,p0.z,  p1.x,p1.y,p1.z,  p2.x,p2.y,p2.z,  p3.x,p3.y,p3.z, point.x,point.y,point.z); */
   Vector3D v0 = p0 - p3;
   Vector3D v1 = p1 - p0;
   Vector3D v2 = p2 - p1;
   Vector3D v3 = p3 - p2;
 
   //line 1
-  printf("first, ");
+  /* printf("first, "); */
   Vector3D pToP2 = point -p2;
   double result = v2.dotVector3D(pToP2);
   if(result > 0) return false;
 
   //line 2
-  printf("second, ");
+  /* printf("second, "); */
   Vector3D pToP1 = point - p1;
   result = v1.dotVector3D(pToP1);
   if(result > 0) return false;
 
   //line 3
-  printf("third, ");
+  /* printf("third, "); */
   Vector3D pToP3 = point - p3;
   result = v3.dotVector3D(pToP3);
   if(result > 0) return false;
 
   //line 4
-  printf("fourth, ");
+  /* printf("fourth, "); */
   Vector3D pToP0 = point - p0;
   result = v0.dotVector3D(pToP0);
   if(result > 0) return false;
@@ -312,8 +312,8 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
   // calculate these values
   Vector3D planeNormal = (p1-p0).crossVector3D(p2-p1);
   Vector3D tempVec = (p1-p0).dotVector3D(p2-p1);
-  printf("p0:(%f,%f,%f), p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f)\n", p0.x,p0.y,p0.z, p1.x,p1.y,p1.z, p2.x,p2.y,p2.z, p3.x,p3.y,p3.z );
-  printf("printing the plane normal: (%f,%f,%f)  are (p1-p0).(p2-p1):(%f,%f,%f) \n",planeNormal.x,planeNormal.y,planeNormal.z, tempVec.x,tempVec.y,tempVec.z);
+  /* printf("p0:(%f,%f,%f), p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f)\n", p0.x,p0.y,p0.z, p1.x,p1.y,p1.z, p2.x,p2.y,p2.z, p3.x,p3.y,p3.z ); */
+  /* printf("printing the plane normal: (%f,%f,%f)  are (p1-p0).(p2-p1):(%f,%f,%f) \n",planeNormal.x,planeNormal.y,planeNormal.z, tempVec.x,tempVec.y,tempVec.z); */
   Vector3D r0 = rayStart;
   Vector3D rd = rayEnd-rayStart;
   // D = -A*x - B * y - C * z, where (A,B,C) is the normal of the plane
@@ -321,20 +321,20 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
   double denom = planeNormal.dotVector3D(rd); // get the denomenator of the equation
   // may have some double == 0 errors
   if(denom == 0 || fabs(denom) < 0.001){// because the plane is at 90 degrees so there is no intersection
-    printf("the plane is at 90 degrees with the ray there is not intersection the rd:(%f,%f,%f) normal:(%f,%f,%f) denom is %f \n", rd.x,rd.y,rd.z,  planeNormal.x,planeNormal.y,planeNormal.z  , denom);
+    /* printf("the plane is at 90 degrees with the ray there is not intersection the rd:(%f,%f,%f) normal:(%f,%f,%f) denom is %f \n", rd.x,rd.y,rd.z,  planeNormal.x,planeNormal.y,planeNormal.z  , denom); */
     return false;
   }
 
   // t = -(N . R0 + D) / (N . Rd);
   double t = (((planeNormal.dotVector3D(r0)) + D) * -1) / (denom);
   Vector3D intersectingPoint = r0 + (rd * t);
-  printf("checking if the intersection point is on the plane: normal:(%f,%f,%f), intersectingPoint:(%f,%f,%f),  pointOnPlane:(%f,%f,%f), result:%f\n", planeNormal.x,planeNormal.y,planeNormal.z, intersectingPoint.x,intersectingPoint.y,intersectingPoint.z, p1.x,p1.y,p1.z, (planeNormal.dotVector3D(p1-intersectingPoint)));
-  printf("the point intersects the plane at (%f,%f,%f), going to the isPointInsideBoxInPlane function\n", intersectingPoint.x, intersectingPoint.y, intersectingPoint.z);
+  /* printf("checking if the intersection point is on the plane: normal:(%f,%f,%f), intersectingPoint:(%f,%f,%f),  pointOnPlane:(%f,%f,%f), result:%f\n", planeNormal.x,planeNormal.y,planeNormal.z, intersectingPoint.x,intersectingPoint.y,intersectingPoint.z, p1.x,p1.y,p1.z, (planeNormal.dotVector3D(p1-intersectingPoint))); */
+  /* printf("the point intersects the plane at (%f,%f,%f), going to the isPointInsideBoxInPlane function\n", intersectingPoint.x, intersectingPoint.y, intersectingPoint.z); */
   if(!isPointInsideBoxInPlane(intersectingPoint, p0,p1,p2,p3)) return false;
-  printf("going to put t inside the vector %f\n",t);
+  /* printf("going to put t inside the vector %f\n",t); */
   listOfDistances->push_back(t);
   listOfnodes->push_back(this);
-  printf("done putting t inside vector");
+  /* printf("done putting t inside vector"); */
   return true; // the plane intersects the ray
 }
 

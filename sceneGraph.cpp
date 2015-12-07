@@ -73,11 +73,11 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
   printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size());
   // go through the list to find the smallset element
-  if(listOfIntersectionDistances.size()==0){ printf("no Intersection\n"); return;} // if there are no elements then just end the function
+  if(listOfIntersectionDistances.size()==0){ selectedNode=NULL;  printf("no Intersection\n"); return;} // if there are no elements then just end the function
   printf("Intersection detected\n");
   int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
   for(int i = 1; i < listOfIntersectionDistances.size();i++){
-    if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex)) minDistanceIndex = i;
+    if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex) && listOfIntersectionDistances.at(i) > 0) minDistanceIndex = i;
   }
 
   // make the selected node equal to the node that is closest to the screen and intersects the ray
@@ -97,7 +97,7 @@ SceneGraph::SceneGraph(){
 
 void SceneGraph::drawRay(){
   if(startRayD == NULL || endRayD == NULL) return;
-  printf("drawing the ray at (%f,%f,%f) to (%f,%f,%f)\n", startRayD->x,startRayD->y,startRayD->z, endRayD->x,endRayD->y,endRayD->z);
+  /* printf("drawing the ray at (%f,%f,%f) to (%f,%f,%f)\n", startRayD->x,startRayD->y,startRayD->z, endRayD->x,endRayD->y,endRayD->z); */
   glBegin(GL_LINES);
   glColor3f(1,0,0);
   glVertex3f(startRayD->x, startRayD->x, startRayD->z);
