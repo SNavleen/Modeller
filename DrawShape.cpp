@@ -78,9 +78,9 @@ void DrawShape::nodeSpecificCodeDown(){
 void DrawShape::nodeSpecificCodeUp(){}
 
 void DrawShape::drawWireFrame(){
-  printf("drawing the wire frame\n");
+  /* printf("drawing the wire frame\n"); */
   glColor3f(0.0f,1.0f,0.0f);
-  printf("going to draw the wireframe of the cube\n");
+  /* printf("going to draw the wireframe of the cube\n"); */
   double minX=-1,minY=-1,minZ=-1;
   double maxX=1,maxY=1,maxZ=1;
   if(modelType=="Cube"){
@@ -267,25 +267,25 @@ bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D 
   Vector3D v3 = p3 - p2;
 
   //line 1
-  /* printf("first, "); */
+  printf("first, ");
   Vector3D pToP2 = point -p2;
   double result = v2.dotVector3D(pToP2);
   if(result > 0) return false;
 
   //line 2
-  /* printf("second, "); */
+  printf("second, ");
   Vector3D pToP1 = point - p1;
   result = v1.dotVector3D(pToP1);
   if(result > 0) return false;
 
   //line 3
-  /* printf("third, "); */
+  printf("third, ");
   Vector3D pToP3 = point - p3;
   result = v3.dotVector3D(pToP3);
   if(result > 0) return false;
 
   //line 4
-  /* printf("fourth, "); */
+  printf("fourth, ");
   Vector3D pToP0 = point - p0;
   result = v0.dotVector3D(pToP0);
   if(result > 0) return false;
@@ -347,6 +347,8 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
     return;
   }
 
+  Vector3D rayVector = rayStart - rayEnd;
+  printf("rayStart:(%f,%f,%f) rayEnd:(%f,%f,%f)  ray vector(%f,%f,%f)\n",rayStart->x,rayStart->y,rayStart->z, rayEnd->x,rayEnd->y,rayEnd->z,  rayVector.x,rayVector.y,rayVector.z);
   printf("  1. rayintersection in the draw shape \n");
   if(modelType=="Sphere"){
     printf("  1. it is a sphere, running the sphere intersection\n");

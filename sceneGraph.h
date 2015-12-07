@@ -19,11 +19,15 @@ public:
 	//Scene Graph Draw
 	void draw();
 
+  void drawRay();
+
   void selectFirstnode();
   void useCustomSettings();
 
 
 private:
+  Vector3D * start;
+  Vector3D * end;
 	Node *rootNode;
     Node *selectedNode;
 	Node *currentNode;

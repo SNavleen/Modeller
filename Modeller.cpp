@@ -80,6 +80,8 @@ void Display(){
 
 	LightingAndMaterial();
 
+
+
 	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
 	glColor3f(1,1,1);
 
@@ -87,6 +89,7 @@ void Display(){
 	objDrawShape.drawAxis();
 	SG->draw();
 
+  SG->drawRay();
 	glutSwapBuffers();
 }
 int decreaseColour(int colour){

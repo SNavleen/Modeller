@@ -52,9 +52,9 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
 
 void SceneGraph::selectnodeAtPos(int x, int y){
   printf("\n\nstarting the select node at pos\n");
-  Vector3D start; // this is the point of the ray vector at the front
-  Vector3D end;  // this is the point of the ray vector at the end
-  getMouseRay(x,y,&start,&end); // actually calculate the following values
+  this->start = new Vector3D(); // this is the point of the ray vector at the front
+  this->end = new Vector3D();  // this is the point of the ray vector at the end
+  getMouseRay(x,y,start,end); // actually calculate the following values
   printf("get the mouse ray\n");
 
   vector<Node*> listOfnodes = vector<Node*>();
@@ -65,7 +65,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   for(int i = 0; i < curnodeLocal->children->size(); i++){
     printf("going to the child at i:%i\n",i);
     Node *node =  curnodeLocal->children->at(i);
-    node->rayIntersection(&listOfnodes,&listOfIntersectionDistances,&start,&end);
+    node->rayIntersection(&listOfnodes,&listOfIntersectionDistances,start,end);
   }
   printf("done the selectnodeatpos\n\n");
 
@@ -80,7 +80,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
   // make the selected node equal to the node that is closest to the screen and intersects the ray
   selectedNode = listOfnodes.at(minDistanceIndex);
-  printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex));
+  /* printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex)); */
 }
 
 
@@ -88,7 +88,18 @@ SceneGraph::SceneGraph(){
   rootNode = new Node();
   currentNode = rootNode;
   selectedNode = NULL;
+  start = new Vector3D();
+  end = new Vector3D();
   /* useCustomSettings(); */
+}
+
+void SceneGraph::drawRay(){
+  printf("drawing the ray at (%f,%f,%f) to (%f,%f,%f)\n", start->x,start->y,start->z, end->x,end->y,end->z);
+  glBegin(GL_LINES);
+  glColor3f(1,0,0);
+  glVertex3f(start->x, start->x, start->z);
+  glVertex3f(end->x, end->y, end->z);
+  glEnd();
 }
 
 void SceneGraph::useCustomSettings(){
@@ -142,7 +153,7 @@ void SceneGraph::deleteThisNode(){
 void SceneGraph::draw(){
   rootNode->draw();
   /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
-  printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL));
+  /* printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL)); */
   if(selectedNode != NULL) selectedNode->drawWireFrame();
 }
 
