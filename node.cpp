@@ -56,7 +56,7 @@ void Node::nodeSpecificCodeUp(){}
 void Node::drawWireFrame(){}
 
 // handle the ray intersection
-void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D *rayStart, Vector3D *rayEnd){
+void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd){
   printf("  inside the ray intersection for the node. going to run it for all the children\n");
   for(int i =0; i < this->children->size(); i++){
     this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,rayStart, rayEnd);

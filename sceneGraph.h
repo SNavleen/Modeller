@@ -4,33 +4,33 @@
 #include "node.h"
 
 class SceneGraph{
-public:
-	SceneGraph();	//constructor
+  public:
+    SceneGraph();	//constructor
 
-	//Scene Graph Navigation
-	void goToRoot();
-	void goToChild(int i);
-	void goToParent();
-	void insertChildNodeHere(Node *node);
-	void deleteThisNode();
+    //Scene Graph Navigation
+    void goToRoot();
+    void goToChild(int i);
+    void goToParent();
+    void insertChildNodeHere(Node *node);
+    void deleteThisNode();
 
     //get the selected node
     void selectnodeAtPos(int x,int y);
-	//Scene Graph Draw
-	void draw();
+    //Scene Graph Draw
+    void draw();
 
-  void drawRay();
+    void drawRay();
 
-  void selectFirstnode();
-  void useCustomSettings();
+    void selectFirstnode();
+    void useCustomSettings();
 
 
-private:
-  Vector3D * start;
-  Vector3D * end;
-	Node *rootNode;
+  private:
+    Vector3D * startRayD;
+    Vector3D * endRayD;
+    Node *rootNode;
     Node *selectedNode;
-	Node *currentNode;
+    Node *currentNode;
 };
 
 #endif

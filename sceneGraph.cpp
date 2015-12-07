@@ -52,9 +52,11 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
 
 void SceneGraph::selectnodeAtPos(int x, int y){
   printf("\n\nstarting the select node at pos\n");
-  this->start = new Vector3D(); // this is the point of the ray vector at the front
-  this->end = new Vector3D();  // this is the point of the ray vector at the end
-  getMouseRay(x,y,start,end); // actually calculate the following values
+  Vector3D start = Vector3D(); // this is the point of the ray vector at the front
+  Vector3D end = Vector3D();  // this is the point of the ray vector at the end
+  getMouseRay(x,y,&start,&end); // actually calculate the following values
+  this->startRayD = new Vector3D(start.x, start.y, start.z);
+  this->endRayD = new Vector3D(end.x, end.y, end.z);
   printf("get the mouse ray\n");
 
   vector<Node*> listOfnodes = vector<Node*>();
@@ -88,17 +90,18 @@ SceneGraph::SceneGraph(){
   rootNode = new Node();
   currentNode = rootNode;
   selectedNode = NULL;
-  start = new Vector3D();
-  end = new Vector3D();
+  startRayD = NULL;
+  endRayD = NULL;
   /* useCustomSettings(); */
 }
 
 void SceneGraph::drawRay(){
-  printf("drawing the ray at (%f,%f,%f) to (%f,%f,%f)\n", start->x,start->y,start->z, end->x,end->y,end->z);
+  if(startRayD == NULL || endRayD == NULL) return;
+  printf("drawing the ray at (%f,%f,%f) to (%f,%f,%f)\n", startRayD->x,startRayD->y,startRayD->z, endRayD->x,endRayD->y,endRayD->z);
   glBegin(GL_LINES);
   glColor3f(1,0,0);
-  glVertex3f(start->x, start->x, start->z);
-  glVertex3f(end->x, end->y, end->z);
+  glVertex3f(startRayD->x, startRayD->x, startRayD->z);
+  glVertex3f(endRayD->x, endRayD->y, endRayD->z);
   glEnd();
 }
 

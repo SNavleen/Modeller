@@ -206,20 +206,20 @@ void DrawShape::drawTeapot(){
 //---------------------------------mouse ray intersection stuff--------------------------------------
 
 //function which preforms intersection test
-bool sphereIntersection(vector<double> *listOfDoubles, Vector3D *rayStart, Vector3D *rayEnd){
-  printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart->x,rayStart->y, rayStart->z,rayEnd->x, rayEnd->y, rayEnd->z);
+bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector3D rayEnd){
+  printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart.x,rayStart.y, rayStart.z,rayEnd.x, rayEnd.y, rayEnd.z);
   //just to check if it this method works
   double A, B, C;
   double R0x, R0y, R0z;
   double Rdx, Rdy, Rdz;
-  R0x = rayStart->x;
-  R0y = rayStart->y;
-  R0z = rayStart->z;
+  R0x = rayStart.x;
+  R0y = rayStart.y;
+  R0z = rayStart.z;
 
 
-  Rdx = rayEnd->x - rayStart->x;
-  Rdy = rayEnd->y - rayStart->y;
-  Rdz = rayEnd->z - rayStart->z;
+  Rdx = rayEnd.x - rayStart.x;
+  Rdy = rayEnd.y - rayStart.y;
+  Rdz = rayEnd.z - rayStart.z;
   printf("  2. rdx:%f rdy:%f rdz:%f\n",Rdx,Rdy,Rdz);
 
   //magnitude!
@@ -333,7 +333,7 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
   return true; // the plane intersects the ray
 }
 
-void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D *rayStart, Vector3D*rayEnd){
+void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd){
   /* printf("calling the stupid plane intersection\n"); */
   /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
   /* printf("done testing the plane intersection \n"); */
@@ -343,12 +343,12 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
     Vector3D p1 = Vector3D(1,1,0);
     Vector3D p2 = Vector3D(1,0,0);
     Vector3D p3 = Vector3D(0,0,0);
-    planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd);
+    planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd);
     return;
   }
 
-  Vector3D rayVector = rayStart - rayEnd;
-  printf("rayStart:(%f,%f,%f) rayEnd:(%f,%f,%f)  ray vector(%f,%f,%f)\n",rayStart->x,rayStart->y,rayStart->z, rayEnd->x,rayEnd->y,rayEnd->z,  rayVector.x,rayVector.y,rayVector.z);
+  Vector3D rayVector = rayEnd;
+  printf("rayStart:(%f,%f,%f) rayEnd:(%f,%f,%f)  ray vector(%f,%f,%f)\n",rayStart.x,rayStart.y,rayStart.z, rayEnd.x,rayEnd.y,rayEnd.z,  rayVector.x,rayVector.y,rayVector.z);
   printf("  1. rayintersection in the draw shape \n");
   if(modelType=="Sphere"){
     printf("  1. it is a sphere, running the sphere intersection\n");
@@ -359,7 +359,10 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   }
   double minX=-1,minY=-1,minZ=-1;
   double maxX=1,maxY=1,maxZ=1;
-  if(modelType == "Teapot"){
+  if(modelType=="Cube"){
+    minX=0.5;minY=-0.5;minZ=-0.5;
+    maxX=0.5;maxY=-0.5;maxZ=-0.5;
+  }else if(modelType == "Teapot"){
     minX=-1.5;minY=-1;minZ=-1;
     maxX=1.5;maxY=1;maxZ=1;
   }else if(modelType == "Cone"){
@@ -381,12 +384,12 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
 
   printf("p\n");
   int beforeSize = 0;
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd)) printf("got an intersection front\n"); // front
-  if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, *rayStart, *rayEnd)) printf("got an intersection back\n"); // back
-  if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, *rayStart, *rayEnd)) printf("got an intersection bottom\n"); // bottom
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, *rayStart, *rayEnd)) printf("got an intersection top\n"); // top
-  if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, *rayStart, *rayEnd)) printf("got an intersection left\n"); // left
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, *rayStart, *rayEnd)) printf("got an intersection right\n"); // right
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd)) printf("got an intersection front\n"); // front
+  if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, rayStart, rayEnd)) printf("got an intersection back\n"); // back
+  if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, rayStart, rayEnd)) printf("got an intersection bottom\n"); // bottom
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, rayStart, rayEnd)) printf("got an intersection top\n"); // top
+  if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, rayStart, rayEnd)) printf("got an intersection left\n"); // left
+  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, rayStart, rayEnd)) printf("got an intersection right\n"); // right
 
   printf("done finding intersection\n");
 }
