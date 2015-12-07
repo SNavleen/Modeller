@@ -311,14 +311,19 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
 
   // calculate these values
   Vector3D planeNormal = (p1-p0).crossVector3D(p2-p1);
+  Vector3D tempVec = (p1-p0).dotVector3D(p2-p1);
+  printf("p0:(%f,%f,%f), p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f)\n", p0.x,p0.y,p0.z, p1.x,p1.y,p1.z, p2.x,p2.y,p2.z, p3.x,p3.y,p3.z );
+  printf("printing the plane normal: (%f,%f,%f)  are (p1-p0).(p2-p1):(%f,%f,%f) \n",planeNormal.x,planeNormal.y,planeNormal.z, tempVec.x,tempVec.y,tempVec.z);
   Vector3D r0 = rayStart;
   Vector3D rd = rayEnd-rayStart;
   // D = -A*x - B * y - C * z, where (A,B,C) is the normal of the plane
   double D = -1 * p0.x * planeNormal.x - planeNormal.y * p0.y - planeNormal.z * p0.z;
   double denom = planeNormal.dotVector3D(rd); // get the denomenator of the equation
   // may have some double == 0 errors
-  if(denom == 0) return false; // because the plane is at 90 degrees so there is no intersection
-  if(fabs(denom) < 0.001) return false; // because the plane is at 90 degrees so there is no intersection
+  if(denom == 0 || fabs(denom) < 0.001){// because the plane is at 90 degrees so there is no intersection
+    printf("the plane is at 90 degrees with the ray there is not intersection the rd:(%f,%f,%f) normal:(%f,%f,%f) denom is %f \n", rd.x,rd.y,rd.z,  planeNormal.x,planeNormal.y,planeNormal.z  , denom);
+    return false;
+  }
 
   // t = -(N . R0 + D) / (N . Rd);
   double t = (((planeNormal.dotVector3D(r0)) + D) * -1) / (denom);
@@ -360,8 +365,8 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   double minX=-1,minY=-1,minZ=-1;
   double maxX=1,maxY=1,maxZ=1;
   if(modelType=="Cube"){
-    minX=0.5;minY=-0.5;minZ=-0.5;
-    maxX=0.5;maxY=-0.5;maxZ=-0.5;
+    minX=-0.5;minY=-0.5;minZ=-0.5;
+    maxX=0.5;maxY=0.5;maxZ=0.5;
   }else if(modelType == "Teapot"){
     minX=-1.5;minY=-1;minZ=-1;
     maxX=1.5;maxY=1;maxZ=1;
@@ -382,7 +387,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   Vector3D p6 = Vector3D(minX,minY,minZ);
   Vector3D p7 = Vector3D(minX,maxY,minZ);
 
-  printf("p\n");
+  printf("going to call the plane intersections \n");
   int beforeSize = 0;
   if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd)) printf("got an intersection front\n"); // front
   if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, rayStart, rayEnd)) printf("got an intersection back\n"); // back
@@ -391,7 +396,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, rayStart, rayEnd)) printf("got an intersection left\n"); // left
   if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, rayStart, rayEnd)) printf("got an intersection right\n"); // right
 
-  printf("done finding intersection\n");
+  printf("done calling the plane intersection intersection\n");
 }
 
 //---------------------------------mouse ray intersection stuff--------------------------------------
