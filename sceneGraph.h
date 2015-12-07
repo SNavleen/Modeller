@@ -19,10 +19,12 @@ public:
 	//Scene Graph Draw
 	void draw();
 
-private:
-	Node *currentNode;
-	Node *rootNode;
+    //here temporarily
     Node *selectedNode;
+	Node *currentNode;
+
+private:
+	Node *rootNode;
 };
 
 #endif

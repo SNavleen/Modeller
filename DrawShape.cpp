@@ -248,7 +248,7 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D *rayStart, Vecto
   return (sq>=0);
 }
 bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3){
-  /* printf("p0:(%f,%f,%f) p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f) point:(%f,%f,%f)\n",p0.x,p0.y,p0.z,  p1.x,p1.y,p1.z,  p2.x,p2.y,p2.z,  p3.x,p3.y,p3.z, point.x,point.y,point.z); */
+  printf("p0:(%f,%f,%f) p1:(%f,%f,%f) p2:(%f,%f,%f) p3:(%f,%f,%f) point:(%f,%f,%f)\n",p0.x,p0.y,p0.z,  p1.x,p1.y,p1.z,  p2.x,p2.y,p2.z,  p3.x,p3.y,p3.z, point.x,point.y,point.z);
   Vector3D v0 = p0 - p3;
   Vector3D v1 = p1 - p0;
   Vector3D v2 = p2 - p1;
@@ -284,17 +284,17 @@ bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D 
 //function which preforms intersection test
 /* bool planeIntersection(vector<double> *listOfDistances, Vector3D rd, Vector3D r0, Vector3D planeNormal, Vector3D *rayStart, Vector3D *rayEnd){ */
 bool planeIntersection(vector<double> *listOfDistances, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3, Vector3D rayStart, Vector3D rayEnd){
-  printf(">>>>> testing purposes\n");
-  Vector3D t0 = Vector3D(0,0,0);
-  Vector3D t1 = Vector3D(1,0,0);
-  Vector3D t2 = Vector3D(1,-1,0);
-  Vector3D t3 = Vector3D(0,-1,0);
-  Vector3D point= Vector3D(1,1,1);
-  printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(point, t0,t1,t2,t3), 0);
-  printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(1,-2,0), t0,t1,t2,t3), 0);
-  printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(0,0,0), t0,t1,t2,t3), 1);
-  printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(0.5,-0.5,0), t0,t1,t2,t3), 1);
-  printf(">>>>> done testing purposes\n");
+  /* printf(">>>>> testing purposes\n"); */
+  /* Vector3D t0 = Vector3D(0,0,0); */
+  /* Vector3D t1 = Vector3D(1,0,0); */
+  /* Vector3D t2 = Vector3D(1,-1,0); */
+  /* Vector3D t3 = Vector3D(0,-1,0); */
+  /* Vector3D point= Vector3D(1,1,1); */
+  /* printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(point, t0,t1,t2,t3), 0); */
+  /* printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(1,-2,0), t0,t1,t2,t3), 0); */
+  /* printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(0,0,0), t0,t1,t2,t3), 1); */
+  /* printf("checking if the point is inside the box result is %i should be %i \n", isPointInsideBoxInPlane(Vector3D(0.5,-0.5,0), t0,t1,t2,t3), 1); */
+  /* printf(">>>>> done testing purposes\n"); */
 
 
   // calculate these values
@@ -310,15 +310,16 @@ bool planeIntersection(vector<double> *listOfDistances, Vector3D p0, Vector3D p1
   // t = -(N * R0 + D) / (N * Rd);
   double t = (((planeNormal.dotVector3D(r0)) + D) * -1) / (denom);
   Vector3D intersectingPoint = r0 + (rd * t);
+  printf("the point intersects the plane, going to the isPointInsideBoxInPlane function\n");
   if(!isPointInsideBoxInPlane(intersectingPoint, p0,p1,p2,p3)) return false;
-  listOfDistances->push_back(t);
+  /* listOfDistances->push_back(t); */
   return true; // the plane intersects the ray
 }
 
 void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D *rayStart, Vector3D*rayEnd){
-  printf("calling the stupid plane intersection\n");
-  planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D());
-  printf("done testing the plane intersection \n");
+  /* printf("calling the stupid plane intersection\n"); */
+  /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
+  /* printf("done testing the plane intersection \n"); */
 
 
   printf("  1. rayintersection in the draw shape \n");
@@ -342,15 +343,23 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
     maxX=1.2,maxY=1.2,maxZ=0.5;
   }
   // get the vertex values
-  Vector3D v1 = Vector3D(maxX,maxY,maxZ);
-  Vector3D v2 = Vector3D(maxX,minY,maxZ);
-  Vector3D v3 = Vector3D(minX,minY,maxZ);
-  Vector3D v4 = Vector3D(minX,maxY,maxZ);
-  Vector3D v5 = Vector3D(maxX,maxY,minZ);
-  Vector3D v6 = Vector3D(maxX,minY,minZ);
-  Vector3D v7 = Vector3D(minX,minY,minZ);
-  Vector3D v8 = Vector3D(minX,maxY,minZ);
+  Vector3D p0 = Vector3D(maxX,maxY,maxZ);
+  Vector3D p1 = Vector3D(maxX,minY,maxZ);
+  Vector3D p2 = Vector3D(minX,minY,maxZ);
+  Vector3D p3 = Vector3D(minX,maxY,maxZ);
+  Vector3D p4 = Vector3D(maxX,maxY,minZ);
+  Vector3D p5 = Vector3D(maxX,minY,minZ);
+  Vector3D p6 = Vector3D(minX,minY,minZ);
+  Vector3D p7 = Vector3D(minX,maxY,minZ);
 
+  printf("p\n");
+  if(planeIntersection(listOfDistances, p0,p1,p2,p3, *rayStart, *rayEnd)) printf("got an intersection 1\n"); // front
+  if(planeIntersection(listOfDistances, p4,p5,p6,p7, *rayStart, *rayEnd)) printf("got an intersection 2\n"); // back
+  if(planeIntersection(listOfDistances, p1,p2,p6,p5, *rayStart, *rayEnd)) printf("got an intersection 3\n"); // bottom
+  if(planeIntersection(listOfDistances, p0,p3,p7,p4, *rayStart, *rayEnd)) printf("got an intersection 4\n"); // top
+  if(planeIntersection(listOfDistances, p3,p2,p6,p7, *rayStart, *rayEnd)) printf("got an intersection 5\n"); // left
+  if(planeIntersection(listOfDistances, p0,p1,p5,p4, *rayStart, *rayEnd)) printf("got an intersection 6\n"); // right
+  printf("done finding intersection\n");
 }
 
 

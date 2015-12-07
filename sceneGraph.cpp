@@ -88,7 +88,6 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 }
 
 
-
 SceneGraph::SceneGraph(){
 	rootNode = new Node();
 	currentNode = rootNode;
@@ -136,6 +135,7 @@ void SceneGraph::deleteThisNode(){
 void SceneGraph::draw(){
 	rootNode->draw();
     /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
+    printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL));
     if(selectedNode != NULL) selectedNode->drawWireFrame();
 }
 

@@ -180,6 +180,13 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(key == 'y' || key == 'Y'){
 	}else if(key == 'y' || key == 'Y'){
 	}*/
+    if(key=='m'){
+      printf("selecting the first node\n");
+       //select the first object
+      SG->goToRoot();
+      SG->goToChild(0);
+      SG->selectedNode = SG->currentNode;
+    }
 
 	//Keys for what type of transformation will be applied
 	/*if(key == 'a' || key == 'A'){
