@@ -38,16 +38,12 @@ class DrawShape:public Node{
         char *modelType;
         float red, green, blue;
 
-        /*DrawShape drawCube();*/
         void drawCube();
-        /*DrawShape drawSphere();*/
         void drawSphere();
-        /*DrawShape drawCone();*/
         void drawCone();
-        /*DrawShape drawTorus();*/
         void drawTorus();
-        /*DrawShape drawTeapot();*/
         void drawTeapot();
-};
+        bool planeIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3, Vector3D rayStart, Vector3D rayEnd);
 
+};
 #endif

@@ -76,7 +76,8 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
   printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size());
   // go through the list to find the smallset element
-  if(listOfIntersectionDistances.size()==0) return; // if there are no elements then just end the function
+  if(listOfIntersectionDistances.size()==0){ printf("no Intersection\n"); return;} // if there are no elements then just end the function
+  printf("Intersection detected\n");
   int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
   for(int i = 1; i < listOfIntersectionDistances.size();i++){
     if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex)) minDistanceIndex = i;
@@ -84,7 +85,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
   // make the selected node equal to the node that is closest to the screen and intersects the ray
   selectedNode = listOfnodes.at(minDistanceIndex);
-  printf("the selected node is at a distance of %f\n",  listOfIntersectionDistances.at(minDistanceIndex));
+  printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex));
 }
 
 
