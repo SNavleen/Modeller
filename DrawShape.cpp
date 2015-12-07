@@ -84,8 +84,8 @@ void DrawShape::drawWireFrame(){
   double minX=-1,minY=-1,minZ=-1;
   double maxX=1,maxY=1,maxZ=1;
   if(modelType=="Cube"){
-    minX=0.5;minY=-0.5;minZ=-0.5;
-    maxX=0.5;maxY=-0.5;maxZ=-0.5;
+    minX=-0.5;minY=-0.5;minZ=-0.5;
+    maxX=0.5;maxY=0.5;maxZ=0.5;
   }if(modelType == "Teapot"){
     minX=-1.5;minY=-1;minZ=-1;
     maxX=1.5;maxY=1;maxZ=1;
