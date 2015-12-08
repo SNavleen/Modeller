@@ -21,7 +21,7 @@
 
 // mouse Intersection stuff
 void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
-  printf("%i, %i\n", x, y);
+  /* printf("%i, %i\n", x, y); */
   //allocate matricies memory
   double matModelView[16], matProjection[16];
   int viewport[4];
@@ -46,35 +46,39 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
       viewport, &end->x, &end->y, &end->z);
 
   // print out the near and far stuff
-  printf("near point: %f,%f,%f\n", start->x, start->y, start->z);
-  printf("far point: %f,%f,%f\n", end->x, end->y, end->z);
+  /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
+  /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
 }
 
 void SceneGraph::selectnodeAtPos(int x, int y){
-  printf("\n\nstarting the select node at pos\n");
+  /* printf("\n\nstarting the select node at pos\n"); */
   Vector3D start = Vector3D(); // this is the point of the ray vector at the front
   Vector3D end = Vector3D();  // this is the point of the ray vector at the end
   getMouseRay(x,y,&start,&end); // actually calculate the following values
   this->startRayD = new Vector3D(start.x, start.y, start.z);
   this->endRayD = new Vector3D(end.x, end.y, end.z);
-  printf("get the mouse ray\n");
+  /* printf("get the mouse ray\n"); */
 
   vector<Node*> listOfnodes = vector<Node*>();
   vector<double> listOfIntersectionDistances = vector<double>();
   Node *curnodeLocal = rootNode;// go to the root node
-  printf("starting the for loop with all the children\n");
+  /* printf("starting the for loop with all the children\n"); */
   // go to all the children checking if they had got the collision
   for(int i = 0; i < curnodeLocal->children->size(); i++){
-    printf("going to the child at i:%i\n",i);
+    /* printf("going to the child at i:%i\n",i); */
     Node *node =  curnodeLocal->children->at(i);
     node->rayIntersection(&listOfnodes,&listOfIntersectionDistances,start,end);
   }
-  printf("done the selectnodeatpos\n\n");
+  /* printf("done the selectnodeatpos\n\n"); */
 
-  printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size());
+  /* printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size()); */
   // go through the list to find the smallset element
-  if(listOfIntersectionDistances.size()==0){ selectedNode=NULL;  printf("no Intersection\n"); return;} // if there are no elements then just end the function
-  printf("Intersection detected\n");
+  if(listOfIntersectionDistances.size()==0){
+    selectedNode=NULL;
+    /* printf("no Intersection\n"); */
+    return;
+  } // if there are no elements then just end the function
+  /* printf("Intersection detected\n"); */
   int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
   for(int i = 1; i < listOfIntersectionDistances.size();i++){
     if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex) && listOfIntersectionDistances.at(i) > 0) minDistanceIndex = i;

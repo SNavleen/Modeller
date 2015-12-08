@@ -353,10 +353,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   }
 
   Vector3D rayVector = rayEnd;
-  printf("rayStart:(%f,%f,%f) rayEnd:(%f,%f,%f)  ray vector(%f,%f,%f)\n",rayStart.x,rayStart.y,rayStart.z, rayEnd.x,rayEnd.y,rayEnd.z,  rayVector.x,rayVector.y,rayVector.z);
-  printf("  1. rayintersection in the draw shape \n");
   if(modelType=="Sphere"){
-    printf("  1. it is a sphere, running the sphere intersection\n");
     if(sphereIntersection(listOfDistances, rayStart, rayEnd)){
       listOfnodes->push_back(this);;
     }
@@ -387,16 +384,22 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   Vector3D p6 = Vector3D(minX,minY,minZ);
   Vector3D p7 = Vector3D(minX,maxY,minZ);
 
-  printf("going to call the plane intersections \n");
-  int beforeSize = 0;
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd)) printf("got an intersection front\n"); // front
-  if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, rayStart, rayEnd)) printf("got an intersection back\n"); // back
-  if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, rayStart, rayEnd)) printf("got an intersection bottom\n"); // bottom
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, rayStart, rayEnd)) printf("got an intersection top\n"); // top
-  if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, rayStart, rayEnd)) printf("got an intersection left\n"); // left
-  if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, rayStart, rayEnd)) printf("got an intersection right\n"); // right
+  /* printf("going to call the plane intersections \n"); */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd)) printf("got an intersection front\n"); // front */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, rayStart, rayEnd)) printf("got an intersection back\n"); // back */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, rayStart, rayEnd)) printf("got an intersection bottom\n"); // bottom */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, rayStart, rayEnd)) printf("got an intersection top\n"); // top */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, rayStart, rayEnd)) printf("got an intersection left\n"); // left */
+  /* if(planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, rayStart, rayEnd)) printf("got an intersection right\n"); // right */
 
-  printf("done calling the plane intersection intersection\n");
+  planeIntersection(listOfnodes, listOfDistances, p0,p1,p2,p3, rayStart, rayEnd); // front
+  planeIntersection(listOfnodes, listOfDistances, p4,p5,p6,p7, rayStart, rayEnd); // back
+  planeIntersection(listOfnodes, listOfDistances, p1,p2,p6,p5, rayStart, rayEnd); // bottom
+  planeIntersection(listOfnodes, listOfDistances, p0,p3,p7,p4, rayStart, rayEnd); // top
+  planeIntersection(listOfnodes, listOfDistances, p3,p2,p6,p7, rayStart, rayEnd); // left
+  planeIntersection(listOfnodes, listOfDistances, p0,p1,p5,p4, rayStart, rayEnd); // right
+
+  /* printf("done calling the plane intersection intersection\n"); */
 }
 
 //---------------------------------mouse ray intersection stuff--------------------------------------
