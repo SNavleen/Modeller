@@ -2,6 +2,7 @@
 #define __DRAWSHAPE_H__
 
 #include "node.h"
+
 #ifdef __APPLE__
 #   include <OpenGL/gl.h>
 #   include <OpenGL/glu.h>
@@ -29,22 +30,20 @@ class DrawShape:public Node{
         virtual void nodeSpecificCodeUp();
         void lighting();
         void material();
+        void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
+
 
     private:
 
         char *modelType;
         float red, green, blue;
 
-        /*DrawShape drawCube();*/
         void drawCube();
-        /*DrawShape drawSphere();*/
         void drawSphere();
-        /*DrawShape drawCone();*/
         void drawCone();
-        /*DrawShape drawTorus();*/
         void drawTorus();
-        /*DrawShape drawTeapot();*/
         void drawTeapot();
-};
+        bool planeIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3, Vector3D rayStart, Vector3D rayEnd);
 
+};
 #endif

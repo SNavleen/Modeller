@@ -37,119 +37,120 @@ bool blRed = false, blGreen = false, blBlue = false, showlight = true;
 int red = 255, green = 255, blue = 255, lightCounter = 1;
 
 bool blnZ = false, blnX = false, blnY = false;
-float Z = 255, X = 255, Y = 255;
+Vector3D v3S, v3T;
+Vector4D v4R;
+//float Z = 255, X = 255, Y = 255;
 
 //node ids
 int masterID = 0;
 int getID(){
-	return masterID++;
+  return masterID++;
 }
 
 //Window size
 void CreateDisplayWindow(int width, int height){
-	objWindow.setWidth(width);
-	objWindow.setHeight(height);
+  objWindow.setWidth(width);
+  objWindow.setHeight(height);
 
-	objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
-	objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
+  objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
+  objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
 
-	//Set the Window Size
-	glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
-	//Set Window position
-	glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
-	//glutCreateWindow("3D Terrain");
+  //Set the Window Size
+  glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
+  //Set Window position
+  glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
+  //glutCreateWindow("3D Terrain");
 }
 void LightingAndMaterial(){
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-	if(showlight){
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		glEnable(GL_LIGHT1);
-	}else{
-		glDisable(GL_LIGHTING);
-	}
+  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+  if(showlight){
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+  }else{
+    glDisable(GL_LIGHTING);
+  }
 
-	objDrawShape.lighting();
+  objDrawShape.lighting();
 
-	objDrawShape.material();
+  objDrawShape.material();
 }
 
 void Display(){
-	float origin[3] = {0,0,0};
+  float origin[3] = {0,0,0};
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 
-	LightingAndMaterial();
+  LightingAndMaterial();
 
-	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
-	glColor3f(1,1,1);
+  gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+  glColor3f(1,1,1);
 
-	//draw the sceneGraph
-	objDrawShape.drawAxis();
-	SG->draw();
+  //draw the sceneGraph
+  objDrawShape.drawAxis();
+  SG->draw();
+  printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
+  printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
 
-	glutSwapBuffers();
+  /* SG->drawRay(); */
+  glutSwapBuffers();
 }
 int decreaseColour(int colour){
-	if(colour>0)
-		return --colour;
-	return colour;
+  if(colour>0)
+    return --colour;
+  return colour;
 }
 
 int increaseColour(int colour){
-	if(colour<256)
-		return ++colour;
-	return colour;
+  if(colour<256)
+    return ++colour;
+  return colour;
 }
-void decreasAxies(){
+
+Vector3D increase3D(Vector3D v3){
 	if(blnZ)
-		Z=-0.01;
+		v3.z+=0.01;
 	if(blnX)
-		X=-0.01;
+		v3.x+=0.01;
 	if(blnY)
-		Y=-0.01;
-	printf("decrease: %f, %f, %f\n", X, Y, Z);
+		v3.y+=0.01;
+	return v3;
 }
-void increaseAxies(){
+Vector3D decrease3D(Vector3D v3){
 	if(blnZ)
-		Z=+0.01;
+		v3.z-=0.01;
 	if(blnX)
-		X=+0.01;
+		v3.x-=0.01;
 	if(blnY)
-		Y=+0.01;
-	printf("increase: %f, %f, %f\n", X, Y, Z);
+		v3.y-=0.01;
+	return v3;
 }
 
 void transformationv3(char *transformation, Vector3D v3){
-	v3.x = X;
-	v3.y = Y;
-	v3.z = Z;
 	NodeTransform *transform;
-	//printf("%s: %f, %f, %f\n", transformation, X, Y, Z);
 
-	if(transformation == "Translate")
+	/*if(transformation == "Translate")
 		transform = new NodeTransform(Translate, v3);
-	else if(transformation == "Scale")
+	else if(transformation == "Scale")*/
 		transform = new NodeTransform(Scale, v3);
 	SG->insertChildNodeHere(transform);
 	SG->goToChild(0);
 }
 
-void transformationv4(char *transformation, Vector4D v4){
+/*void transformationv4(char *transformation, Vector4D v4){
 	//v4.w = 1;
 	v4.x = X;
 	v4.y = Y;
 	v4.z = Z;
 	NodeTransform *transform;
-	//printf("%s: %f, %f, %f\n", transformation, X, Y, Z);
 
 	if(transformation == "Rotate")
 		transform = new NodeTransform(Rotate, v4);
 	SG->insertChildNodeHere(transform);
 	SG->goToChild(0);
-}
+}*/
 
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
@@ -225,60 +226,67 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 
 	//Keys for what axis the transformation will be applied to
-	if(key == 'z' || key == 'Z'){
+	if(key == 'z'){
 		blnZ = true;
 		blnX = false;
 		blnY = false;
-	}else if(key == 'x' || key == 'X'){
+	}else if(key == 'x'){
 		blnZ = false;
 		blnX = true;
 		blnY = false;
-	}else if(key == 'y' || key == 'Y'){
+	}else if(key == 'y'){
 		blnZ = false;
 		blnX = false;
 		blnY = true;
-	}else if(mod == 1 && (key == 'z' || key == 'Z')){
+	}else if(key == 'Z'){
 		blnZ = false;
 		blnX = true;
 		blnY = true;
-	}else if(mod == 1 && (key == 'x' || key == 'X')){
+	}else if(key == 'X'){
 		blnZ = true;
 		blnX = false;
 		blnY = true;
-	}else if(mod == 1 && (key == 'y' || key == 'Y')){
+	}else if(key == 'Y'){
 		blnZ = true;
 		blnX = true;
 		blnY = false;
 	}
 	
-	Vector3D v3;
-	Vector4D v4;
 
 	//Keys for what type of transformation will be applied
 	if(mod == 1){
-		if(key == 's' || key == 'S'){
-			increaseAxies();
-			transformationv3("Scale", v3);
-		}else if(key == 'r' || key == 'R'){
-			increaseAxies();
+		if(key == 'S'){
+			v3S = increase3D(v3S);
+			transformationv3("Scale", v3S);
+		}/*else if(key == 'r' || key == 'R'){
+			if(blnZ)
+				v3.z+=0.01;
+			if(blnX)
+				v3.x+=0.01;
+			if(blnY)
+				v3.y+=0.01;
 			transformationv4("Rotate", v4);
-		}else if(key == 't' || key == 'T'){
-			increaseAxies();
-			transformationv3("Translate", v3);
+		}*/else if(key == 'T'){
+			v3T = increase3D(v3T);
+			//transformationv3("Translate", v3);
 		}
 	}else if(mod == 4){
-		if(key == 's' || key == 'S'){
-			decreasAxies();
-			transformationv3("Scale", v3);
-		}else if(key == 'r' || key == 'R'){
-			decreasAxies();
-			transformationv4("Rotate", v4);
-		}else if(key == 't' || key == 'T'){
-			decreasAxies();
-			transformationv3("Translate", v3);
+		if(key == 's'){
+			v3S = decrease3D(v3S);
+			//transformationv3("Scale", v3);
+		}/*else if(key == 'r'){
+			if(blnZ)
+				v3.z-=0.01;
+			if(blnX)
+				v3.x-=0.01;
+			if(blnY)
+				v3.y-=0.01;
+			//transformationv4("Rotate", v4);
+		}*/else if(key == 't'){
+			v3T = decrease3D(v3T);
+			//transformationv3("Translate", v3);
 		}
 	}
-
 
 	Display();
 }
@@ -302,52 +310,36 @@ void KeyBoardSpecial(int key, int x, int y){
   glutPostRedisplay();
 }
 
-void drawWireFrameObject(){
-  // TODO
-
-  // go to the root node
-
-
-  // go to all the children checking if they had got the collision
-
-
-  // this is just a temp fix
-  printf("going to select the first node \n");
-  SG->goToRoot();
-  SG->goToChild(0);
-  SG->selectCurrentNode();
-  printf("done selecting the first node\n");
-}
-
 void MouseClickAction(int button, int state, int posX, int posY){
   switch(button){
     case GLUT_LEFT_BUTTON:
-      if(state==0) drawWireFrameObject();
+      if(state==0) SG->selectnodeAtPos(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
       break;
     default:
       break;
   }
+  Display();
 }
 
 //Init
 void glutCallbacks(){
-	glutDisplayFunc(Display);
-	glutKeyboardFunc(KeyBoardAction);
-	glutSpecialFunc(KeyBoardSpecial);
-	glutMouseFunc(MouseClickAction);
+  glutDisplayFunc(Display);
+  glutKeyboardFunc(KeyBoardAction);
+  glutSpecialFunc(KeyBoardSpecial);
+  glutMouseFunc(MouseClickAction);
 }
 void init(void){
-	GLuint id = 1;
+  GLuint id = 1;
 
-	glEnable(GLUT_DEPTH);
+  glEnable(GLUT_DEPTH);
 
-	glClearColor(0, 0, 0, 0);
-	glColor3f(1, 1, 1);
+  glClearColor(0, 0, 0, 0);
+  glColor3f(1, 1, 1);
 
-	//init our scenegraph
-	SG = new SceneGraph();
+  //init our scenegraph
+  SG = new SceneGraph();
 }
 
 int main(int argc, char** argv){
@@ -380,19 +372,18 @@ int main(int argc, char** argv){
 	cout << "" << endl;
 
 	cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
-	cout << "z/Z KEY -------------------------- SELECT Z AXIS" << endl;
-	cout << "x/X KEY -------------------------- SELECT X AXIS" << endl;
-	cout << "y/Y KEY -------------------------- SELECT Y AXIS" << endl;
-	cout << "SHIFT z/Z KEY -------------------------- SELECT X AND Y AXIS" << endl;
-	cout << "SHIFT x/X KEY -------------------------- SELECT Z AND Y AXIS" << endl;
-	cout << "SHIFT y/Y KEY -------------------------- SELECT X AND Z AXIS" << endl;
-	cout << "ALT s/S KEY -------------------------- DECREASE SCALE" << endl;
-	cout << "ALT r/R KEY -------------------------- DECREASE ROTATE" << endl;
-	cout << "ALT t/T KEY -------------------------- DECREASE TRANSLATE" << endl;
-	cout << "SHIFT s/S KEY -------------------------- INCREASE SCALE" << endl;
-	cout << "SHIFT r/R KEY -------------------------- INCREASE ROTATE" << endl;
-	cout << "SHIFT t/T KEY -------------------------- INCREASE TRANSLATE" << endl;
-
+	cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
+	cout << "x KEY -------------------------- SELECT X AXIS" << endl;
+	cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
+	cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
+	cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
+	cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;
+	cout << "ALT s KEY -------------------------- DECREASE SCALE" << endl;
+	cout << "ALT r KEY -------------------------- DECREASE ROTATE" << endl;
+	cout << "ALT t KEY -------------------------- DECREASE TRANSLATE" << endl;
+	cout << "SHIFT s KEY -------------------------- INCREASE SCALE" << endl;
+	cout << "SHIFT r KEY -------------------------- INCREASE ROTATE" << endl;
+	cout << "SHIFT t KEY -------------------------- INCREASE TRANSLATE" << endl;
 
 	CreateDisplayWindow(600, 600);
 	//Creates the Terrain window

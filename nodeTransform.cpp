@@ -11,6 +11,7 @@
 #	include <windows.h>
 #endif
 
+
 //for gltranslate and gl scale
 NodeTransform::NodeTransform(transformType whatType, Vector3D vec3){
 	nodeType = transformation;
