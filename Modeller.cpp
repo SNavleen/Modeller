@@ -26,7 +26,7 @@ using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
-DrawShape objDrawShape("", 255, 255, 255);
+DrawShape objDrawShape("", 1, 1, 1);
 SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
@@ -34,78 +34,79 @@ float pos[] = {0,1,0};
 float angle = 0.0f;
 
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
-int red = 255, green = 255, blue = 255, lightCounter = 1;
+int red = 1, green = 1, blue = 1, lightCounter = 1;
 
 //node ids
 int masterID = 0;
 int getID(){
-  return masterID++;
+	return masterID++;
 }
 
 //Window size
 void CreateDisplayWindow(int width, int height){
-  objWindow.setWidth(width);
-  objWindow.setHeight(height);
+	objWindow.setWidth(width);
+	objWindow.setHeight(height);
 
-  objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
-  objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
+	objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
+	objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
 
-  //Set the Window Size
-  glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
-  //Set Window position
-  glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
-  //glutCreateWindow("3D Terrain");
+	//Set the Window Size
+	glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
+	//Set Window position
+	glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
+	//glutCreateWindow("3D Terrain");
 }
 void LightingAndMaterial(){
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-  if(showlight){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-  }else{
-    glDisable(GL_LIGHTING);
-  }
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	if(showlight){
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	}else{
+	glDisable(GL_LIGHTING);
+	}
 
-  objDrawShape.lighting();
-
-  objDrawShape.material();
+	objDrawShape.lighting();
+	//objDrawShape.material();
 }
 
 void Display(){
-  float origin[3] = {0,0,0};
+	float origin[3] = {0,0,0};
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-  LightingAndMaterial();
+	LightingAndMaterial();
 
-  gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
-  glColor3f(1,1,1);
+	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+	glClearColor(1, 1, 0.9, 0);
 
-  //draw the sceneGraph
-  objDrawShape.drawAxis();
-  SG->draw();
+	//draw the sceneGraph
+	//objDrawShape.material();
+	objDrawShape.drawAxis();
+	SG->draw();
 
-  /* SG->drawRay(); */
-  glutSwapBuffers();
+	/* SG->drawRay(); */
+	glutSwapBuffers();
 }
 int decreaseColour(int colour){
-  if(colour>0)
-    return --colour;
-  return colour;
+	if(colour>1)
+		return --colour;
+	return colour;
 }
 
 int increaseColour(int colour){
-  if(colour<256)
-    return ++colour;
-  return colour;
+	if(colour<256)
+		return ++colour;
+  	return colour;
 }
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
  *  x and y - mouse x and y coordinates at the time the function is called
  */
 void KeyBoardAction(unsigned char key, int x, int y){
+  objDrawShape.material();
   //Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
   //if the "q" key is pressed, quit the program
   if(key == 'q' || key == 'Q'){
@@ -149,11 +150,12 @@ void KeyBoardAction(unsigned char key, int x, int y){
     if(blRed)
       red = increaseColour(red);
     else if(blGreen)
-      red = increaseColour(green);
+      green = increaseColour(green);
     else if(blBlue)
       blue = increaseColour(blue);
   }
 
+    printf("key rgb: %i, %i, %i\n", red, green, blue);
   //Keys to draw a shpae
   if(key == '1'){//Cube
     DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
@@ -240,7 +242,7 @@ void init(void){
 
   glEnable(GLUT_DEPTH);
 
-  glClearColor(0, 0, 0, 0);
+  glClearColor(1, 1, 0.9, 0);
   glColor3f(1, 1, 1);
 
   //init our scenegraph
