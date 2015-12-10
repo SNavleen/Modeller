@@ -50,6 +50,11 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
 }
 
+
+Node* SceneGraph::getSelectedNode(){
+  return selectedNode;
+}
+
 void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("\n\nstarting the select node at pos\n"); */
   Vector3D start = Vector3D(); // this is the point of the ray vector at the front
@@ -148,6 +153,7 @@ void SceneGraph::goToParent(){
 
 //inserts a child node into the current node
 void SceneGraph::insertChildNodeHere(Node *node){
+  node->parent = currentNode;
   currentNode->children->push_back(node);
 }
 

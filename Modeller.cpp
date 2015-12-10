@@ -136,7 +136,7 @@ void transformationv3(char *transformation, Vector3D v3){
 	else if(transformation == "Scale")*/
 		transform = new NodeTransform(Scale, v3);
 	SG->insertChildNodeHere(transform);
-	SG->goToChild(0);
+	//SG->goToChild(SG->getSelectedNode());
 }
 
 /*void transformationv4(char *transformation, Vector4D v4){
@@ -264,7 +264,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	if(mod == 1){
 		if(key == 'S'){
 			v3S = increase3D(v3S);
-			//transformationv3("Scale", v3S);
+			transformationv3("Scale", v3S);
 		}else if(key == 'R'){
 			if(blnZ)
 				v4R.z+=0.1;
@@ -282,7 +282,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(mod == 4){
 		if(key == 's'){
 			v3S = decrease3D(v3S);
-			//transformationv3("Scale", v3);
+			transformationv3("Scale", v3S);
 		}else if(key == 'r'){
 			if(blnZ)
 				v4R.z-=0.1;

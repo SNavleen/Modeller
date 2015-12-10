@@ -23,6 +23,7 @@ class SceneGraph{
 
     void selectFirstnode();
     void useCustomSettings();
+    Node* getSelectedNode();
 
 
   private:
