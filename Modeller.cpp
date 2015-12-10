@@ -36,10 +36,9 @@ float angle = 0.0f;
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
 int red = 255, green = 255, blue = 255, lightCounter = 1;
 
-bool blnZ = false, blnX = false, blnY = false;
+bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
 Vector4D v4R;
-//float Z = 255, X = 255, Y = 255;
 
 //node ids
 int masterID = 0;
@@ -93,6 +92,7 @@ void Display(){
   SG->draw();
   printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
   printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
+  printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
   /* SG->drawRay(); */
   glutSwapBuffers();
@@ -111,20 +111,20 @@ int increaseColour(int colour){
 
 Vector3D increase3D(Vector3D v3){
 	if(blnZ)
-		v3.z+=0.01;
+		v3.z+=0.1;
 	if(blnX)
-		v3.x+=0.01;
+		v3.x+=0.1;
 	if(blnY)
-		v3.y+=0.01;
+		v3.y+=0.1;
 	return v3;
 }
 Vector3D decrease3D(Vector3D v3){
 	if(blnZ)
-		v3.z-=0.01;
+		v3.z-=0.1;
 	if(blnX)
-		v3.x-=0.01;
+		v3.x-=0.1;
 	if(blnY)
-		v3.y-=0.01;
+		v3.y-=0.1;
 	return v3;
 }
 
@@ -140,10 +140,6 @@ void transformationv3(char *transformation, Vector3D v3){
 }
 
 /*void transformationv4(char *transformation, Vector4D v4){
-	//v4.w = 1;
-	v4.x = X;
-	v4.y = Y;
-	v4.z = Z;
 	NodeTransform *transform;
 
 	if(transformation == "Rotate")
@@ -230,26 +226,37 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		blnZ = true;
 		blnX = false;
 		blnY = false;
+		blnAngle = false;
 	}else if(key == 'x'){
 		blnZ = false;
 		blnX = true;
 		blnY = false;
+		blnAngle = false;
 	}else if(key == 'y'){
 		blnZ = false;
 		blnX = false;
 		blnY = true;
+		blnAngle = false;
 	}else if(key == 'Z'){
 		blnZ = false;
 		blnX = true;
 		blnY = true;
+		blnAngle = false;
 	}else if(key == 'X'){
 		blnZ = true;
 		blnX = false;
 		blnY = true;
+		blnAngle = false;
 	}else if(key == 'Y'){
 		blnZ = true;
 		blnX = true;
 		blnY = false;
+		blnAngle = false;
+	}else if(key == 'a' || key == 'A'){
+		blnZ = false;
+		blnX = false;
+		blnY = false;
+		blnAngle = true;
 	}
 	
 
@@ -257,16 +264,18 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	if(mod == 1){
 		if(key == 'S'){
 			v3S = increase3D(v3S);
-			transformationv3("Scale", v3S);
-		}/*else if(key == 'r' || key == 'R'){
+			//transformationv3("Scale", v3S);
+		}else if(key == 'R'){
 			if(blnZ)
-				v3.z+=0.01;
+				v4R.z+=0.1;
 			if(blnX)
-				v3.x+=0.01;
+				v4R.x+=0.1;
 			if(blnY)
-				v3.y+=0.01;
-			transformationv4("Rotate", v4);
-		}*/else if(key == 'T'){
+				v4R.y+=0.1;
+			if(blnAngle)
+				v4R.w+=0.1;
+			//transformationv4("Rotate", v4);
+		}else if(key == 'T'){
 			v3T = increase3D(v3T);
 			//transformationv3("Translate", v3);
 		}
@@ -274,15 +283,17 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		if(key == 's'){
 			v3S = decrease3D(v3S);
 			//transformationv3("Scale", v3);
-		}/*else if(key == 'r'){
+		}else if(key == 'r'){
 			if(blnZ)
-				v3.z-=0.01;
+				v4R.z-=0.1;
 			if(blnX)
-				v3.x-=0.01;
+				v4R.x-=0.1;
 			if(blnY)
-				v3.y-=0.01;
+				v4R.y-=0.1;
+			if(blnAngle)
+				v4R.w-=0.1;
 			//transformationv4("Rotate", v4);
-		}*/else if(key == 't'){
+		}else if(key == 't'){
 			v3T = decrease3D(v3T);
 			//transformationv3("Translate", v3);
 		}
@@ -375,6 +386,7 @@ int main(int argc, char** argv){
 	cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
 	cout << "x KEY -------------------------- SELECT X AXIS" << endl;
 	cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
+	cout << "a/A KEY -------------------------- SELECT THE ANGLE" << endl;
 	cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
 	cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
 	cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;
