@@ -179,9 +179,18 @@ void SceneGraph::deleteThisNode(){
       parentSelectedNode->children->push_back(selectedNodesChildren->at(i));
     }
 
+    //set the selected element to nothing 
     selectedNode = NULL;
-    //TODO
   }
+}
+//deletes the current node, relinking the children as necessary
+void SceneGraph::resetScene(){
+  goToParent();
+  while(!currentNode->children->empty()){
+    currentNode->children->pop_back();
+  }
+  
+  selectedNode = NULL;
 }
 
 //draw the scenegraph

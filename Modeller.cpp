@@ -158,10 +158,11 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	//if the "q" key is pressed, quit the program
 	if(key == 'q' || key == 'Q'){
 		exit(0);
-	}else if(key == 'r' || key == 'R'){
-	}else if(key == 's' || key == 'S'){
-	}else if(key == 'l' || key == 'L'){
-	}else if(key == 'w' || key == 'W'){
+	}else if(key == 'r'){
+		SG->resetScene();
+	}else if(key == 's'){
+	}else if(key == 'l'){
+	}else if(key == 'w'){
 		lightCounter++;
 		if (lightCounter % 2 == 0){
 			showlight = false;
@@ -252,7 +253,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		blnX = true;
 		blnY = false;
 		blnAngle = false;
-	}else if(key == 'a' || key == 'A'){
+	}else if(key == 'a'){
 		blnZ = false;
 		blnX = false;
 		blnY = false;
@@ -369,10 +370,10 @@ int main(int argc, char** argv){
 	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
 	cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
 	cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
-	cout << "w/W KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-	cout << "l/L KEY -------------------------- LOAD SAVED SECNE" << endl;
-	cout << "s/S KEY -------------------------- SAVE SECNE INTO FILE" << endl;
-	cout << "r/R KEY -------------------------- RESET SECNE" << endl;
+	cout << "w KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
+	cout << "l KEY -------------------------- LOAD SAVED SECNE" << endl;
+	cout << "s KEY -------------------------- SAVE SECNE INTO FILE" << endl;
+	cout << "r KEY -------------------------- RESET SECNE" << endl;
 	cout << "q -------------------------- EXIT" << endl;
 	cout << "" << endl;
 
@@ -388,7 +389,7 @@ int main(int argc, char** argv){
 	cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
 	cout << "x KEY -------------------------- SELECT X AXIS" << endl;
 	cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
-	cout << "a/A KEY -------------------------- SELECT THE ANGLE" << endl;
+	cout << "a KEY -------------------------- SELECT THE ANGLE" << endl;
 	cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
 	cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
 	cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;
