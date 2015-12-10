@@ -134,8 +134,9 @@ void transformationv3(char *transformation, Vector3D v3){
 	/*if(transformation == "Translate")
 		transform = new NodeTransform(Translate, v3);
 	else if(transformation == "Scale")*/
-		transform = new NodeTransform(Scale, v3);
-	SG->insertChildNodeHere(transform);
+      transform = new NodeTransform(Scale, v3);
+	/* SG->insertChildNodeHere(transform); */
+    SG->addTransformationToCurrentNode(transform);
 	//SG->goToChild(SG->getSelectedNode());
 }
 
@@ -258,7 +259,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		blnY = false;
 		blnAngle = true;
 	}
-	
+
 
 	//Keys for what type of transformation will be applied
 	if(mod == 1){
