@@ -50,6 +50,11 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
 }
 
+
+Node* SceneGraph::getSelectedNode(){
+  return selectedNode;
+}
+
 void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("\n\nstarting the select node at pos\n"); */
   Vector3D start = Vector3D(); // this is the point of the ray vector at the front
@@ -148,12 +153,35 @@ void SceneGraph::goToParent(){
 
 //inserts a child node into the current node
 void SceneGraph::insertChildNodeHere(Node *node){
+  node->parent = currentNode;
   currentNode->children->push_back(node);
 }
 
 //deletes the current node, relinking the children as necessary
 void SceneGraph::deleteThisNode(){
-  //TODO
+  if(selectedNode!=NULL){
+    Node *parentSelectedNode = selectedNode->parent;
+
+    vector<Node*> *parentsChildren = parentSelectedNode->children;
+    vector<Node*> *selectedNodesChildren = selectedNode->children;
+
+    //find the selected nodes index
+    int indexOfSelectedNode = 0;
+    for(indexOfSelectedNode = 0; indexOfSelectedNode < parentSelectedNode->children->size(); indexOfSelectedNode++){
+      if(parentSelectedNode->children->at(indexOfSelectedNode) == selectedNode) break;
+    }
+
+    //Delete the selected node
+    parentSelectedNode->children->erase(parentsChildren->begin()+indexOfSelectedNode);
+
+    //Put all the children of the selected not to the parent 
+    for(int i = 0; i < selectedNodesChildren->size(); i++){
+      parentSelectedNode->children->push_back(selectedNodesChildren->at(i));
+    }
+
+    selectedNode = NULL;
+    //TODO
+  }
 }
 
 //draw the scenegraph
@@ -163,5 +191,16 @@ void SceneGraph::draw(){
   /* printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL)); */
   if(selectedNode != NULL) selectedNode->drawWireFrame();
 }
+
+
+void SceneGraph::addTransformationToCurrentNode(Node * transform){
+  Node *parentSelectedNode = selectedNode->parent;
+  vector<Node*> *parentsChildren = selectedNode->children;
+  parentSelectedNode->children = new vector<Node*>();
+  parentSelectedNode->children->push_back(transform);
+  transform->children = parentsChildren;
+}
+
+
 
 

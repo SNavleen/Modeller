@@ -36,6 +36,10 @@ float angle = 0.0f;
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
 int red = 1, green = 1, blue = 1, lightCounter = 1;
 
+bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
+Vector3D v3S, v3T;
+Vector4D v4R;
+
 //node ids
 int masterID = 0;
 int getID(){
@@ -83,9 +87,11 @@ void Display(){
 	glClearColor(1, 1, 0.9, 0);
 
 	//draw the sceneGraph
-	//objDrawShape.material();
 	objDrawShape.drawAxis();
 	SG->draw();
+	printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
+	printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
+	printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
 	/* SG->drawRay(); */
 	glutSwapBuffers();
@@ -101,101 +107,199 @@ int increaseColour(int colour){
 		return ++colour;
   	return colour;
 }
+
+Vector3D increase3D(Vector3D v3){
+	if(blnZ)
+		v3.z+=0.1;
+	if(blnX)
+		v3.x+=0.1;
+	if(blnY)
+		v3.y+=0.1;
+	return v3;
+}
+Vector3D decrease3D(Vector3D v3){
+	if(blnZ)
+		v3.z-=0.1;
+	if(blnX)
+		v3.x-=0.1;
+	if(blnY)
+		v3.y-=0.1;
+	return v3;
+}
+
+void transformationv3(char *transformation, Vector3D v3){
+	NodeTransform *transform;
+
+	if(transformation == "Translate")
+		transform = new NodeTransform(Translate, v3);
+	else if(transformation == "Scale")
+      transform = new NodeTransform(Scale, v3);
+	/* SG->insertChildNodeHere(transform); */
+    SG->addTransformationToCurrentNode(transform);
+	//SG->goToChild(SG->getSelectedNode());
+}
+
+void transformationv4(char *transformation, Vector4D v4){
+	NodeTransform *transform;
+
+	if(transformation == "Rotate")
+		transform = new NodeTransform(Rotate, v4);
+	SG->insertChildNodeHere(transform);
+	SG->goToChild(0);
+}
+
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
  *  x and y - mouse x and y coordinates at the time the function is called
  */
 void KeyBoardAction(unsigned char key, int x, int y){
-  objDrawShape.material();
-  //Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
-  //if the "q" key is pressed, quit the program
-  if(key == 'q' || key == 'Q'){
-    exit(0);
-  }else if(key == 'r' || key == 'R'){
-  }else if(key == 's' || key == 'S'){
-  }else if(key == 'l' || key == 'L'){
-  }else if(key == 'w' || key == 'W'){
-    lightCounter++;
-    if (lightCounter % 2 == 0){
-      showlight = false;
-    }else{
-      showlight = true;
-    }
-  }
+	int mod = glutGetModifiers();
+	//Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
+	//if the "q" key is pressed, quit the program
+	if(key == 'q' || key == 'Q'){
+		exit(0);
+	}else if(key == 'r' || key == 'R'){
+	}else if(key == 's' || key == 'S'){
+	}else if(key == 'l' || key == 'L'){
+	}else if(key == 'w' || key == 'W'){
+		lightCounter++;
+		if (lightCounter % 2 == 0){
+			showlight = false;
+		}else{
+			showlight = true;
+		}
+	}
 
-  //Keys to select a colour
-  if(key == ','){//Select the red colour to change
-    blRed = true;
-    blGreen = false;
-    blBlue = false;
-  }else if(key == '.'){//Select the green colour to change
-    blRed = false;
-    blGreen = true;
-    blBlue = false;
-  }else if(key == '/'){//Select the blue colour to change
-    blRed = false;
-    blGreen = false;
-    blBlue = true;
-  }
+	//Keys to select a colour
+	if(key == ','){//Select the red colour to change
+		blRed = true;
+		blGreen = false;
+		blBlue = false;
+	}else if(key == '.'){//Select the green colour to change
+		blRed = false;
+		blGreen = true;
+		blBlue = false;
+	}else if(key == '/'){//Select the blue colour to change
+		blRed = false;
+		blGreen = false;
+		blBlue = true;
+	}
 
-  //Keys for increasing and decreasing selected colour
-  if(key == '-'){//Subtract 1 from the colour
-    if(blRed)
-      red = decreaseColour(red);
-    else if(blGreen)
-      green = decreaseColour(green);
-    else if(blBlue)
-      blue = decreaseColour(blue);
-  }else if(key == '='){//Add 1 to the colour
-    if(blRed)
-      red = increaseColour(red);
-    else if(blGreen)
-      green = increaseColour(green);
-    else if(blBlue)
-      blue = increaseColour(blue);
-  }
+	//Keys for increasing and decreasing selected colour
+	if(key == '-'){//Subtract 1 from the colour
+		if(blRed)
+			red = decreaseColour(red);
+		else if(blGreen)
+			green = decreaseColour(green);
+		else if(blBlue)
+			blue = decreaseColour(blue);
+	}else if(key == '='){//Add 1 to the colour
+		if(blRed)
+			red = increaseColour(red);
+		else if(blGreen)
+			red = increaseColour(green);
+		else if(blBlue)
+			blue = increaseColour(blue);
+	}
 
-    printf("key rgb: %i, %i, %i\n", red, green, blue);
-  //Keys to draw a shpae
-  if(key == '1'){//Cube
-    DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
-    SG->insertChildNodeHere(drawCude);
-    //cude = true;
-  }else if(key == '2'){//Sphere
-    DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
-    SG->insertChildNodeHere(drawSphere);
-  }else if(key == '3'){//Cone
-    DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
-    SG->insertChildNodeHere(drawCone);
-  }else if(key == '4'){//Torus
-    DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
-    SG->insertChildNodeHere(drawTorus);
-  }else if(key == '5'){//Teapot
-    DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
-    SG->insertChildNodeHere(drawTeapot);
-  }
+	//Keys to draw a shpae
+	if(key == '1'){//Cube
+		DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
+		SG->insertChildNodeHere(drawCude);
+		//cude = true;
+	}else if(key == '2'){//Sphere
+		DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
+		SG->insertChildNodeHere(drawSphere);
+	}else if(key == '3'){//Cone
+		DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
+		SG->insertChildNodeHere(drawCone);
+	}else if(key == '4'){//Torus
+		DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
+		SG->insertChildNodeHere(drawTorus);
+	}else if(key == '5'){//Teapot
+		DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
+		SG->insertChildNodeHere(drawTeapot);
+	}
 
-  //Keys for what axis the transformation will be applied to
-  if(key == 'z' || key == 'Z'){
-  }else if(key == 'x' || key == 'X'){
-  }else if(key == 'y' || key == 'Y'){
-  }/*else if(key == 'x' || key == 'X'){
-     }else if(key == 'y' || key == 'Y'){
-     }else if(key == 'y' || key == 'Y'){
-     }*/
-  if(key=='m'){
-    printf("selecting the first node\n");
-    //select the first object
-    SG->selectFirstnode();
-  }
+	//Keys for what axis the transformation will be applied to
+	if(key == 'z'){
+		blnZ = true;
+		blnX = false;
+		blnY = false;
+		blnAngle = false;
+	}else if(key == 'x'){
+		blnZ = false;
+		blnX = true;
+		blnY = false;
+		blnAngle = false;
+	}else if(key == 'y'){
+		blnZ = false;
+		blnX = false;
+		blnY = true;
+		blnAngle = false;
+	}else if(key == 'Z'){
+		blnZ = false;
+		blnX = true;
+		blnY = true;
+		blnAngle = false;
+	}else if(key == 'X'){
+		blnZ = true;
+		blnX = false;
+		blnY = true;
+		blnAngle = false;
+	}else if(key == 'Y'){
+		blnZ = true;
+		blnX = true;
+		blnY = false;
+		blnAngle = false;
+	}else if(key == 'a' || key == 'A'){
+		blnZ = false;
+		blnX = false;
+		blnY = false;
+		blnAngle = true;
+	}
 
-  //Keys for what type of transformation will be applied
-  /*if(key == 'a' || key == 'A'){
-    }else if(key == '' || key == 'R'){
-    }else if(key == 's' || key == 'S'){
-    }*/
 
-  Display();
+	//Keys for what type of transformation will be applied
+	if(mod == 1){
+		if(key == 'S'){
+			v3S = increase3D(v3S);
+			transformationv3("Scale", v3S);
+		}else if(key == 'R'){
+			if(blnZ)
+				v4R.z+=0.1;
+			if(blnX)
+				v4R.x+=0.1;
+			if(blnY)
+				v4R.y+=0.1;
+			if(blnAngle)
+				v4R.w+=0.1;
+			transformationv4("Rotate", v4R);
+		}else if(key == 'T'){
+			v3T = increase3D(v3T);
+			transformationv3("Translate", v3T);
+		}
+	}else if(mod == 4){
+		if(key == 's'){
+			v3S = decrease3D(v3S);
+			transformationv3("Scale", v3S);
+		}else if(key == 'r'){
+			if(blnZ)
+				v4R.z-=0.1;
+			if(blnX)
+				v4R.x-=0.1;
+			if(blnY)
+				v4R.y-=0.1;
+			if(blnAngle)
+				v4R.w-=0.1;
+			transformationv4("Rotate", v4R);
+		}else if(key == 't'){
+			v3T = decrease3D(v3T);
+			transformationv3("Translate", v3T);
+		}
+	}
+
+	Display();
 }
 
 void KeyBoardSpecial(int key, int x, int y){
@@ -223,6 +327,7 @@ void MouseClickAction(int button, int state, int posX, int posY){
       if(state==0) SG->selectnodeAtPos(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
+      SG->deleteThisNode();
       break;
     default:
       break;
@@ -250,57 +355,61 @@ void init(void){
 }
 
 int main(int argc, char** argv){
-  //glut initialization stuff:
-  // set the window size, display mode, and create the window
-  glutInit(&argc, argv);
+	//glut initialization stuff:
+	// set the window size, display mode, and create the window
+	glutInit(&argc, argv);
 
-  cout << "-------------------------- MENU COMMANDS --------------------------" << endl;
-  cout << "ARROW KEYS -------------------------- ROTATE CAMERA" << endl;
-  cout << "END KEY -------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
-  cout << "HOME KEY -------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
-  cout << ", -------------------------- SELECT THE COLOUR RED" << endl;
-  cout << ". -------------------------- SELECT THE COLOUR GREEN" << endl;
-  cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
-  cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
-  cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
-  cout << "w/W KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-  cout << "l/L KEY -------------------------- LOAD SAVED SECNE" << endl;
-  cout << "s/S KEY -------------------------- SAVE SECNE INTO FILE" << endl;
-  cout << "r/R KEY -------------------------- RESET SECNE" << endl;
-  cout << "q -------------------------- EXIT" << endl;
-  cout << "" << endl;
+	cout << "-------------------------- MENU COMMANDS --------------------------" << endl;
+	cout << "RIGHT CLICK -------------------------- DELETE SELECTED NODE" << endl;
+	cout << "ARROW KEYS -------------------------- ROTATE CAMERA" << endl;
+	cout << "END KEY -------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
+	cout << "HOME KEY -------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
+	cout << ", -------------------------- SELECT THE COLOUR RED" << endl;
+	cout << ". -------------------------- SELECT THE COLOUR GREEN" << endl;
+	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
+	cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
+	cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
+	cout << "w/W KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
+	cout << "l/L KEY -------------------------- LOAD SAVED SECNE" << endl;
+	cout << "s/S KEY -------------------------- SAVE SECNE INTO FILE" << endl;
+	cout << "r/R KEY -------------------------- RESET SECNE" << endl;
+	cout << "q -------------------------- EXIT" << endl;
+	cout << "" << endl;
 
-  cout << "-------------------------- DRAWING SHAPE COMMANDS --------------------------" << endl;
-  cout << "1 KEY -------------------------- CUBE" << endl;
-  cout << "2 KEY -------------------------- SPHERE" << endl;
-  cout << "3 KEY -------------------------- CONE" << endl;
-  cout << "4 KEY -------------------------- TORUS" << endl;
-  cout << "5 KEY -------------------------- TEAPOT" << endl;
-  cout << "" << endl;
+	cout << "-------------------------- DRAWING SHAPE COMMANDS --------------------------" << endl;
+	cout << "1 KEY -------------------------- CUBE" << endl;
+	cout << "2 KEY -------------------------- SPHERE" << endl;
+	cout << "3 KEY -------------------------- CONE" << endl;
+	cout << "4 KEY -------------------------- TORUS" << endl;
+	cout << "5 KEY -------------------------- TEAPOT" << endl;
+	cout << "" << endl;
 
-  cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
-  cout << "z/Z KEY -------------------------- SELECT Z AXIS" << endl;
-  cout << "x/X KEY -------------------------- SELECT X AXIS" << endl;
-  cout << "y/Y KEY -------------------------- SELECT Y AXIS" << endl;
-  cout << "SHIFT z/Z KEY -------------------------- SELECT X AND Y AXIS" << endl;
-  cout << "SHIFT x/X KEY -------------------------- SELECT Z AND Y AXIS" << endl;
-  cout << "SHIFT y/Y KEY -------------------------- SELECT X AND Z AXIS" << endl;
-  cout << "SHIFT s/S KEY -------------------------- SCALE" << endl;
-  cout << "SHIFT r/R KEY -------------------------- ROTATE" << endl;
-  cout << "SHIFT t/T KEY -------------------------- TRANSLATE" << endl;
+	cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
+	cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
+	cout << "x KEY -------------------------- SELECT X AXIS" << endl;
+	cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
+	cout << "a/A KEY -------------------------- SELECT THE ANGLE" << endl;
+	cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
+	cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
+	cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;
+	cout << "ALT s KEY -------------------------- DECREASE SCALE" << endl;
+	cout << "ALT r KEY -------------------------- DECREASE ROTATE" << endl;
+	cout << "ALT t KEY -------------------------- DECREASE TRANSLATE" << endl;
+	cout << "SHIFT s KEY -------------------------- INCREASE SCALE" << endl;
+	cout << "SHIFT r KEY -------------------------- INCREASE ROTATE" << endl;
+	cout << "SHIFT t KEY -------------------------- INCREASE TRANSLATE" << endl;
 
+	CreateDisplayWindow(600, 600);
+	//Creates the Terrain window
+	glutCreateWindow("Modeller");
+	glutCallbacks();
+	init();
 
-  CreateDisplayWindow(600, 600);
-  //Creates the Terrain window
-  glutCreateWindow("Modeller");
-  glutCallbacks();
-  init();
+	//enable Z buffer test, otherwise things appear in the order they're drawn
+	//glEnable(GL_DEPTH_TEST);
+	objWindow.viewDisplay();
 
-  //enable Z buffer test, otherwise things appear in the order they're drawn
-  //glEnable(GL_DEPTH_TEST);
-  objWindow.viewDisplay();
+	glutMainLoop();
 
-  glutMainLoop();
-
-  return 0;
+	return 0;
 }
