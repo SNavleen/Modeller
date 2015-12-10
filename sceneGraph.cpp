@@ -159,7 +159,29 @@ void SceneGraph::insertChildNodeHere(Node *node){
 
 //deletes the current node, relinking the children as necessary
 void SceneGraph::deleteThisNode(){
-  //TODO
+  if(selectedNode!=NULL){
+    Node *parentSelectedNode = selectedNode->parent;
+
+    vector<Node*> *parentsChildren = parentSelectedNode->children;
+    vector<Node*> *selectedNodesChildren = selectedNode->children;
+
+    //find the selected nodes index
+    int indexOfSelectedNode = 0;
+    for(indexOfSelectedNode = 0; indexOfSelectedNode < parentSelectedNode->children->size(); indexOfSelectedNode++){
+      if(parentSelectedNode->children->at(indexOfSelectedNode) == selectedNode) break;
+    }
+
+    //Delete the selected node
+    parentSelectedNode->children->erase(parentsChildren->begin()+indexOfSelectedNode);
+
+    //Put all the children of the selected not to the parent 
+    for(int i = 0; i < selectedNodesChildren->size(); i++){
+      parentSelectedNode->children->push_back(selectedNodesChildren->at(i));
+    }
+
+    selectedNode = NULL;
+    //TODO
+  }
 }
 
 //draw the scenegraph
@@ -172,8 +194,8 @@ void SceneGraph::draw(){
 
 
 void SceneGraph::addTransformationToCurrentNode(Node * transform){
-  Node * parentSelectedNode = selectedNode->parent;
-  vector<Node*> * parentsChildren = selectedNode->children;
+  Node *parentSelectedNode = selectedNode->parent;
+  vector<Node*> *parentsChildren = selectedNode->children;
   parentSelectedNode->children = new vector<Node*>();
   parentSelectedNode->children->push_back(transform);
   transform->children = parentsChildren;

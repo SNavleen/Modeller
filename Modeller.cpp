@@ -328,6 +328,7 @@ void MouseClickAction(int button, int state, int posX, int posY){
       if(state==0) SG->selectnodeAtPos(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
+      SG->deleteThisNode();
       break;
     default:
       break;
