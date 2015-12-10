@@ -13,6 +13,7 @@ class SceneGraph{
     void goToParent();
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
+    void resetScene();
 
     //get the selected node
     void selectnodeAtPos(int x,int y);
@@ -31,6 +32,7 @@ class SceneGraph{
     Vector3D * endRayD;
     Node *rootNode;
     Node *selectedNode;
+    Node *transformNode;
     Node *currentNode;
 };
 

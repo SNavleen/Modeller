@@ -26,7 +26,7 @@ using namespace std;
 
 //Object Variables
 Window objWindow("perspective");
-DrawShape objDrawShape("", 255, 255, 255);
+DrawShape objDrawShape("", 1, 1, 1);
 SceneGraph *SG;
 
 float camPos[] = {2.5, 2.5, 0.5};
@@ -34,7 +34,7 @@ float pos[] = {0,1,0};
 float angle = 0.0f;
 
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
-int red = 255, green = 255, blue = 255, lightCounter = 1;
+int red = 1, green = 1, blue = 1, lightCounter = 1;
 
 bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
@@ -43,70 +43,69 @@ Vector4D v4R;
 //node ids
 int masterID = 0;
 int getID(){
-  return masterID++;
+	return masterID++;
 }
 
 //Window size
 void CreateDisplayWindow(int width, int height){
-  objWindow.setWidth(width);
-  objWindow.setHeight(height);
+	objWindow.setWidth(width);
+	objWindow.setHeight(height);
 
-  objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
-  objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
+	objWindow.setPosX((glutGet(GLUT_SCREEN_WIDTH)-objWindow.getWidth())/2);
+	objWindow.setPosY((glutGet(GLUT_SCREEN_HEIGHT)-objWindow.getHeight())/2);
 
-  //Set the Window Size
-  glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
-  //Set Window position
-  glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
-  //glutCreateWindow("3D Terrain");
+	//Set the Window Size
+	glutInitWindowSize(objWindow.getWidth(), objWindow.getHeight());
+	//Set Window position
+	glutInitWindowPosition(objWindow.getPosX(), objWindow.getPosY());
+	//glutCreateWindow("3D Terrain");
 }
 void LightingAndMaterial(){
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-  if(showlight){
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-  }else{
-    glDisable(GL_LIGHTING);
-  }
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	if(showlight){
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	}else{
+	glDisable(GL_LIGHTING);
+	}
 
-  objDrawShape.lighting();
-
-  objDrawShape.material();
+	objDrawShape.lighting();
+	//objDrawShape.material();
 }
 
 void Display(){
-  float origin[3] = {0,0,0};
+	float origin[3] = {0,0,0};
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-  LightingAndMaterial();
+	LightingAndMaterial();
 
-  gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
-  glColor3f(1,1,1);
+	gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+	glClearColor(1, 1, 0.9, 0);
 
-  //draw the sceneGraph
-  objDrawShape.drawAxis();
-  SG->draw();
-  printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
-  printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-  printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+	//draw the sceneGraph
+	objDrawShape.drawAxis();
+	SG->draw();
+	//printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
+	//printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
+	//printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
-  /* SG->drawRay(); */
-  glutSwapBuffers();
+	/* SG->drawRay(); */
+	glutSwapBuffers();
 }
 int decreaseColour(int colour){
-  if(colour>0)
-    return --colour;
-  return colour;
+	if(colour>1)
+		return --colour;
+	return colour;
 }
 
 int increaseColour(int colour){
-  if(colour<256)
-    return ++colour;
-  return colour;
+	if(colour<256)
+		return ++colour;
+  	return colour;
 }
 
 Vector3D increase3D(Vector3D v3){
@@ -159,10 +158,11 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	//if the "q" key is pressed, quit the program
 	if(key == 'q' || key == 'Q'){
 		exit(0);
-	}else if(key == 'r' || key == 'R'){
-	}else if(key == 's' || key == 'S'){
-	}else if(key == 'l' || key == 'L'){
-	}else if(key == 'w' || key == 'W'){
+	}else if(key == 'r'){
+		SG->resetScene();
+	}else if(key == 's'){
+	}else if(key == 'l'){
+	}else if(key == 'w'){
 		lightCounter++;
 		if (lightCounter % 2 == 0){
 			showlight = false;
@@ -253,49 +253,50 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		blnX = true;
 		blnY = false;
 		blnAngle = false;
-	}else if(key == 'a' || key == 'A'){
+	}else if(key == 'a'){
 		blnZ = false;
 		blnX = false;
 		blnY = false;
 		blnAngle = true;
 	}
 
-
+	Vector3D v3;
+	Vector4D v4;
 	//Keys for what type of transformation will be applied
 	if(mod == 1){
 		if(key == 'S'){
-			v3S = increase3D(v3S);
+			v3S = increase3D(v3);
 			transformationv3("Scale", v3S);
 		}else if(key == 'R'){
 			if(blnZ)
-				v4R.z+=0.1;
+				v4.z+=0.1;
 			if(blnX)
-				v4R.x+=0.1;
+				v4.x+=0.1;
 			if(blnY)
-				v4R.y+=0.1;
+				v4.y+=0.1;
 			if(blnAngle)
-				v4R.w+=0.1;
+				v4.w+=0.1;
 			transformationv4("Rotate", v4R);
 		}else if(key == 'T'){
-			v3T = increase3D(v3T);
+			v3T = increase3D(v3);
 			transformationv3("Translate", v3T);
 		}
 	}else if(mod == 4){
 		if(key == 's'){
-			v3S = decrease3D(v3S);
+			v3S = decrease3D(v3);
 			transformationv3("Scale", v3S);
 		}else if(key == 'r'){
 			if(blnZ)
-				v4R.z-=0.1;
+				v4.z-=0.1;
 			if(blnX)
-				v4R.x-=0.1;
+				v4.x-=0.1;
 			if(blnY)
-				v4R.y-=0.1;
+				v4.y-=0.1;
 			if(blnAngle)
-				v4R.w-=0.1;
+				v4.w-=0.1;
 			transformationv4("Rotate", v4R);
 		}else if(key == 't'){
-			v3T = decrease3D(v3T);
+			v3T = decrease3D(v3);
 			transformationv3("Translate", v3T);
 		}
 	}
@@ -328,6 +329,7 @@ void MouseClickAction(int button, int state, int posX, int posY){
       if(state==0) SG->selectnodeAtPos(posX, posY);
       break;
     case GLUT_RIGHT_BUTTON:
+      SG->deleteThisNode();
       break;
     default:
       break;
@@ -347,7 +349,7 @@ void init(void){
 
   glEnable(GLUT_DEPTH);
 
-  glClearColor(0, 0, 0, 0);
+  glClearColor(1, 1, 0.9, 0);
   glColor3f(1, 1, 1);
 
   //init our scenegraph
@@ -360,6 +362,7 @@ int main(int argc, char** argv){
 	glutInit(&argc, argv);
 
 	cout << "-------------------------- MENU COMMANDS --------------------------" << endl;
+	cout << "RIGHT CLICK -------------------------- DELETE SELECTED NODE" << endl;
 	cout << "ARROW KEYS -------------------------- ROTATE CAMERA" << endl;
 	cout << "END KEY -------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
 	cout << "HOME KEY -------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
@@ -368,10 +371,10 @@ int main(int argc, char** argv){
 	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
 	cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
 	cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
-	cout << "w/W KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-	cout << "l/L KEY -------------------------- LOAD SAVED SECNE" << endl;
-	cout << "s/S KEY -------------------------- SAVE SECNE INTO FILE" << endl;
-	cout << "r/R KEY -------------------------- RESET SECNE" << endl;
+	cout << "w KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
+	cout << "l KEY -------------------------- LOAD SAVED SECNE" << endl;
+	cout << "s KEY -------------------------- SAVE SECNE INTO FILE" << endl;
+	cout << "r KEY -------------------------- RESET SECNE" << endl;
 	cout << "q -------------------------- EXIT" << endl;
 	cout << "" << endl;
 
@@ -387,7 +390,7 @@ int main(int argc, char** argv){
 	cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
 	cout << "x KEY -------------------------- SELECT X AXIS" << endl;
 	cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
-	cout << "a/A KEY -------------------------- SELECT THE ANGLE" << endl;
+	cout << "a KEY -------------------------- SELECT THE ANGLE" << endl;
 	cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
 	cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
 	cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;

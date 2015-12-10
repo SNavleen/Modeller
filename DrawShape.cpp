@@ -19,12 +19,12 @@ using namespace std;
 
 //Constructors
 DrawShape::DrawShape(char *modelType, int red, int green, int blue){
-	this->red = red/255;
-	this->green = green/255;
-	this->blue = blue/255;
 	nodeType = model;
 	this->modelType = modelType;
 	isDrawable = true;
+	this->red = (float)red/255;
+	this->green = (float)green/255;
+	this->blue = (float)blue/255;
 }
 
 //Deconstructor
@@ -51,6 +51,7 @@ void DrawShape::drawAxis(){
 
 void DrawShape::nodeSpecificCodeDown(){
     glColor3f(this->red,this->green,this->blue);
+    material();
 	if(modelType == "Cube"){
 		drawCube();
 	}
@@ -168,9 +169,9 @@ void DrawShape::lighting(){
 }
 /*DrawShape material();*/
 void DrawShape::material(){
-	float mat_ambient[4] ={ 0.0f,0.05f,0.0f,1.0f };
-	float mat_diffuse[4] ={ 0.4f,0.5f,0.4f,1.0f};
-	float mat_specular[4] ={0.04f,0.7f,0.04f,1.0f };
+	float mat_ambient[4] ={this->red+0.0f, this->green+0.05f, this->blue+0.0f, 1.0f};
+	float mat_diffuse[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
+	float mat_specular[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
 	float shine =  10.0f;
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
