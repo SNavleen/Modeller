@@ -172,11 +172,13 @@ void SceneGraph::draw(){
 
 
 void SceneGraph::addTransformationToCurrentNode(Node * transform){
-  Node * parentSelectedNode = selectedNode->parent;
-  vector<Node*> * parentsChildren = selectedNode->children;
-  parentSelectedNode->children = new vector<Node*>();
-  parentSelectedNode->children->push_back(transform);
-  transform->children = parentsChildren;
+  //Node * parentSelectedNode = selectedNode->parent;
+  //vector<Node*> * parentsChildren = selectedNode->children;
+  //parentSelectedNode->children = new vector<Node*>();
+  currentNode = selectedNode->parent;
+  insertChildNodeHere(transform);
+  //parentSelectedNode->children->push_back(transform);
+  //transform->children = parentsChildren;
 }
 
 
