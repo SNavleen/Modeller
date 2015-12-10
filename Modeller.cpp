@@ -131,23 +131,23 @@ Vector3D decrease3D(Vector3D v3){
 void transformationv3(char *transformation, Vector3D v3){
 	NodeTransform *transform;
 
-	/*if(transformation == "Translate")
+	if(transformation == "Translate")
 		transform = new NodeTransform(Translate, v3);
-	else if(transformation == "Scale")*/
+	else if(transformation == "Scale")
       transform = new NodeTransform(Scale, v3);
 	/* SG->insertChildNodeHere(transform); */
     SG->addTransformationToCurrentNode(transform);
 	//SG->goToChild(SG->getSelectedNode());
 }
 
-/*void transformationv4(char *transformation, Vector4D v4){
+void transformationv4(char *transformation, Vector4D v4){
 	NodeTransform *transform;
 
 	if(transformation == "Rotate")
 		transform = new NodeTransform(Rotate, v4);
 	SG->insertChildNodeHere(transform);
 	SG->goToChild(0);
-}*/
+}
 
 /*  KeyBoardAction -- the GLUT keyboard function
  *  key -- the key pressed
@@ -275,10 +275,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
 				v4R.y+=0.1;
 			if(blnAngle)
 				v4R.w+=0.1;
-			//transformationv4("Rotate", v4);
+			transformationv4("Rotate", v4R);
 		}else if(key == 'T'){
 			v3T = increase3D(v3T);
-			//transformationv3("Translate", v3);
+			transformationv3("Translate", v3T);
 		}
 	}else if(mod == 4){
 		if(key == 's'){
@@ -293,10 +293,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
 				v4R.y-=0.1;
 			if(blnAngle)
 				v4R.w-=0.1;
-			//transformationv4("Rotate", v4);
+			transformationv4("Rotate", v4R);
 		}else if(key == 't'){
 			v3T = decrease3D(v3T);
-			//transformationv3("Translate", v3);
+			transformationv3("Translate", v3T);
 		}
 	}
 
