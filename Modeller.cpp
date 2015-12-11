@@ -131,22 +131,34 @@ Vector3D decrease3D(Vector3D v3){
 void transformationv3(char *transformation, Vector3D v3){
 	NodeTransform *transform;
 
-	if(transformation == "Translate")
+	if(transformation == "Translate"){
 		transform = new NodeTransform(Translate, v3);
-	else if(transformation == "Scale")
+    	SG->addTransformationToCurrentNode(transform);
+	}else if(transformation == "Scale"){
       transform = new NodeTransform(Scale, v3);
-	/* SG->insertChildNodeHere(transform); */
-    SG->addTransformationToCurrentNode(transform);
+    	SG->addTransformationToCurrentNode(transform);
+    }
+	//SG->insertChildNodeHere(transform);
+	//glutPostRedisplay();
+    //SG->addTransformationToCurrentNode(transform);
 	//SG->goToChild(SG->getSelectedNode());
 }
 
 void transformationv4(char *transformation, Vector4D v4){
 	NodeTransform *transform;
 
-	if(transformation == "Rotate")
+	if(transformation == "Rotate"){
 		transform = new NodeTransform(Rotate, v4);
-	SG->insertChildNodeHere(transform);
-	SG->goToChild(0);
+    	SG->addTransformationToCurrentNode(transform);
+    }
+	//SG->insertChildNodeHere(transform);
+	//glutPostRedisplay();
+	//SG->goToChild(0);
+}
+void resetRotate(){
+	v4R.x = 0;
+	v4R.y = 0;
+	v4R.z = 0;
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -155,14 +167,15 @@ void transformationv4(char *transformation, Vector4D v4){
  */
 void KeyBoardAction(unsigned char key, int x, int y){
 	int mod = glutGetModifiers();
+	//printf("%u\n", key);
 	//Keys for general commands; such as quiting, reseting, loading, saving and lighting/material toggle
 	//if the "q" key is pressed, quit the program
 	if(key == 'q' || key == 'Q'){
 		exit(0);
-	}else if(key == 'r'){
+	}else if(key == 127 || key == 8){
 		SG->resetScene();
-	}else if(key == 's'){
-	}else if(key == 'l'){
+	}else if(key == 'p'){
+	}else if(key == 'o'){
 	}else if(key == 'w'){
 		lightCounter++;
 		if (lightCounter % 2 == 0){
@@ -273,21 +286,25 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}
 
 	Vector3D v3;
-	Vector4D v4;
+	//Vector4D v4;
 	//Keys for what type of transformation will be applied
 	if(mod == 1){
 		if(key == 'S'){
 			v3S = increase3D(v3);
+			v3S.x = 1+v3S.x;
+			v3S.y = 1+v3S.y;
+			v3S.z = 1+v3S.z;
 			transformationv3("Scale", v3S);
 		}else if(key == 'R'){
+			resetRotate();
 			if(blnZ)
-				v4.z+=0.1;
+				v4R.z+=0.1;
 			if(blnX)
-				v4.x+=0.1;
+				v4R.x+=0.1;
 			if(blnY)
-				v4.y+=0.1;
+				v4R.y+=0.1;
 			if(blnAngle)
-				v4.w+=0.1;
+				v4R.w+=0.1;
 			transformationv4("Rotate", v4R);
 		}else if(key == 'T'){
 			v3T = increase3D(v3);
@@ -296,16 +313,20 @@ void KeyBoardAction(unsigned char key, int x, int y){
 	}else if(mod == 4){
 		if(key == 's'){
 			v3S = decrease3D(v3);
+			v3S.x = 1+v3S.x;
+			v3S.y = 1+v3S.y;
+			v3S.z = 1+v3S.z;
 			transformationv3("Scale", v3S);
 		}else if(key == 'r'){
+			resetRotate();
 			if(blnZ)
-				v4.z-=0.1;
+				v4R.z-=0.1;
 			if(blnX)
-				v4.x-=0.1;
+				v4R.x-=0.1;
 			if(blnY)
-				v4.y-=0.1;
+				v4R.y-=0.1;
 			if(blnAngle)
-				v4.w-=0.1;
+				v4R.w+=0.1;
 			transformationv4("Rotate", v4R);
 		}else if(key == 't'){
 			v3T = decrease3D(v3);
@@ -313,7 +334,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		}
 	}
 
-	Display();
+	glutPostRedisplay();
 }
 
 void KeyBoardSpecial(int key, int x, int y){
@@ -332,6 +353,9 @@ void KeyBoardSpecial(int key, int x, int y){
   }else if(key == GLUT_KEY_HOME){
     camPos[1]+=0.1;
   }
+  /*if(key == GLUT_KEY_DELETE){
+  	SG->resetScene();
+  }*/
   glutPostRedisplay();
 }
 
@@ -382,15 +406,15 @@ int main(int argc, char** argv){
 	cout << "j KEY -------------------------- MOVE LIGHTS DOWN" << endl;
 	cout << "k KEY -------------------------- MOVE LIGHTS RIGHT" << endl;
 	cout << "h KEY -------------------------- MOVE LIGHTS LEFT" << endl;
-	cout << ", -------------------------- SELECT THE COLOUR RED" << endl;
-	cout << ". -------------------------- SELECT THE COLOUR GREEN" << endl;
-	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;
-	cout << "- -------------------------- DECREASE THE SELECTED COLOUR" << endl;
-	cout << "= -------------------------- INCREASE THE SELECTED COLOUR" << endl;
+	cout << ", -------------------------- SELECT THE COLOUR/MATERIAL RED" << endl;
+	cout << ". -------------------------- SELECT THE COLOUR/MATERIAL GREEN" << endl;
+	cout << "/ -------------------------- SELECT THE COLOUR/MATERIAL BLUE" << endl;
+	cout << "- -------------------------- DECREASE THE SELECTED COLOUR/MATERIAL" << endl;
+	cout << "= -------------------------- INCREASE THE SELECTED COLOUR/MATERIAL" << endl;
 	cout << "w KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-	cout << "l KEY -------------------------- LOAD SAVED SECNE" << endl;
-	cout << "s KEY -------------------------- SAVE SECNE INTO FILE" << endl;
-	cout << "r KEY -------------------------- RESET SECNE" << endl;
+	cout << "o KEY -------------------------- LOAD SAVED SECNE" << endl;
+	cout << "p KEY -------------------------- SAVE SECNE INTO FILE" << endl;
+	cout << "DELETE/BACKSPACE KEY -------------------------- RESET SECNE" << endl;
 	cout << "q -------------------------- EXIT" << endl;
 	cout << "" << endl;
 
