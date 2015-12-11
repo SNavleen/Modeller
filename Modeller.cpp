@@ -384,6 +384,7 @@ void init(void){
   GLuint id = 1;
 
   glEnable(GLUT_DEPTH);
+  glEnable(GL_CULL_FACE);
 
   glClearColor(1, 1, 0.9, 0);
   glColor3f(1, 1, 1);
