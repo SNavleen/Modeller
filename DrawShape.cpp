@@ -19,12 +19,13 @@ using namespace std;
 
 //Constructors
 DrawShape::DrawShape(char *modelType, int red, int green, int blue){
-	nodeType = model;
-	this->modelType = modelType;
-	isDrawable = true;
-	this->red = (float)red/255;
-	this->green = (float)green/255;
-	this->blue = (float)blue/255;
+  this->isSelected=false;
+  nodeType = model;
+  this->modelType = modelType;
+  isDrawable = true;
+  this->red = (float)red/255;
+  this->green = (float)green/255;
+  this->blue = (float)blue/255;
 }
 
 //Deconstructor
@@ -34,46 +35,47 @@ DrawShape::~DrawShape(){
 //Public function
 
 void DrawShape::drawAxis(){
-	glBegin(GL_LINES);
-		glColor3f(1, 0, 0);
-		glVertex3f(0,0,0);
-		glVertex3f(100,0,0);
+  glBegin(GL_LINES);
+  glColor3f(1, 0, 0);
+  glVertex3f(0,0,0);
+  glVertex3f(100,0,0);
 
-		glColor3f(0,1,0);
-		glVertex3f(0,0,0);
-		glVertex3f(0,100,0);
+  glColor3f(0,1,0);
+  glVertex3f(0,0,0);
+  glVertex3f(0,100,0);
 
-		glColor3f(0,0,1);
-		glVertex3f(0,0,0);
-		glVertex3f(0,0,100);
-	glEnd();
+  glColor3f(0,0,1);
+  glVertex3f(0,0,0);
+  glVertex3f(0,0,100);
+  glEnd();
 }
 
 void DrawShape::nodeSpecificCodeDown(){
-    glColor3f(this->red,this->green,this->blue);
-    material();
-	if(modelType == "Cube"){
-		drawCube();
-	}
-	if(modelType == "Sphere"){
-		drawSphere();
-	}
-	if(modelType == "Cone"){
-		drawCone();
-	}
-	if(modelType == "Torus"){
-		drawTorus();
-	}
-	if(modelType == "Teapot"){
-		drawTeapot();
-    }else if(modelType == "Plane"){
-      glBegin(GL_QUADS);
-        glVertex3f(0,0,0);
-        glVertex3f(1,0,0);
-        glVertex3f(1,1,0);
-        glVertex3f(0,1,0);
-      glEnd();
-    }
+  glColor3f(this->red,this->green,this->blue);
+  material();
+  if(modelType == "Cube"){
+    drawCube();
+  }
+  if(modelType == "Sphere"){
+    drawSphere();
+  }
+  if(modelType == "Cone"){
+    drawCone();
+  }
+  if(modelType == "Torus"){
+    drawTorus();
+  }
+  if(modelType == "Teapot"){
+    drawTeapot();
+  }else if(modelType == "Plane"){
+    glBegin(GL_QUADS);
+    glVertex3f(0,0,0);
+    glVertex3f(1,0,0);
+    glVertex3f(1,1,0);
+    glVertex3f(0,1,0);
+    glEnd();
+  }
+  if(isSelected) drawWireFrame();
 }
 //code where we add what the node will do when moving up the tree
 void DrawShape::nodeSpecificCodeUp(){}
@@ -110,17 +112,17 @@ void DrawShape::drawWireFrame(){
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
   glBegin(GL_POLYGON); // begin drawing
-    glVertex3f(v1.x,v1.y,v1.z);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glVertex3f(v3.x,v3.y,v3.z);
-    glVertex3f(v4.x,v4.y,v4.z);
+  glVertex3f(v1.x,v1.y,v1.z);
+  glVertex3f(v2.x,v2.y,v2.z);
+  glVertex3f(v3.x,v3.y,v3.z);
+  glVertex3f(v4.x,v4.y,v4.z);
   glEnd();
 
   glBegin(GL_POLYGON); // begin drawing
-    glVertex3f(v5.x,v5.y,v5.z);
-    glVertex3f(v6.x,v6.y,v6.z);
-    glVertex3f(v7.x,v7.y,v7.z);
-    glVertex3f(v8.x,v8.y,v8.z);
+  glVertex3f(v5.x,v5.y,v5.z);
+  glVertex3f(v6.x,v6.y,v6.z);
+  glVertex3f(v7.x,v7.y,v7.z);
+  glVertex3f(v8.x,v8.y,v8.z);
   glEnd();
 
   glBegin(GL_LINES);
@@ -146,63 +148,63 @@ void DrawShape::drawWireFrame(){
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
 void DrawShape::setLight(int lightX, int lightZ){
-	this->lightX = lightX;
-	this->lightZ = lightZ;
+  this->lightX = lightX;
+  this->lightZ = lightZ;
 }
 /*DrawShape lighting();*/
 void DrawShape::lighting(){
-	float amb[4] = {1, 1, 1, 1};
-	float diff[4] = {1, 1, 1, 1};
-	float spec[4] = {1, 1, 1, 1};
-	float light_pos[] = {this->lightX+0,150,this->lightZ+0,1.0};
-	float light_pos2[] = {this->lightX+100,150,this->lightZ+100,1.0};
+  float amb[4] = {1, 1, 1, 1};
+  float diff[4] = {1, 1, 1, 1};
+  float spec[4] = {1, 1, 1, 1};
+  float light_pos[] = {this->lightX+0,150,this->lightZ+0,1.0};
+  float light_pos2[] = {this->lightX+100,150,this->lightZ+100,1.0};
 
 
-	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
-	glLightf(GL_LIGHT0, GL_SHININESS, 100);
+  glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
+  glLightf(GL_LIGHT0, GL_SHININESS, 100);
 
-	glLightfv(GL_LIGHT1, GL_POSITION, light_pos2);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff);
-	glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, spec);
-	glLightf(GL_LIGHT1, GL_SHININESS, 100);
+  glLightfv(GL_LIGHT1, GL_POSITION, light_pos2);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, diff);
+  glLightfv(GL_LIGHT1, GL_AMBIENT, amb);
+  glLightfv(GL_LIGHT1, GL_SPECULAR, spec);
+  glLightf(GL_LIGHT1, GL_SHININESS, 100);
 }
 /*DrawShape material();*/
 void DrawShape::material(){
-	float mat_ambient[4] ={this->red+0.0f, this->green+0.05f, this->blue+0.0f, 1.0f};
-	float mat_diffuse[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
-	float mat_specular[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
-	float shine =  10.0f;
+  float mat_ambient[4] ={this->red+0.0f, this->green+0.05f, this->blue+0.0f, 1.0f};
+  float mat_diffuse[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
+  float mat_specular[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
+  float shine =  10.0f;
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 }
 //Private
 
 /*DrawShape drawCube();*/
 void DrawShape::drawCube(){
-	glutSolidCube(1);
+  glutSolidCube(1);
 }
 /*DrawShape drawSphere();*/
 void DrawShape::drawSphere(){
-	glutSolidSphere(1, 10, 10);
+  glutSolidSphere(1, 10, 10);
 }
 /*DrawShape drawCone();*/
 void DrawShape::drawCone(){
-	glutSolidCone(0.5, 1, 20, 1);
+  glutSolidCone(0.5, 1, 20, 1);
 }
 /*DrawShape drawTorus();*/
 void DrawShape::drawTorus(){
-	glutSolidTorus(0.25, 1, 40, 40);
+  glutSolidTorus(0.25, 1, 40, 40);
 }
 /*DrawShape drawTeapot();*/
 void DrawShape::drawTeapot(){
-	glutSolidTeapot(1);
+  glutSolidTeapot(1);
 }
 
 

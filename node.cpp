@@ -20,6 +20,7 @@ Node::Node(){	//constructor
 	children = new vector<Node*>();
 	parent = 0;
 	currentChild = 0;
+    isSelected = false;
 }
 
 //==================================================================

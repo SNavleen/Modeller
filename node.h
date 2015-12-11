@@ -13,27 +13,28 @@ extern int getID();
 //if you add more derived classes
 //add the types here
 enum NodeType{
-	root,
-	group,
-	transformation,
-	model
+  root,
+  group,
+  transformation,
+  model
 };
 
 class Node{
-public:
-	Node();	//constructor
+  public:
+    Node();	//constructor
 
-	NodeType nodeType;
-	bool isDrawable;
-	int ID;
-	vector<Node*> *children;
-	Node* parent;
-	int currentChild;
+    NodeType nodeType;
+    bool isDrawable;
+    int ID;
+    vector<Node*> *children;
+    Node* parent;
+    int currentChild;
+    bool isSelected;
 
-	void draw();
+    void draw();
     virtual void drawWireFrame();
-	virtual void nodeSpecificCodeDown();
-	virtual void nodeSpecificCodeUp();
+    virtual void nodeSpecificCodeDown();
+    virtual void nodeSpecificCodeUp();
     virtual void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
 };
 

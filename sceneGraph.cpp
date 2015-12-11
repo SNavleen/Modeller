@@ -56,6 +56,7 @@ Node* SceneGraph::getSelectedNode(){
 }
 
 void SceneGraph::selectnodeAtPos(int x, int y){
+  if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
   /* printf("\n\nstarting the select node at pos\n"); */
   Vector3D start = Vector3D(); // this is the point of the ray vector at the front
   Vector3D end = Vector3D();  // this is the point of the ray vector at the end
@@ -91,6 +92,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
 
   // make the selected node equal to the node that is closest to the screen and intersects the ray
   selectedNode = listOfnodes.at(minDistanceIndex);
+  selectedNode->isSelected = true;
   /* printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex)); */
 }
 
@@ -130,7 +132,11 @@ void SceneGraph::useCustomSettings(){
   /* rootNode->children->push_back(translatenode); */
 }
 void SceneGraph::selectFirstnode()
-{ if(rootNode->children->size() > 0) selectedNode = rootNode->children->at(0);}
+{
+  if(rootNode->children->size() == 0) return;
+  selectedNode = rootNode->children->at(0);
+  selectedNode->isSelected = true;
+}
 
 //Scene Graph Navigation
 //resets the current node to the root of the graph
@@ -160,6 +166,7 @@ void SceneGraph::insertChildNodeHere(Node *node){
 //deletes the current node, relinking the children as necessary
 void SceneGraph::deleteThisNode(){
   if(selectedNode!=NULL){
+    selectedNode->isSelected = false;
     Node *parentSelectedNode = selectedNode->parent;
 
     vector<Node*> *parentsChildren = parentSelectedNode->children;
@@ -174,12 +181,12 @@ void SceneGraph::deleteThisNode(){
     //Delete the selected node
     parentSelectedNode->children->erase(parentsChildren->begin()+indexOfSelectedNode);
 
-    //Put all the children of the selected not to the parent 
+    //Put all the children of the selected not to the parent
     for(int i = 0; i < selectedNodesChildren->size(); i++){
       parentSelectedNode->children->push_back(selectedNodesChildren->at(i));
     }
 
-    //set the selected element to nothing 
+    //set the selected element to nothing
     selectedNode = NULL;
   }
 }
@@ -189,7 +196,7 @@ void SceneGraph::resetScene(){
   while(!currentNode->children->empty()){
     currentNode->children->pop_back();
   }
-  
+
   selectedNode = NULL;
 }
 
@@ -198,7 +205,7 @@ void SceneGraph::draw(){
   rootNode->draw();
   /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
   /* printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL)); */
-  if(selectedNode != NULL) selectedNode->drawWireFrame();
+  /* if(selectedNode != NULL) selectedNode->drawWireFrame(); */
 }
 
 
@@ -211,6 +218,7 @@ void SceneGraph::addTransformationToCurrentNode(Node * transform){
 
   insertChildNodeHere(transformNode);
   selectedNode = transformNode;
+  selectedNode->isSelected = true;
 }
 
 
