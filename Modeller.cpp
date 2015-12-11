@@ -34,7 +34,7 @@ float pos[] = {0,1,0};
 float angle = 0.0f;
 
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
-int red = 1, green = 1, blue = 1, lightCounter = 1;
+int red = 1, green = 1, blue = 1, lightCounter = 1, lightX = 0, lightZ = 0;
 
 bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
@@ -70,6 +70,7 @@ void LightingAndMaterial(){
 	glDisable(GL_LIGHTING);
 	}
 
+	objDrawShape.setLight(lightX, lightZ);
 	objDrawShape.lighting();
 	//objDrawShape.material();
 }
@@ -169,6 +170,17 @@ void KeyBoardAction(unsigned char key, int x, int y){
 		}else{
 			showlight = true;
 		}
+	}
+
+	if(key == 'u'){
+		lightZ +=5;
+	}else if(key == 'j'){
+		lightZ -=5;
+	}
+	if(key == 'k'){
+		lightX +=5;
+	}else if(key == 'h'){
+		lightX -=5;
 	}
 
 	//Keys to select a colour
@@ -366,6 +378,10 @@ int main(int argc, char** argv){
 	cout << "ARROW KEYS -------------------------- ROTATE CAMERA" << endl;
 	cout << "END KEY -------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
 	cout << "HOME KEY -------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
+	cout << "u KEY -------------------------- MOVE LIGHTS UP" << endl;
+	cout << "j KEY -------------------------- MOVE LIGHTS DOWN" << endl;
+	cout << "k KEY -------------------------- MOVE LIGHTS RIGHT" << endl;
+	cout << "h KEY -------------------------- MOVE LIGHTS LEFT" << endl;
 	cout << ", -------------------------- SELECT THE COLOUR RED" << endl;
 	cout << ". -------------------------- SELECT THE COLOUR GREEN" << endl;
 	cout << "/ -------------------------- SELECT THE COLOUR BLUE" << endl;

@@ -31,12 +31,13 @@ class DrawShape:public Node{
         void lighting();
         void material();
         void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
-
+        void setLight(int lightX, int lightZ);
 
     private:
 
         char *modelType;
         float red, green, blue;
+        int lightX, lightZ;
 
         void drawCube();
         void drawSphere();

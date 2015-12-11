@@ -145,14 +145,17 @@ void DrawShape::drawWireFrame(){
 
   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
-
+void DrawShape::setLight(int lightX, int lightZ){
+	this->lightX = lightX;
+	this->lightZ = lightZ;
+}
 /*DrawShape lighting();*/
 void DrawShape::lighting(){
 	float amb[4] = {1, 1, 1, 1};
 	float diff[4] = {1, 1, 1, 1};
 	float spec[4] = {1, 1, 1, 1};
-	float light_pos[] = {0,150,0,1.0};
-	float light_pos2[] = {100,150,100,1.0};
+	float light_pos[] = {this->lightX+0,150,this->lightZ+0,1.0};
+	float light_pos2[] = {this->lightX+100,150,this->lightZ+100,1.0};
 
 
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
