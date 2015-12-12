@@ -19,61 +19,27 @@
 #endif
 
 
-// mouse Intersection stuff
-void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
-  /* printf("%i, %i\n", x, y); */
-  //allocate matricies memory
-  double matModelView[16], matProjection[16];
-  int viewport[4];
-
-  //vectors
-
-  //grab the matricies
-  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
-  glGetDoublev(GL_PROJECTION_MATRIX, matProjection);
-  glGetIntegerv(GL_VIEWPORT, viewport);
-
-  //unproject the values
-  double winX = (double)x;
-  double winY = viewport[3] - (double)y;
-
-  // get point on the 'near' plane (third param is set to 0.0)
-  gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
-      &start->x, &start->y, &start->z);
-
-  // get point on the 'far' plane (third param is set to 1.0)
-  gluUnProject(winX, winY, 1.0, matModelView, matProjection,
-      viewport, &end->x, &end->y, &end->z);
-
-  // print out the near and far stuff
-  /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
-  /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
-}
-
 
 bool SceneGraph::isSelectednodeNull(){ return (selectedNode==NULL); }
 
+
 void SceneGraph::selectnodeAtPos(int x, int y){
   if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
-  /* printf("\n\nstarting the select node at pos\n"); */
-  Vector3D start = Vector3D(); // this is the point of the ray vector at the front
-  Vector3D end = Vector3D();  // this is the point of the ray vector at the end
-  getMouseRay(x,y,&start,&end); // actually calculate the following values
-  this->startRayD = new Vector3D(start.x, start.y, start.z);
-  this->endRayD = new Vector3D(end.x, end.y, end.z);
-  /* printf("get the mouse ray\n"); */
 
   vector<Node*> listOfnodes = vector<Node*>();
   vector<double> listOfIntersectionDistances = vector<double>();
-  Node *curnodeLocal = rootNode;// go to the root node
+  /* Node *curnodeLocal = rootNode;// go to the root node */
   /* printf("starting the for loop with all the children\n"); */
   // go to all the children checking if they had got the collision
-  for(int i = 0; i < curnodeLocal->children->size(); i++){
+  /* for(int i = 0; i < curnodeLocal->children->size(); i++){ */
     /* printf("going to the child at i:%i\n",i); */
-    Node *node =  curnodeLocal->children->at(i);
-    node->rayIntersection(&listOfnodes,&listOfIntersectionDistances,start,end);
-  }
+    /* Node *node =  curnodeLocal->children->at(i); */
+    /* node->rayIntersection(&listOfnodes,&listOfIntersectionDistances); */
+  /* } */
   /* printf("done the selectnodeatpos\n\n"); */
+
+  // reddid the recursion
+  rootNode->rayIntersection(&listOfnodes, &listOfIntersectionDistances, x,y);
 
   /* printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size()); */
   // go through the list to find the smallset element
@@ -93,6 +59,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   selectedNode->isSelected = true;
   /* printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex)); */
 }
+
 
 SceneGraph::SceneGraph(){
   rootNode = new Node();

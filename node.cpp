@@ -63,11 +63,13 @@ void Node::nodeSpecificCodeUp(){}
 void Node::drawWireFrame(){}
 
 // handle the ray intersection
-void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd){
+void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx,int my){
   /* printf("  inside the ray intersection for the node. going to run it for all the children\n"); */
+  this->nodeSpecificCodeDown();
   for(int i =0; i < this->children->size(); i++){
-    this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,rayStart, rayEnd);
+    this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,mx,my);
   }
+  this->nodeSpecificCodeDown();
   /* if(this->children->size()==0) printf("  there are no children\n"); */
   /* printf("  done for this node, going up the scene graph\n"); */
 }

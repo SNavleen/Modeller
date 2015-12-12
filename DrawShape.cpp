@@ -211,6 +211,37 @@ void DrawShape::drawTeapot(){
 
 //---------------------------------mouse ray intersection stuff--------------------------------------
 
+// mouse Intersection stuff
+void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
+  /* printf("%i, %i\n", x, y); */
+  //allocate matricies memory
+  double matModelView[16], matProjection[16];
+  int viewport[4];
+
+  //vectors
+
+  //grab the matricies
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+  glGetDoublev(GL_PROJECTION_MATRIX, matProjection);
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  //unproject the values
+  double winX = (double)x;
+  double winY = viewport[3] - (double)y;
+
+  // get point on the 'near' plane (third param is set to 0.0)
+  gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
+      &start->x, &start->y, &start->z);
+
+  // get point on the 'far' plane (third param is set to 1.0)
+  gluUnProject(winX, winY, 1.0, matModelView, matProjection,
+      viewport, &end->x, &end->y, &end->z);
+
+  // print out the near and far stuff
+  /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
+  /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
+}
+
 //function which preforms intersection test
 bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector3D rayEnd){
   /* printf("  2. rayStart:(%f,%f,%f)  rayEnd:(%f,%f,%f)\n",rayStart.x,rayStart.y, rayStart.z,rayEnd.x, rayEnd.y, rayEnd.z); */
@@ -343,10 +374,15 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
   return true; // the plane intersects the ray
 }
 
-void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd){
+void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx, int my){
   /* printf("calling the stupid plane intersection\n"); */
   /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
   /* printf("done testing the plane intersection \n"); */
+  Vector3D rayStart = Vector3D();
+  Vector3D rayEnd = Vector3D();
+  getMouseRay(mx,my,&rayStart,&rayEnd);
+
+
 
   if(modelType =="Plane"){
     Vector3D p0 = Vector3D(0,1,0);
@@ -406,5 +442,6 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
 
   /* printf("done calling the plane intersection intersection\n"); */
 }
+
 
 //---------------------------------mouse ray intersection stuff--------------------------------------

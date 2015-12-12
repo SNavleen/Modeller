@@ -31,7 +31,7 @@ class DrawShape:public Node{
         void drawSelf();
         void lighting();
         void material();
-        void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
+        void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx, int my);
         void setLight(int lightX, int lightZ);
 
     private:

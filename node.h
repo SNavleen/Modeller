@@ -36,7 +36,7 @@ class Node{
     virtual void drawWireFrame();
     virtual void nodeSpecificCodeDown();
     virtual void nodeSpecificCodeUp();
-    virtual void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
+    virtual void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances,int mx,int my);
 };
 
 #endif
