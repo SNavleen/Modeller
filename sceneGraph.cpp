@@ -51,9 +51,7 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
 }
 
 
-Node* SceneGraph::getSelectedNode(){
-  return selectedNode;
-}
+bool SceneGraph::isSelectednodeNull(){ return (selectedNode==NULL); }
 
 void SceneGraph::selectnodeAtPos(int x, int y){
   if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
@@ -203,13 +201,11 @@ void SceneGraph::resetScene(){
 //draw the scenegraph
 void SceneGraph::draw(){
   rootNode->draw();
-  /* printf("is selected node null: %i\n",(selectedNode!=NULL)); */
-  /* printf("the selected node is null () (selectenode==null):? %i\n", (selectedNode==NULL)); */
-  /* if(selectedNode != NULL) selectedNode->drawWireFrame(); */
 }
 
 
 void SceneGraph::addTransformationToCurrentNode(Node * transform){
+  if(selectedNode == NULL) return;
   transformNode = selectedNode;
   currentNode = selectedNode->parent;
   insertChildNodeHere(transform);
