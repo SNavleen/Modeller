@@ -64,12 +64,15 @@ void Node::drawWireFrame(){}
 
 // handle the ray intersection
 void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx,int my){
+  printf("inside a node that is not a draw node, going to the children\n");
   /* printf("  inside the ray intersection for the node. going to run it for all the children\n"); */
   this->nodeSpecificCodeDown();
   for(int i =0; i < this->children->size(); i++){
+    printf("going through the loop at i:%i\n",i);
     this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,mx,my);
   }
-  this->nodeSpecificCodeDown();
+  this->nodeSpecificCodeUp();
+  printf("going up a node\n");
   /* if(this->children->size()==0) printf("  there are no children\n"); */
   /* printf("  done for this node, going up the scene graph\n"); */
 }

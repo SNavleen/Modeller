@@ -22,7 +22,36 @@
 
 bool SceneGraph::isSelectednodeNull(){ return (selectedNode==NULL); }
 
+// mouse Intersection stuff
+void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
+  /* printf("%i, %i\n", x, y); */
+  //allocate matricies memory
+  double matModelView[16], matProjection[16];
+  int viewport[4];
 
+  //vectors
+
+  //grab the matricies
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+  glGetDoublev(GL_PROJECTION_MATRIX, matProjection);
+  glGetIntegerv(GL_VIEWPORT, viewport);
+
+  //unproject the values
+  double winX = (double)x;
+  double winY = viewport[3] - (double)y;
+
+  // get point on the 'near' plane (third param is set to 0.0)
+  gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
+      &start->x, &start->y, &start->z);
+
+  // get point on the 'far' plane (third param is set to 1.0)
+  gluUnProject(winX, winY, 1.0, matModelView, matProjection,
+      viewport, &end->x, &end->y, &end->z);
+
+  // print out the near and far stuff
+  /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
+  /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
+}
 void SceneGraph::selectnodeAtPos(int x, int y){
   if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
 
@@ -39,7 +68,11 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("done the selectnodeatpos\n\n"); */
 
   // reddid the recursion
+
+  printf("starting the ray intersection: made the vectors. going to load the identity\n");
+  glLoadIdentity();
   rootNode->rayIntersection(&listOfnodes, &listOfIntersectionDistances, x,y);
+  printf("done doing the ray intersection the length of the listOfnodes is:%li, listOfDistances:%li\n", listOfnodes.size(), listOfIntersectionDistances.size());
 
   /* printf("the size of the list of distances is %li\n",listOfIntersectionDistances.size()); */
   // go through the list to find the smallset element
@@ -50,7 +83,9 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   } // if there are no elements then just end the function
   /* printf("Intersection detected\n"); */
   int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
+    printf("mindistance is %f for %i\n",listOfIntersectionDistances.at(0), 0);
   for(int i = 1; i < listOfIntersectionDistances.size();i++){
+    printf("mindistance is %f for %i\n",listOfIntersectionDistances.at(i), i);
     if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex) && listOfIntersectionDistances.at(i) > 0) minDistanceIndex = i;
   }
 
@@ -58,6 +93,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   selectedNode = listOfnodes.at(minDistanceIndex);
   selectedNode->isSelected = true;
   /* printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex)); */
+  printf("\n\n");
 }
 
 

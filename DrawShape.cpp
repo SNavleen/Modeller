@@ -375,14 +375,14 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
 }
 
 void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx, int my){
+  printf("started the ray intersection for this draw node\n");
   /* printf("calling the stupid plane intersection\n"); */
   /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
   /* printf("done testing the plane intersection \n"); */
   Vector3D rayStart = Vector3D();
   Vector3D rayEnd = Vector3D();
   getMouseRay(mx,my,&rayStart,&rayEnd);
-
-
+  printf("rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
 
   if(modelType =="Plane"){
     Vector3D p0 = Vector3D(0,1,0);
