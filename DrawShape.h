@@ -28,6 +28,7 @@ class DrawShape:public Node{
         void drawAxis();  // draws the axis
         void drawWireFrame(); // this draws the wireframe of the object
         virtual void nodeSpecificCodeUp();
+        void drawSelf();
         void lighting();
         void material();
         void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);

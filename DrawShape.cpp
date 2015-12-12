@@ -50,7 +50,8 @@ void DrawShape::drawAxis(){
   glEnd();
 }
 
-void DrawShape::nodeSpecificCodeDown(){
+void DrawShape::nodeSpecificCodeDown(){}
+void DrawShape::drawSelf(){
   glColor3f(this->red,this->green,this->blue);
   material();
   if(modelType == "Cube"){
@@ -208,7 +209,6 @@ void DrawShape::drawTeapot(){
 }
 
 
-
 //---------------------------------mouse ray intersection stuff--------------------------------------
 
 //function which preforms intersection test
@@ -300,7 +300,6 @@ bool isPointInsideBoxInPlane(Vector3D point, Vector3D p0, Vector3D p1, Vector3D 
   return true;
 }
 //function which preforms intersection test
-/* bool planeIntersection(vector<double> *listOfDistances, Vector3D rd, Vector3D r0, Vector3D planeNormal, Vector3D *rayStart, Vector3D *rayEnd){ */
 bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D p0, Vector3D p1, Vector3D p2, Vector3D p3, Vector3D rayStart, Vector3D rayEnd){
   /* printf(">>>>> testing purposes\n"); */
   /* Vector3D t0 = Vector3D(0,0,0); */

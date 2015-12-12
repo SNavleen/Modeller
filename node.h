@@ -32,6 +32,7 @@ class Node{
     bool isSelected;
 
     void draw();
+    virtual void drawSelf();
     virtual void drawWireFrame();
     virtual void nodeSpecificCodeDown();
     virtual void nodeSpecificCodeUp();

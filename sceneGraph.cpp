@@ -94,7 +94,6 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("the selected node is at a distance of %f\n\n\n",  listOfIntersectionDistances.at(minDistanceIndex)); */
 }
 
-
 SceneGraph::SceneGraph(){
   rootNode = new Node();
   currentNode = rootNode;

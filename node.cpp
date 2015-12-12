@@ -13,7 +13,7 @@
 #include "node.h"
 #include <stdio.h>
 
-Node::Node(){	//constructor
+Node::Node(){//constructor
 	ID = getID();
 	nodeType = root; //base class will be only really our root node, so lets do that
 	isDrawable = false;
@@ -28,6 +28,8 @@ Node::Node(){	//constructor
 void Node::draw(){
 	nodeSpecificCodeDown();
 
+    drawSelf();
+
 	//recursively call our children
 	const int numberOfChildren = children->size();
 	if (numberOfChildren > 0){
@@ -35,6 +37,7 @@ void Node::draw(){
 			children->at(i)->draw();
 		}
 	}
+
 
 	//we are exiting the node, so execute the commands
 	//ie. pop matrix, etc.
@@ -45,6 +48,9 @@ void Node::draw(){
 //====================================================================
 //FUNCTION THAT DOES THE ACTUAL STUFF IN
 //DERIVED CLASSES
+
+//
+void Node::drawSelf(){}
 
 //TO BE OVERRIDDEN IN CHILD CLASSES AS NEEDED
 //code where we add what the node will do when moving down the tree
@@ -58,11 +64,11 @@ void Node::drawWireFrame(){}
 
 // handle the ray intersection
 void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd){
-  printf("  inside the ray intersection for the node. going to run it for all the children\n");
+  /* printf("  inside the ray intersection for the node. going to run it for all the children\n"); */
   for(int i =0; i < this->children->size(); i++){
     this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,rayStart, rayEnd);
   }
-  if(this->children->size()==0) printf("  there are no children\n");
-  printf("  done for this node, going up the scene graph\n");
+  /* if(this->children->size()==0) printf("  there are no children\n"); */
+  /* printf("  done for this node, going up the scene graph\n"); */
 }
 
