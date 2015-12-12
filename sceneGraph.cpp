@@ -174,23 +174,37 @@ void SceneGraph::deleteThisNode(){
     //Delete the selected node
     parentSelectedNode->children->erase(parentsChildren->begin()+indexOfSelectedNode);
 
-    //Put all the children of the selected not to the parent 
+    //Put all the children of the selected not to the parent
     for(int i = 0; i < selectedNodesChildren->size(); i++){
       parentSelectedNode->children->push_back(selectedNodesChildren->at(i));
     }
 
-    //set the selected element to nothing 
+    //set the selected element to nothing
     selectedNode = NULL;
   }
 }
 //deletes the current node, relinking the children as necessary
 void SceneGraph::resetScene(){
-  goToParent();
+  goToRoot();
   while(!currentNode->children->empty()){
     currentNode->children->pop_back();
   }
-  
+
   selectedNode = NULL;
+}
+
+void SceneGraph::saveFile(){
+    printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+    int indexOfSelectedNode;
+    for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
+        goToChild(indexOfSelectedNode);
+        saveFile();
+        goToParent();
+    }
+}
+
+void SceneGraph::loadFile(){
+
 }
 
 //draw the scenegraph

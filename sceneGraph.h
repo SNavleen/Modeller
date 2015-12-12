@@ -14,6 +14,8 @@ class SceneGraph{
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
     void resetScene();
+    void saveFile();
+    void loadFile();
 
     //get the selected node
     void selectnodeAtPos(int x,int y);
