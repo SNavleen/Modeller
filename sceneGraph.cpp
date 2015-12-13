@@ -2,8 +2,9 @@
 #include "node.h"
 #include "Vector3D.h"
 #include <stdio.h>
-
 #include <iostream>
+#include <fstream>
+
 //temporary
 #include "nodeTransform.h"
 #include "DrawShape.h"
@@ -195,34 +196,37 @@ void SceneGraph::resetScene(){
 }
 
 void SceneGraph::saveFile(){
+    ofstream sceneFile;
+    sceneFile.open("Scene-Graph.csv");
     //printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
     printf("ID: %i ", currentNode->ID);
+    sceneFile << currentNode->ID;
     if(currentNode->nodeType == 0){
-        printf("root");
+        sceneFile << "root";
     }
     else if(currentNode->nodeType == 1){
-        printf("group");
+        sceneFile << "group";
     }
     else if(currentNode->nodeType == 2){
-        printf("transformation");
+        sceneFile << "transformation";
         NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
-        printf("%i",nodeTransform->transformationType);
+        //printf("%i",nodeTransform->transformationType);
+        sceneFile << nodeTransform->transformationType;
         if(nodeTransform->transformationType == 0){
-            printf("%f, %f, %f", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+            sceneFile << nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z;
         }else if(nodeTransform->transformationType == 1){
-            printf("%f, %f, %f, %f", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
+            sceneFile << nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w;
         }else if(nodeTransform->transformationType == 2){
-            printf("%f, %f, %f", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+            sceneFile << nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z;
         }
     }
     else if(currentNode->nodeType == 3){
-        printf("model");
+        sceneFile << "model";
         DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
-        printf("%s", drawShape->modelType);
-        if(drawShape->modelType == "Cude"){
-
-        }
+        //printf("%s", drawShape->modelType);
+        sceneFile << drawShape->modelType;
     }
+    sceneFile << "\n";
 
     int indexOfSelectedNode;
     for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
@@ -230,6 +234,8 @@ void SceneGraph::saveFile(){
         saveFile();
         goToParent();
     }
+    sceneFile.close();
+
 }
 
 void SceneGraph::loadFile(){
