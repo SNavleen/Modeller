@@ -15,7 +15,7 @@
 #include <iostream>
 #include <fstream>
 
-/* #include "structs.h" */
+#include "structs.h"
 #include "vector3d.h"
 #include "sceneGraph.h"
 #include "nodeGroup.h"
@@ -151,10 +151,12 @@ void resetRotate(){
     v4R.x = 0;
     v4R.y = 0;
     v4R.z = 0;
+    if(blnAngle)
+        v4R.w = 0;
+
 }
 
 void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
-
     //Insert default Rotate node to scene graph
     SG->insertChildNodeHere(rotate);
     SG->goToChild(0);
@@ -245,14 +247,12 @@ void KeyBoardAction(unsigned char key, int x, int y){
             blue = increaseColour(blue);
     }
 
-    Vector3D v3s, v3t;
-    Vector4D v4r;
+    Vector3D v3s = Vector3D(1,1,1), v3t = Vector3D(0,0,0);
+    Vector4D v4r = {0,0,0,0};
+    //printf("v4r: (%f,%f,%f,%f)\n",v4r.x,v4r.y,v4r.z,v4r.w);
 
     NodeTransform *rotate = new NodeTransform (Rotate, v4r);
     NodeTransform *translate = new NodeTransform (Translate, v3t);
-    v3s.x = 1;
-    v3s.y = 1;
-    v3s.z = 1;
     NodeTransform *scale = new NodeTransform (Scale, v3s);
 
     //Keys to draw a shpae
@@ -331,13 +331,13 @@ void KeyBoardAction(unsigned char key, int x, int y){
         }else if(key == 'R'){
             resetRotate();
             if(blnZ)
-                v4R.z+=0.1;
+                v4R.z+=1;
             if(blnX)
-                v4R.x+=0.1;
+                v4R.x+=1;
             if(blnY)
-                v4R.y+=0.1;
+                v4R.y+=1;
             if(blnAngle)
-                v4R.w+=0.1;
+                v4R.w+=1;
             transformationv4("Rotate", v4R);
         }else if(key == 'T'){
             v3T = increase3D(v3);
@@ -350,13 +350,13 @@ void KeyBoardAction(unsigned char key, int x, int y){
         }else if(key == 'r'){
             resetRotate();
             if(blnZ)
-                v4R.z-=0.1;
+                v4R.z-=1;
             if(blnX)
-                v4R.x-=0.1;
+                v4R.x-=1;
             if(blnY)
-                v4R.y-=0.1;
+                v4R.y-=1;
             if(blnAngle)
-                v4R.w+=0.1;
+                v4R.w-=1;
             transformationv4("Rotate", v4R);
         }else if(key == 't'){
             v3T = decrease3D(v3);
