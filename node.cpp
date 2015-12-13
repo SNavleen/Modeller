@@ -23,8 +23,6 @@ Node::Node(){//constructor
   isSelected = false;
 }
 
-
-
 void printModelMatrix(){
   double matModelView[16];
   glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
