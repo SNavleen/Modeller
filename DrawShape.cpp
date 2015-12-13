@@ -52,6 +52,7 @@ void DrawShape::drawAxis(){
 void DrawShape::nodeSpecificCodeDown(){
     glColor3f(this->red,this->green,this->blue);
     material();
+    //printf("%s\n", modelType);
     if(modelType == "Cube"){
         drawCube();
     }

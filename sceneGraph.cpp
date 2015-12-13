@@ -293,19 +293,17 @@ void SceneGraph::loadFile(ifstream *sceneFile){
                     insertChildNodeHere(transform);
                     goToChild(0);
                 }else if(cell == "model"){
+                    int red, green, blue;
+                    char *model;
                     getline(streamCell, cell, ',');
-                    char *model = new char[cell.length() + 1];
+                    model = new char[cell.length() + 1];
                     strcpy(model, cell.c_str());
-
                     getline(streamCell, cell, ',');
-                    int red = atof(cell.c_str());
-
+                    red = atof(cell.c_str());
                     getline(streamCell, cell, ',');
-                    int green = atof(cell.c_str());
-
+                    green = atof(cell.c_str());
                     getline(streamCell, cell, ',');
-                    int blue = atof(cell.c_str());
-
+                    blue = atof(cell.c_str());
                     DrawShape *drawShape = new DrawShape(model, red, green, blue);
                     insertChildNodeHere(drawShape);
                 }
