@@ -41,6 +41,14 @@ void getMouseRay2(int x, int y, Vector3D *start, Vector3D *end){
   double winX = (double)x;
   double winY = viewport[3] - (double)y;
 
+  printf("printing the mouseRay2\n");
+  for(int i =0; i < 4; i++){
+    for(int j=0; j < 4; j++){
+      printf("%f, ",matModelView[i+j*4]);
+    }
+    printf("\n");
+  }
+
   // get point on the 'near' plane (third param is set to 0.0)
   gluUnProject(winX, winY, 0.0, matModelView, matProjection, viewport,
       &start->x, &start->y, &start->z);
@@ -68,9 +76,9 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
   Vector3D rayStart = Vector3D();
   Vector3D rayEnd   = Vector3D();
+
   getMouseRay2(x,y,&rayStart,&rayEnd);
   printf("scene graph = rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
-
 
   vector<Node*> listOfnodes = vector<Node*>();
   vector<double> listOfIntersectionDistances = vector<double>();
@@ -130,6 +138,7 @@ SceneGraph::SceneGraph(){
   startRayD = NULL;
   endRayD = NULL;
   /* useCustomSettings(); */
+
 }
 
 void SceneGraph::drawRay(){
@@ -172,7 +181,7 @@ void SceneGraph::goToRoot(){
 
 //moves to a child node i
 void SceneGraph::goToChild(int i){
-  if (i < currentNode->children->size() && i >= 0)
+  if (i < currentNode->children->size() && i >= -1)
     currentNode = currentNode->children->at(i);
   else
     printf("child out of range\n");

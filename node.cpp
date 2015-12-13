@@ -14,34 +14,33 @@
 #include <stdio.h>
 
 Node::Node(){//constructor
-	ID = getID();
-	nodeType = root; //base class will be only really our root node, so lets do that
-	isDrawable = false;
-	children = new vector<Node*>();
-	parent = 0;
-	currentChild = 0;
-    isSelected = false;
+  ID = getID();
+  nodeType = root; //base class will be only really our root node, so lets do that
+  isDrawable = false;
+  children = new vector<Node*>();
+  parent = 0;
+  currentChild = 0;
+  isSelected = false;
 }
 
 //==================================================================
 //function which does all the heavy lifting
 void Node::draw(){
-	nodeSpecificCodeDown();
+  nodeSpecificCodeDown();
 
-    drawSelf();
+  drawSelf();
 
-	//recursively call our children
-	const int numberOfChildren = children->size();
-	if (numberOfChildren > 0){
-		for (int i = 0; i < numberOfChildren; i++){
-			children->at(i)->draw();
-		}
-	}
+  //recursively call our children
+  const int numberOfChildren = children->size();
+  if (numberOfChildren > 0){
+    for (int i = 0; i < numberOfChildren; i++){
+      children->at(i)->draw();
+    }
+  }
 
-
-	//we are exiting the node, so execute the commands
-	//ie. pop matrix, etc.
-	nodeSpecificCodeUp();
+  //we are exiting the node, so execute the commands
+  //ie. pop matrix, etc.
+  nodeSpecificCodeUp();
 }
 
 
