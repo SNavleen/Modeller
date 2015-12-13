@@ -26,6 +26,7 @@ class SceneGraph{
     void useCustomSettings();
     void addTransformationToCurrentNode(Node * transform);
     bool isSelectednodeNull();
+    void printScene(Node *curNode, int depth);
 
   private:
     Vector3D * startRayD;

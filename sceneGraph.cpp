@@ -23,7 +23,7 @@
 bool SceneGraph::isSelectednodeNull(){ return (selectedNode==NULL); }
 
 // mouse Intersection stuff
-void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
+void getMouseRay2(int x, int y, Vector3D *start, Vector3D *end){
   /* printf("%i, %i\n", x, y); */
   //allocate matricies memory
   double matModelView[16], matProjection[16];
@@ -52,8 +52,23 @@ void getMouseRay(int x, int y, Vector3D *start, Vector3D *end){
   /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
   /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
 }
+void SceneGraph::printScene(Node * curNode, int depth){
+  for(int i = 0; i < depth; i++) printf("  ");
+  if(this->currentNode == curNode) printf("<current node> ");
+  printf("number of children:%li \n",curNode->children->size());
+  for(int i = 0;i < curNode->children->size(); i++){
+    printScene(curNode->children->at(i), depth+1);
+  }
+  for(int i = 0; i < depth; i++) printf("  ");
+  printf("going up\n");
+}
 void SceneGraph::selectnodeAtPos(int x, int y){
   if(selectedNode != NULL) selectedNode->isSelected = false; // make it so that if you attempt to select another node it will make the first one false
+  Vector3D rayStart = Vector3D();
+  Vector3D rayEnd   = Vector3D();
+  getMouseRay2(x,y,&rayStart,&rayEnd);
+  printf("scene graph = rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
+
 
   vector<Node*> listOfnodes = vector<Node*>();
   vector<double> listOfIntersectionDistances = vector<double>();
@@ -67,10 +82,18 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   /* } */
   /* printf("done the selectnodeatpos\n\n"); */
 
-  // reddid the recursion
 
-  printf("starting the ray intersection: made the vectors. going to load the identity\n");
-  glLoadIdentity();
+  printf("starting the ray intersection: made the vectors. print scene graph\n");
+  printScene(rootNode, 0);
+  printf("going to load the identity\n");
+// reddid the recursion
+  double mat[16];
+  glGetDoublev(GL_MODELVIEW_MATRIX, mat);
+  glGetDoublev(GL_MODELVIEW_MATRIX, mat);
+  glLoadMatrixd(mat);
+  /* glLoadIdentity(); */
+
+  /* glLoadIdentity(); */
   rootNode->rayIntersection(&listOfnodes, &listOfIntersectionDistances, x,y);
   printf("done doing the ray intersection the length of the listOfnodes is:%li, listOfDistances:%li\n", listOfnodes.size(), listOfIntersectionDistances.size());
 

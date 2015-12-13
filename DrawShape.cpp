@@ -33,7 +33,6 @@ DrawShape::~DrawShape(){
 }
 
 //Public function
-
 void DrawShape::drawAxis(){
   glBegin(GL_LINES);
   glColor3f(1, 0, 0);
@@ -382,7 +381,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   Vector3D rayStart = Vector3D();
   Vector3D rayEnd = Vector3D();
   getMouseRay(mx,my,&rayStart,&rayEnd);
-  printf("rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
+  printf("drawshape rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
 
   if(modelType =="Plane"){
     Vector3D p0 = Vector3D(0,1,0);
