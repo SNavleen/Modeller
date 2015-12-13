@@ -93,6 +93,7 @@ void DrawShape::drawSelf(){
   }
   if(isSelected) drawWireFrame();
 }
+
 //code where we add what the node will do when moving up the tree
 void DrawShape::nodeSpecificCodeUp(){}
 
