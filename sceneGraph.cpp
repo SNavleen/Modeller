@@ -194,7 +194,23 @@ void SceneGraph::resetScene(){
 }
 
 void SceneGraph::saveFile(){
-    printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+    //printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+    printf("ID: %i ", currentNode->ID);
+    if(currentNode->nodeType == 0){
+        printf("root");
+    }
+    else if(currentNode->nodeType == 1){
+        printf("group");
+    }
+    else if(currentNode->nodeType == 2){
+        printf("transformation");
+        NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
+        printf("%i",nodeTransform->transformationType);
+    }
+    else if(currentNode->nodeType == 3){
+        printf("model");
+    }
+
     int indexOfSelectedNode;
     for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
         goToChild(indexOfSelectedNode);
