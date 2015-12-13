@@ -195,47 +195,42 @@ void SceneGraph::resetScene(){
   selectedNode = NULL;
 }
 
-void SceneGraph::saveFile(){
-    ofstream sceneFile;
-    sceneFile.open("Scene-Graph.csv");
+void SceneGraph::saveFile(ofstream *sceneFile){
     //printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
-    printf("ID: %i ", currentNode->ID);
-    sceneFile << currentNode->ID;
+    *sceneFile << currentNode->ID << ",";
     if(currentNode->nodeType == 0){
-        sceneFile << "root";
+        *sceneFile << "root";
     }
     else if(currentNode->nodeType == 1){
-        sceneFile << "group";
+        *sceneFile << "group";
     }
     else if(currentNode->nodeType == 2){
-        sceneFile << "transformation";
+        *sceneFile << "transformation" << ",";
         NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
         //printf("%i",nodeTransform->transformationType);
-        sceneFile << nodeTransform->transformationType;
+        *sceneFile << nodeTransform->transformationType << ",";
         if(nodeTransform->transformationType == 0){
-            sceneFile << nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z;
+            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
         }else if(nodeTransform->transformationType == 1){
-            sceneFile << nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w;
+            *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
         }else if(nodeTransform->transformationType == 2){
-            sceneFile << nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z;
+            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
         }
     }
     else if(currentNode->nodeType == 3){
-        sceneFile << "model";
+        *sceneFile << "model" << ",";
         DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
         //printf("%s", drawShape->modelType);
-        sceneFile << drawShape->modelType;
+        *sceneFile << drawShape->modelType;
     }
-    sceneFile << "\n";
+    *sceneFile << "\n";
 
     int indexOfSelectedNode;
     for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
         goToChild(indexOfSelectedNode);
-        saveFile();
+        saveFile(sceneFile);
         goToParent();
     }
-    sceneFile.close();
-
 }
 
 void SceneGraph::loadFile(){
