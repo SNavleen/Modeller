@@ -240,6 +240,7 @@ void SceneGraph::goToMaxChild(){
 void SceneGraph::goToParent(){
   if (currentNode->parent != 0)
     currentNode = currentNode->parent;
+  else printf("parent is null\n");
 }
 
 //inserts a child node into the current node
@@ -325,6 +326,7 @@ void SceneGraph::saveFile(ofstream *sceneFile){
   for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
     goToChild(indexOfSelectedNode);
     saveFile(sceneFile);
+    *sceneFile << "goUpParent\n";
     goToParent();
   }
 }
@@ -352,7 +354,10 @@ void SceneGraph::loadFile(ifstream *sceneFile){
         stringstream streamCell(line);
         getline(streamCell, cell, ',');
         /* printf("%s\n", cell.c_str()); */
-        if(cell == "root"){
+        if(cell == "goUpParent"){
+          printf("going to parent\n");
+          goToParent();
+        }else if(cell == "root"){
           /* goToRoot(); */
         }else if(cell == "group"){
 
@@ -399,8 +404,6 @@ void SceneGraph::loadFile(ifstream *sceneFile){
           model = new char[cell.length() + 1];
           printf("model:-%s-", model);
           strcpy(model, cell.c_str());
-          if(strcmp(model,"Cube")==0) printf("the model==Cube\n");
-          else printf("the model does not equal Cube\n");
           getline(streamCell, cell, ',');
           red = atof(cell.c_str());
           getline(streamCell, cell, ',');
@@ -421,7 +424,6 @@ void SceneGraph::loadFile(ifstream *sceneFile){
 
 //draw the scenegraph
 void SceneGraph::draw(){
-
   printf("\n\nstart drawing\n");
   printScene();
   rootNode->draw();
