@@ -32,10 +32,10 @@ class DrawShape:public Node{
         void material();
         void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
         void setLight(int lightX, int lightZ);
+        char *modelType;
 
     private:
 
-        char *modelType;
         float red, green, blue;
         int lightX, lightZ;
 

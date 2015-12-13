@@ -207,9 +207,21 @@ void SceneGraph::saveFile(){
         printf("transformation");
         NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
         printf("%i",nodeTransform->transformationType);
+        if(nodeTransform->transformationType == 0){
+            printf("%f, %f, %f", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+        }else if(nodeTransform->transformationType == 1){
+            printf("%f, %f, %f, %f", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
+        }else if(nodeTransform->transformationType == 2){
+            printf("%f, %f, %f", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+        }
     }
     else if(currentNode->nodeType == 3){
         printf("model");
+        DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
+        printf("%s", drawShape->modelType);
+        if(drawShape->modelType == "Cude"){
+
+        }
     }
 
     int indexOfSelectedNode;
