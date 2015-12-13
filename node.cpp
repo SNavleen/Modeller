@@ -44,16 +44,12 @@ void printModelMatrix(){
 void Node::draw(){
   nodeSpecificCodeDown();
 
-  printf("got down tot he node\n");
-
-  printf("drawing self object\n");
   drawSelf();
 
   //recursively call our children
   const int numberOfChildren = children->size();
   if (numberOfChildren > 0){
     for (int i = 0; i < numberOfChildren; i++){
-      printf("going to node at %i so going down a node\n", i);
       children->at(i)->draw();
     }
   }
@@ -61,8 +57,6 @@ void Node::draw(){
   //we are exiting the node, so execute the commands
   //ie. pop matrix, etc.
   nodeSpecificCodeUp();
-
-  printf("done node\n");
 }
 
 

@@ -238,9 +238,9 @@ void SceneGraph::goToMaxChild(){
 }
 
 void SceneGraph::goToParent(){
-  if (currentNode->parent != 0)
+  if (currentNode->parent != 0){
     currentNode = currentNode->parent;
-  else printf("parent is null\n");
+  }
 }
 
 //inserts a child node into the current node
@@ -287,10 +287,8 @@ void SceneGraph::resetScene(){
 }
 
 void SceneGraph::saveFile(ofstream *sceneFile){
-  printf("ID: %i\n", currentNode->ID);
   //*sceneFile << currentNode->ID << ",";
   if(currentNode->nodeType == 0){
-    printf("root\n");
     *sceneFile << "root";
   }
   else if(currentNode->nodeType == 1){
@@ -299,25 +297,19 @@ void SceneGraph::saveFile(ofstream *sceneFile){
   else if(currentNode->nodeType == 2){
     *sceneFile << "transformation" << ",";
     NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
-    printf("%i\n",nodeTransform->transformationType);
     *sceneFile << nodeTransform->transformationType << ",";
     if(nodeTransform->transformationType == 0){
-      printf("Translate: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
       *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
     }else if(nodeTransform->transformationType == 1){
-      printf("Rotate: %f, %f, %f, %f\n", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
       *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
     }else if(nodeTransform->transformationType == 2){
-      printf("Scale: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
       *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
     }
   }
   else if(currentNode->nodeType == 3){
     *sceneFile << "model" << ",";
     DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
-    printf("Shape: %s\n", drawShape->modelType);
     *sceneFile << drawShape->modelType << ",";
-    printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
     *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
   }
   *sceneFile << "\n";
@@ -346,16 +338,16 @@ void SceneGraph::insertDefaultTransformations(NodeTransform *rotate, NodeTransfo
 }
 
 void SceneGraph::loadFile(ifstream *sceneFile){
+  resetScene();
+  goToRoot();
+  /* currentNode = rootNode; */
   if(*sceneFile){
     string line;
     while(getline(*sceneFile, line)){
-        printf("line:%s\n", line.c_str());
         string cell;
         stringstream streamCell(line);
         getline(streamCell, cell, ',');
-        /* printf("%s\n", cell.c_str()); */
         if(cell == "goUpParent"){
-          printf("going to parent\n");
           goToParent();
         }else if(cell == "root"){
           /* goToRoot(); */
@@ -363,7 +355,6 @@ void SceneGraph::loadFile(ifstream *sceneFile){
 
         }else if(cell == "transformation"){
           getline(streamCell, cell, ',');
-          printf("%s\n", cell.c_str());
           NodeTransform *transform;
           if(cell == "0"){ // translate
             Vector3D v3;
@@ -373,7 +364,6 @@ void SceneGraph::loadFile(ifstream *sceneFile){
             v3.y = atof(cell.c_str());
             getline(streamCell, cell, ',');
             v3.z = atof(cell.c_str());
-            printf("(%f,%f,%f)\n", v3.x,v3.y,v3.z);
             transform = new NodeTransform(Translate, v3);
           }else if(cell == "1"){ // rotate
             Vector4D v4;
@@ -397,12 +387,12 @@ void SceneGraph::loadFile(ifstream *sceneFile){
             transform = new NodeTransform(Scale, v3);
           }
           insertChildNodeHere(transform);
+          goToMaxChild();
         }else if(cell == "model"){
           int red, green, blue;
           char *model;
           getline(streamCell, cell, ',');
           model = new char[cell.length() + 1];
-          printf("model:-%s-", model);
           strcpy(model, cell.c_str());
           getline(streamCell, cell, ',');
           red = atof(cell.c_str());
@@ -413,10 +403,10 @@ void SceneGraph::loadFile(ifstream *sceneFile){
           // insertDefaultTransformations(new NodeTransform(Rotate, Vector4D()), new NodeTransform(Translate, Vector3D()), new NodeTransform(Scale, Vector3D(1,1,1)));
           DrawShape *drawShape = new DrawShape(model, red, green, blue);
           insertChildNodeHere(drawShape);
+          goToRoot();
         }
-        goToMaxChild();
-        printf("starting\n\n");
-        printScene();
+        /* goToMaxChild(); */
+        /* printScene(); */
     }
   }
   glutPostRedisplay();
@@ -424,8 +414,7 @@ void SceneGraph::loadFile(ifstream *sceneFile){
 
 //draw the scenegraph
 void SceneGraph::draw(){
-  printf("\n\nstart drawing\n");
-  printScene();
+  /* printScene(); */
   rootNode->draw();
 }
 

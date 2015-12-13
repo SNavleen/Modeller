@@ -56,9 +56,6 @@ void DrawShape::drawAxis(){
 
 void DrawShape::nodeSpecificCodeDown(){}
 void DrawShape::drawSelf(){
-  printf("inside the self drawSelf from the draw object\n");
-  printf("modelType:-%s-\n", modelType);
-  //
   /* double matModelView[16]; */
   /* glGetDoublev(GL_MODELVIEW_MATRIX, matModelView); */
 
