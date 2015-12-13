@@ -40,7 +40,6 @@ int red = 1, green = 1, blue = 1, lightCounter = 1, lightX = 0, lightZ = 0;
 bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
 Vector4D v4R;
-ofstream sceneFile;
 
 //node ids
 int masterID = 0;
@@ -184,11 +183,16 @@ void KeyBoardAction(unsigned char key, int x, int y){
     }else if(key == 127 || key == 8){
         SG->resetScene();
     }else if(mod == 2 && key == 19){
+        ofstream sceneFile;
         SG->goToRoot();
         sceneFile.open("Scene-Graph.csv");
         SG->saveFile(&sceneFile);
         sceneFile.close();
-    }else if(mod == 2 && key == 15){
+    }else if(mod == 2 && key == 12){
+        ifstream sceneFile;
+        sceneFile.open("Scene-Graph.csv");
+        SG->loadFile(&sceneFile);
+        sceneFile.close();
     }else if(key == 'w'){
         lightCounter++;
         if (lightCounter % 2 == 0){
