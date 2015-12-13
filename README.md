@@ -56,8 +56,44 @@ SHIFT r KEY ------------------------- INCREASE ROTATE
 SHIFT t KEY ------------------------- INCREASE TRANSLATE
 
 
+GENERAL COMMANDS
+    - Using the arrow key's you can control the camera's rotation around the x-y-z axis
+    - Using 'u' & 'j' you can control the two light sources about the y-axis
+    - Using 'h' & 'k' you can control the two light sources about the z-axis
+    - To turn on and off lighting/material use the 'w' key
+    - To reset the whole scene graph you can use the 'delete' or 'backspace' key
+    - To delete a single object you must select it and then right click the selected object 
+    - To save a scene to a CSV file you can press 'CTRL+s'
+    - To load a scene from a CSV file you can press 'CTRL+l'
+    - 'q' or 'Q' or 'esc' key will close the application 
 
-HOW TO TRANSFORM OBJECTS
-  - 
+DRAWING OBJECTS
+    - There are 5 different objects that you can choice to draw on the screen using the number key's 1-5
+      1) Cube
+      2) Sphere
+      3) Cone
+      4) Torus
+      5) Teapot
+
+CHANGING OBJECTS MATERIALS
+    - There are 5 different materials that you can choice to apply to an object using the number key's 6-0 (default 0)
+      6) Yellow Rubber
+      7) Silver
+      8) Red Plastic
+      9) Obsidian
+      0) Emerald
+
+MODIFY COLOURS
+    - To modify the colours of the next object you first need to select a colour 
+    - Using ',' or '.' or '/' you can select 'red' & 'green' & 'blue' respectively 
+    - Then you can use the '-' or '=' to decrease and increase respectively to change the values of the colours 
+
+TRANSFORM OBJECTS
+    - Select the axis that you would like to apply the transformation on
+    - By pressing 'SHIFT' & the axis you can modify the other two axis at the same time
+    - To translate an object you can use 'ALT+t' or 'SHIFT+t' which will decrease and increase
+    - To scale an object you can use 'ALT+s' or 'SHIFT+s' which will decrease and increase
+    - Before rotating the object on the x-y-z axis you need to increase or decrease the angle by pressing 'a'
+    - Then to rotate an object you can use 'ALT+r' or 'SHIFT+r' which will decrease and increase
 
 
