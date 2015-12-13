@@ -21,6 +21,7 @@ public:
 	Vector4D amount4;
 
 	virtual void nodeSpecificCodeDown();
+	virtual void nodeSpecificCodeUp();
 };
 
 #endif

@@ -240,7 +240,6 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     Vector3D v3s = Vector3D(1,1,1), v3t = Vector3D(0,0,0);
     Vector4D v4r = {0,0,0,0};
-    printf("v4r: (%f,%f,%f,%f)\n",v4r.x,v4r.y,v4r.z,v4r.w);
 
     NodeTransform *rotate = new NodeTransform (Rotate, v4r);
     NodeTransform *translate = new NodeTransform (Translate, v3t);

@@ -53,6 +53,7 @@ void getMouseRay2(int x, int y, Vector3D *start, Vector3D *end){
   /* printf("near point: %f,%f,%f\n", start->x, start->y, start->z); */
   /* printf("far point: %f,%f,%f\n", end->x, end->y, end->z); */
 }
+void SceneGraph::printScene(){ this->printScene(rootNode, 0);  }
 void SceneGraph::printScene(Node * curNode, int depth){
   for(int i = 0; i < depth; i++) printf("  ");
   if(this->currentNode == curNode) printf("<current node> ");
@@ -87,12 +88,13 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   printf("starting the ray intersection: made the vectors. print scene graph\n");
   printScene(rootNode, 0);
   printf("going to load the identity\n");
-// reddid the recursion
-  double mat[16];
-  glGetDoublev(GL_MODELVIEW_MATRIX, mat);
-  glGetDoublev(GL_MODELVIEW_MATRIX, mat);
-  glLoadMatrixd(mat);
-  /* glLoadIdentity(); */
+
+  // reddid the recursion
+
+  /* double mat[16]; */
+  /* glGetDoublev(GL_MODELVIEW_MATRIX, mat); */
+  /* glGetDoublev(GL_MODELVIEW_MATRIX, mat); */
+  /* glLoadMatrixd(mat); */
 
   /* glLoadIdentity(); */
   rootNode->rayIntersection(&listOfnodes, &listOfIntersectionDistances, x,y);

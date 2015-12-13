@@ -27,7 +27,7 @@ class SceneGraph{
     void selectFirstnode();
     void useCustomSettings();
     bool isSelectednodeNull();
-    void printScene(Node *curNode, int depth);
+    void printScene();
     Node* getSelectedNode();
     void addTransformationToCurrentNode(char *transformation, Node * transform);
 
@@ -38,6 +38,9 @@ class SceneGraph{
     Node *selectedNode;
     Node *transformNode;
     Node *currentNode;
+
+
+    void printScene(Node *curNode, int depth);
 };
 
 #endif
