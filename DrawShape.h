@@ -29,10 +29,11 @@ class DrawShape:public Node{
         void drawAxis();  // draws the axis
         void drawWireFrame(); // this draws the wireframe of the object
         virtual void nodeSpecificCodeUp();
+        void drawSelf();
         void lighting();
         void material();
         void setMaterialValue(int materialValue);
-        void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
+        void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx, int my);
         void setLight(int lightX, int lightZ);
         char *modelType;
 

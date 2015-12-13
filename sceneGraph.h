@@ -13,6 +13,7 @@ class SceneGraph{
     //Scene Graph Navigation
     void goToRoot();
     void goToChild(int i);
+    void goToMaxChild();
     void goToParent();
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
@@ -29,6 +30,8 @@ class SceneGraph{
 
     void selectFirstnode();
     void useCustomSettings();
+    bool isSelectednodeNull();
+    void printScene();
     Node* getSelectedNode();
     void addTransformationToCurrentNode(char *transformation, Node * transform);
 
@@ -39,6 +42,11 @@ class SceneGraph{
     Node *selectedNode;
     Node *transformNode;
     Node *currentNode;
+
+    double oldMat[16];
+
+    void printModelMatrix();
+    void printScene(Node *curNode, int depth);
 };
 
 #endif

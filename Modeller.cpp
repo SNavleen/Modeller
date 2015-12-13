@@ -44,7 +44,7 @@ Vector4D v4R;
 //node ids
 int masterID = 0;
 int getID(){
-    return masterID++;
+  return masterID++;
 }
 
 //Window size
@@ -76,6 +76,19 @@ void LightingAndMaterial(){
     objDrawShape.lighting();
 //    objDrawShape.material(materialValue);
 }
+void printModelMatrix2(){
+  double matModelView[16];
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+
+  printf("printing the modelview matrix in the draw shape\n");
+  for(int i =0; i < 4; i++){
+    for(int j=0; j < 4; j++){
+      printf("%f, ",matModelView[i+j*4]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
 
 void Display(){
     float origin[3] = {0,0,0};
@@ -86,7 +99,11 @@ void Display(){
 
     LightingAndMaterial();
 
+    /* printf("before the camera!!"); */
+    /* printModelMatrix2(); */
     gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+    /* printf("before the display!!"); */
+    /* printModelMatrix2(); */
     glClearColor(1, 1, 0.9, 0);
 
     //draw the sceneGraph
@@ -94,7 +111,7 @@ void Display(){
     SG->draw();
     //printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
     //printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-    //printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+    /* printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w); */
 
     /* SG->drawRay(); */
     glutSwapBuffers();
@@ -160,15 +177,18 @@ void resetRotate(){
 void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
     //Insert default Rotate node to scene graph
     SG->insertChildNodeHere(rotate);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 
     //Insert default Translate node to scene graph
     SG->insertChildNodeHere(translate);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 
     //Insert default Scale node to scene graph
     SG->insertChildNodeHere(scale);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -271,27 +291,32 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     //Keys to draw a shpae
     if(key == '1'){//Cube
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
         SG->insertChildNodeHere(drawCude);
         //cude = true;
     }else if(key == '2'){//Sphere
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
         SG->insertChildNodeHere(drawSphere);
     }else if(key == '3'){//Cone
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
         SG->insertChildNodeHere(drawCone);
     }else if(key == '4'){//Torus
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
         SG->insertChildNodeHere(drawTorus);
     }else if(key == '5'){//Teapot
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
@@ -338,46 +363,48 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     Vector3D v3;
     //Keys for what type of transformation will be applied
-    if(mod == 1){
+    if(SG->isSelectednodeNull()) printf("please select an object before trying to modify it\n");
+    else{
+      if(mod == 1){
         if(key == 'S'){
-            v3S = increase3D(v3);
-            transformationv3("Scale", v3S);
+          v3S = increase3D(v3);
+          transformationv3("Scale", v3S);
         }else if(key == 'R'){
-            resetRotate();
-            if(blnZ)
-                v4R.z+=1;
-            if(blnX)
-                v4R.x+=1;
-            if(blnY)
-                v4R.y+=1;
-            if(blnAngle)
-                v4R.w+=1;
-            transformationv4("Rotate", v4R);
+          resetRotate();
+          if(blnZ)
+            v4R.z+=1;
+          if(blnX)
+            v4R.x+=1;
+          if(blnY)
+            v4R.y+=1;
+          if(blnAngle)
+            v4R.w+=1;
+          transformationv4("Rotate", v4R);
         }else if(key == 'T'){
-            v3T = increase3D(v3);
-            transformationv3("Translate", v3T);
+          v3T = increase3D(v3);
+          transformationv3("Translate", v3T);
         }
-    }else if(mod == 4){
+      }else if(mod == 4){
         if(key == 's'){
-            v3S = decrease3D(v3);
-            transformationv3("Scale", v3S);
+          v3S = decrease3D(v3);
+          transformationv3("Scale", v3S);
         }else if(key == 'r'){
-            resetRotate();
-            if(blnZ)
-                v4R.z-=1;
-            if(blnX)
-                v4R.x-=1;
-            if(blnY)
-                v4R.y-=1;
-            if(blnAngle)
-                v4R.w-=1;
-            transformationv4("Rotate", v4R);
+          resetRotate();
+          if(blnZ)
+            v4R.z-=1;
+          if(blnX)
+            v4R.x-=1;
+          if(blnY)
+            v4R.y-=1;
+          if(blnAngle)
+            v4R.w-=1;
+          transformationv4("Rotate", v4R);
         }else if(key == 't'){
-            v3T = decrease3D(v3);
-            transformationv3("Translate", v3T);
+          v3T = decrease3D(v3);
+          transformationv3("Translate", v3T);
         }
+      }
     }
-
     glutPostRedisplay();
 }
 
@@ -406,7 +433,11 @@ void KeyBoardSpecial(int key, int x, int y){
 void MouseClickAction(int button, int state, int posX, int posY){
     switch(button){
         case GLUT_LEFT_BUTTON:
-            if(state==0) SG->selectnodeAtPos(posX, posY);
+            if(state==0){
+              glLoadIdentity();
+              gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+              SG->selectnodeAtPos(posX, posY);
+            }
             break;
         case GLUT_RIGHT_BUTTON:
             SG->deleteThisNode();
@@ -427,7 +458,8 @@ void glutCallbacks(){
 void init(void){
     GLuint id = 1;
 
-    glEnable(GLUT_DEPTH);
+  glEnable(GLUT_DEPTH);
+  glEnable(GL_CULL_FACE);
 
     glClearColor(1, 1, 0.9, 0);
     glColor3f(1, 1, 1);
