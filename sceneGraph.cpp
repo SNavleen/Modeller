@@ -77,6 +77,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   Vector3D rayStart = Vector3D();
   Vector3D rayEnd   = Vector3D();
 
+  printf("\n\n\n started ray intersetion");
   getMouseRay2(x,y,&rayStart,&rayEnd);
   printf("scene graph = rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
 
@@ -100,11 +101,16 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   // reddid the recursion
 
   /* double mat[16]; */
-  /* glGetDoublev(GL_MODELVIEW_MATRIX, mat); */
+  /* printf("===========OLDMATH============="); */
+  /* glGetDoublev(GL_MODELVIEW_MATRIX, oldMat); */
+  /* for(int i =0;i<16;i++){ */
+     /* printf("%f, ", oldMat[i]); */
+  /* } */
   /* glGetDoublev(GL_MODELVIEW_MATRIX, mat); */
   /* glLoadMatrixd(mat); */
 
   /* glLoadIdentity(); */
+
   rootNode->rayIntersection(&listOfnodes, &listOfIntersectionDistances, x,y);
   printf("done doing the ray intersection the length of the listOfnodes is:%li, listOfDistances:%li\n", listOfnodes.size(), listOfIntersectionDistances.size());
 
@@ -139,6 +145,10 @@ SceneGraph::SceneGraph(){
   endRayD = NULL;
   /* useCustomSettings(); */
 
+  /* for(int i =0; i< 16; i++) oldMat[i] = 0.0f; */
+}
+
+void SceneGraph::printModelMatrix(){
   double matModelView[16];
   glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
 
@@ -150,8 +160,6 @@ SceneGraph::SceneGraph(){
     printf("\n");
   }
   printf("\n");
-
-
 }
 
 void SceneGraph::drawRay(){
@@ -198,6 +206,9 @@ void SceneGraph::goToChild(int i){
     currentNode = currentNode->children->at(i);
   else
     printf("child out of range\n");
+}
+void SceneGraph::goToMaxChild(){
+  currentNode = currentNode->children->at(currentNode->children->size()-1);
 }
 
 void SceneGraph::goToParent(){
@@ -264,6 +275,7 @@ void SceneGraph::loadFile(){
 
 //draw the scenegraph
 void SceneGraph::draw(){
+  /* printf("\n\nstart drawing\n"); */
   rootNode->draw();
 }
 

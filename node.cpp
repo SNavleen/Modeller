@@ -23,17 +23,43 @@ Node::Node(){//constructor
   isSelected = false;
 }
 
+
+
+void printModelMatrix(){
+  double matModelView[16];
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+
+  printf("printing the modelview matrix in the draw shape\n");
+  for(int i =0; i < 4; i++){
+    for(int j=0; j < 4; j++){
+      printf("%f, ",matModelView[i+j*4]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
+
+
 //==================================================================
 //function which does all the heavy lifting
 void Node::draw(){
+  /* printf("going to print the matrix before\n"); */
+  /* printModelMatrix(); */
+
   nodeSpecificCodeDown();
 
+  /* printf("going to print the matrix after down\n"); */
+  /* printModelMatrix(); */
+
+  /* printf("drawing self object\n"); */
   drawSelf();
 
   //recursively call our children
   const int numberOfChildren = children->size();
   if (numberOfChildren > 0){
     for (int i = 0; i < numberOfChildren; i++){
+      /* printf("going to node at %i so going down a node\n", i); */
       children->at(i)->draw();
     }
   }
@@ -41,6 +67,10 @@ void Node::draw(){
   //we are exiting the node, so execute the commands
   //ie. pop matrix, etc.
   nodeSpecificCodeUp();
+
+  /* printf("printing matrix value when going up after pop\n"); */
+  /* printModelMatrix(); */
+  /* printf("going up a node\n"); */
 }
 
 
@@ -64,13 +94,27 @@ void Node::drawWireFrame(){}
 // handle the ray intersection
 void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx,int my){
   printf("inside a node that is not a draw node, going to the children\n");
+  printf("going to print the matrix before down\n");
+  printModelMatrix();
+
   /* printf("  inside the ray intersection for the node. going to run it for all the children\n"); */
   this->nodeSpecificCodeDown();
+  printf("going to print the matrix after down\n");
+  printModelMatrix();
+
   for(int i =0; i < this->children->size(); i++){
     printf("going through the loop at i:%i\n",i);
     this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,mx,my);
   }
+
+  printf("just came back, going to print the model matrix\n");
+  printModelMatrix();
+
   this->nodeSpecificCodeUp();
+  printf("printing model matrix after the code up\n");
+  printModelMatrix();
+
+
   printf("going up a node\n");
   /* if(this->children->size()==0) printf("  there are no children\n"); */
   /* printf("  done for this node, going up the scene graph\n"); */

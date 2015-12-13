@@ -10,6 +10,7 @@ class SceneGraph{
     //Scene Graph Navigation
     void goToRoot();
     void goToChild(int i);
+    void goToMaxChild();
     void goToParent();
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
@@ -39,7 +40,9 @@ class SceneGraph{
     Node *transformNode;
     Node *currentNode;
 
+    double oldMat[16];
 
+    void printModelMatrix();
     void printScene(Node *curNode, int depth);
 };
 

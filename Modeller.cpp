@@ -43,7 +43,7 @@ Vector4D v4R;
 //node ids
 int masterID = 0;
 int getID(){
-    return masterID++;
+  return masterID++;
 }
 
 //Window size
@@ -74,6 +74,19 @@ void LightingAndMaterial(){
     objDrawShape.lighting();
     //objDrawShape.material();
 }
+void printModelMatrix2(){
+  double matModelView[16];
+  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+
+  printf("printing the modelview matrix in the draw shape\n");
+  for(int i =0; i < 4; i++){
+    for(int j=0; j < 4; j++){
+      printf("%f, ",matModelView[i+j*4]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
 
 void Display(){
     float origin[3] = {0,0,0};
@@ -84,7 +97,11 @@ void Display(){
 
     LightingAndMaterial();
 
+    /* printf("before the camera!!"); */
+    /* printModelMatrix2(); */
     gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+    /* printf("before the display!!"); */
+    /* printModelMatrix2(); */
     glClearColor(1, 1, 0.9, 0);
 
     //draw the sceneGraph
@@ -156,15 +173,18 @@ void resetRotate(){
 void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
     //Insert default Rotate node to scene graph
     SG->insertChildNodeHere(rotate);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 
     //Insert default Translate node to scene graph
     SG->insertChildNodeHere(translate);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 
     //Insert default Scale node to scene graph
     SG->insertChildNodeHere(scale);
-    SG->goToChild(0);
+    /* SG->goToChild(0); */
+    SG->goToMaxChild();
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -247,12 +267,14 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     //Keys to draw a shpae
     if(key == '1'){//Cube
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
         SG->insertChildNodeHere(drawCude);
         //cude = true;
     }else if(key == '2'){//Sphere
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
@@ -382,7 +404,11 @@ void KeyBoardSpecial(int key, int x, int y){
 void MouseClickAction(int button, int state, int posX, int posY){
     switch(button){
         case GLUT_LEFT_BUTTON:
-            if(state==0) SG->selectnodeAtPos(posX, posY);
+            if(state==0){
+              glLoadIdentity();
+              gluLookAt(camPos[0], camPos[1], camPos[2], 0,0,0, 0,1,0);
+              SG->selectnodeAtPos(posX, posY);
+            }
             break;
         case GLUT_RIGHT_BUTTON:
             SG->deleteThisNode();

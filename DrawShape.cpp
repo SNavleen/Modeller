@@ -55,14 +55,14 @@ void DrawShape::drawSelf(){
   double matModelView[16];
   glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
 
-  printf("printing the modelview matrix in the draw shape\n");
-  for(int i =0; i < 4; i++){
-    for(int j=0; j < 4; j++){
-      printf("%f, ",matModelView[i+j*4]);
-    }
-    printf("\n");
-  }
-  printf("\n");
+  /* printf("printing the modelview matrix in the draw shape\n"); */
+  /* for(int i =0; i < 4; i++){ */
+  /*   for(int j=0; j < 4; j++){ */
+  /*     printf("%f, ",matModelView[i+j*4]); */
+  /*   } */
+  /*   printf("\n"); */
+  /* } */
+  /* printf("\n"); */
 
 
 
