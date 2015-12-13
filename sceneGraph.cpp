@@ -3,6 +3,7 @@
 #include "Vector3D.h"
 #include <stdio.h>
 
+#include <iostream>
 //temporary
 #include "nodeTransform.h"
 #include "DrawShape.h"
@@ -215,12 +216,26 @@ void SceneGraph::deleteThisNode(){
 }
 //deletes the current node, relinking the children as necessary
 void SceneGraph::resetScene(){
-  goToParent();
+  goToRoot();
   while(!currentNode->children->empty()){
     currentNode->children->pop_back();
   }
 
   selectedNode = NULL;
+}
+
+void SceneGraph::saveFile(){
+    printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+    int indexOfSelectedNode;
+    for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
+        goToChild(indexOfSelectedNode);
+        saveFile();
+        goToParent();
+    }
+}
+
+void SceneGraph::loadFile(){
+
 }
 
 //draw the scenegraph
@@ -229,17 +244,28 @@ void SceneGraph::draw(){
 }
 
 
-void SceneGraph::addTransformationToCurrentNode(Node * transform){
-  if(selectedNode == NULL) return;
-  transformNode = selectedNode;
-  currentNode = selectedNode->parent;
-  insertChildNodeHere(transform);
+void SceneGraph::addTransformationToCurrentNode(char *transformation, Node * transform){
 
-  deleteThisNode();
+    Vector3D v3;
+    Vector4D v4;
 
-  insertChildNodeHere(transformNode);
-  selectedNode = transformNode;
-  selectedNode->isSelected = true;
+    if(transformation == "Rotate"){
+        transformNode = selectedNode->parent->parent->parent;
+        static_cast<NodeTransform *>(transformNode)->amount4.x += static_cast<NodeTransform *>(transform)->amount4.x;
+        static_cast<NodeTransform *>(transformNode)->amount4.y += static_cast<NodeTransform *>(transform)->amount4.y;
+        static_cast<NodeTransform *>(transformNode)->amount4.z += static_cast<NodeTransform *>(transform)->amount4.z;
+        static_cast<NodeTransform *>(transformNode)->amount4.w += static_cast<NodeTransform *>(transform)->amount4.w;
+    }else if(transformation == "Translate"){
+        transformNode = selectedNode->parent->parent;
+        static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
+        static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
+        static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
+    }else if(transformation == "Scale"){
+        transformNode = selectedNode->parent;
+        static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
+        static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
+        static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
+    }
 }
 
 

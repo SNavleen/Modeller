@@ -14,6 +14,8 @@ class SceneGraph{
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
     void resetScene();
+    void saveFile();
+    void loadFile();
 
     //get the selected node
     void selectnodeAtPos(int x,int y);
@@ -24,9 +26,10 @@ class SceneGraph{
 
     void selectFirstnode();
     void useCustomSettings();
-    void addTransformationToCurrentNode(Node * transform);
     bool isSelectednodeNull();
     void printScene(Node *curNode, int depth);
+    Node* getSelectedNode();
+    void addTransformationToCurrentNode(char *transformation, Node * transform);
 
   private:
     Vector3D * startRayD;
