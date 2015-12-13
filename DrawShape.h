@@ -23,6 +23,7 @@ class DrawShape:public Node{
         ~DrawShape();
 
         //Public variables
+        float red, green, blue;
         //Public function
         virtual void nodeSpecificCodeDown();
         void drawAxis();  // draws the axis
@@ -37,7 +38,6 @@ class DrawShape:public Node{
 
     private:
 
-        float red, green, blue;
         int lightX, lightZ;
 
         void drawCube();
