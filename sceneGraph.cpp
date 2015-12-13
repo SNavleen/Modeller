@@ -308,11 +308,12 @@ void SceneGraph::loadFile(ifstream *sceneFile){
 
                     DrawShape *drawShape = new DrawShape(model, red, green, blue);
                     insertChildNodeHere(drawShape);
+                    //drawShape->nodeSpecificCodeDown();
                 }
-
             }
          }
     }
+   // draw();
 }
 
 //draw the scenegraph

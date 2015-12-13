@@ -170,12 +170,87 @@ void DrawShape::lighting(){
     glLightfv(GL_LIGHT1, GL_SPECULAR, spec);
     glLightf(GL_LIGHT1, GL_SHININESS, 100);
 }
+void DrawShape::setMaterialValue(int materialValue){
+    this->materialValue = materialValue;
+}
 /*DrawShape material();*/
 void DrawShape::material(){
-    float mat_ambient[4] ={this->red+0.0f, this->green+0.05f, this->blue+0.0f, 1.0f};
-    float mat_diffuse[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
-    float mat_specular[4] ={this->red+0.4f, this->green+0.05f, this->blue+0.4f, 1.0f};
-    float shine =  10.0f;
+    float mat_ambient[4], mat_diffuse[4], mat_specular[4], shine;
+
+    if(materialValue == 0){
+        mat_ambient[0] = this->red+0.0215f;
+        mat_ambient[1] = this->green+0.1745f;
+        mat_ambient[2] = this->blue+0.0215f;
+        mat_ambient[3] = 1.0f;
+        mat_diffuse[0] = this->red+0.07568f;
+        mat_diffuse[1] = this->green+0.61424f;
+        mat_diffuse[2] = this->blue+0.07568f;
+        mat_diffuse[3] = 1.0f;
+        mat_specular[0] = this->red+0.633f;
+        mat_specular[1] = this->green+0.727811f;
+        mat_specular[2] = this->blue+0.633f;
+        mat_specular[3] = 1.0f;
+        shine = 0.6f;
+    }else if(materialValue == 9){
+        mat_ambient[0] = this->red+0.05375f;
+        mat_ambient[1] = this->green+0.05f;
+        mat_ambient[2] = this->blue+0.06625f;
+        mat_ambient[3] = 1.0f;
+        mat_diffuse[0] = this->red+0.18275f;
+        mat_diffuse[1] = this->green+0.17f;
+        mat_diffuse[2] = this->blue+0.22525f;
+        mat_diffuse[3] = 1.0f;
+        mat_specular[0] = this->red+0.332741f;
+        mat_specular[1] = this->green+0.328634f;
+        mat_specular[2] = this->blue+0.346435f;
+        mat_specular[3] = 1.0f;
+        shine =  0.3f;
+    }else if(materialValue == 8){
+        mat_ambient[0] = this->red+0.0f;
+        mat_ambient[1] = this->green+0.0f;
+        mat_ambient[2] = this->blue+0.0f;
+        mat_ambient[3] = 1.0f;
+        mat_diffuse[0] = this->red+0.5f;
+        mat_diffuse[1] = this->green+0.0f;
+        mat_diffuse[2] = this->blue+0.0f;
+        mat_diffuse[3] = 1.0f;
+        mat_specular[0] = this->red+0.7f;
+        mat_specular[1] = this->green+0.6f;
+        mat_specular[2] = this->blue+0.6f;
+        mat_specular[3] = 1.0f;
+        shine =  0.25f;
+    }else if(materialValue == 7){
+        mat_ambient[0] = this->red+0.19225f;
+        mat_ambient[1] = this->green+0.19225f;
+        mat_ambient[2] = this->blue+0.19225f;
+        mat_ambient[3] = 1.0f;
+        mat_diffuse[0] = this->red+0.50754f;
+        mat_diffuse[1] = this->green+0.50754f;
+        mat_diffuse[2] = this->blue+0.50754f;
+        mat_diffuse[3] = 1.0f;
+        mat_specular[0] = this->red+0.508273f;
+        mat_specular[1] = this->green+0.508273f;
+        mat_specular[2] = this->blue+0.508273f;
+        mat_specular[3] = 1.0f;
+        shine =  0.4f;
+    }else if(materialValue == 6){
+        mat_ambient[0] = this->red+0.05f;
+        mat_ambient[1] = this->green+0.05f;
+        mat_ambient[2] = this->blue+0.0f;
+        mat_ambient[3] = 1.0f;
+        mat_diffuse[0] = this->red+0.05f;
+        mat_diffuse[1] = this->green+0.05f;
+        mat_diffuse[2] = this->blue+0.04f;
+        mat_diffuse[3] = 1.0f;
+        mat_specular[0] = this->red+0.07f;
+        mat_specular[1] = this->green+0.07f;
+        mat_specular[2] = this->blue+0.04f;
+        mat_specular[3] = 1.0f;
+        shine =  0.078125f;
+    }
+
+
+
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);

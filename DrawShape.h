@@ -31,13 +31,14 @@ class DrawShape:public Node{
         virtual void nodeSpecificCodeUp();
         void lighting();
         void material();
+        void setMaterialValue(int materialValue);
         void rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, Vector3D rayStart, Vector3D rayEnd);
         void setLight(int lightX, int lightZ);
         char *modelType;
 
     private:
 
-        int lightX, lightZ;
+        int lightX, lightZ, materialValue;
 
         void drawCube();
         void drawSphere();

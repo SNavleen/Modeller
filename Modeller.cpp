@@ -35,7 +35,7 @@ float pos[] = {0,1,0};
 float angle = 0.0f;
 
 bool blRed = false, blGreen = false, blBlue = false, showlight = true;
-int red = 1, green = 1, blue = 1, lightCounter = 1, lightX = 0, lightZ = 0;
+int red = 1, green = 1, blue = 1, lightCounter = 1, lightX = 0, lightZ = 0, materialValue = 0;
 
 bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
@@ -72,8 +72,9 @@ void LightingAndMaterial(){
     }
 
     objDrawShape.setLight(lightX, lightZ);
+    objDrawShape.setMaterialValue(materialValue);
     objDrawShape.lighting();
-    //objDrawShape.material();
+//    objDrawShape.material(materialValue);
 }
 
 void Display(){
@@ -93,7 +94,7 @@ void Display(){
     SG->draw();
     //printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
     //printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-    printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+    //printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
     /* SG->drawRay(); */
     glutSwapBuffers();
@@ -254,6 +255,19 @@ void KeyBoardAction(unsigned char key, int x, int y){
     NodeTransform *rotate = new NodeTransform (Rotate, v4r);
     NodeTransform *translate = new NodeTransform (Translate, v3t);
     NodeTransform *scale = new NodeTransform (Scale, v3s);
+
+    //Keys to change materials
+    if(key == '0'){
+        materialValue = 0;
+    }else if(key == '9'){
+        materialValue = 9;
+    }else if(key == '8'){
+        materialValue = 8;
+    }else if(key == '7'){
+        materialValue = 7;
+    }else if(key == '6'){
+        materialValue = 6;
+    }
 
     //Keys to draw a shpae
     if(key == '1'){//Cube
@@ -442,8 +456,8 @@ int main(int argc, char** argv){
     cout << "- -------------------------- DECREASE THE SELECTED COLOUR/MATERIAL" << endl;
     cout << "= -------------------------- INCREASE THE SELECTED COLOUR/MATERIAL" << endl;
     cout << "w KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-    cout << "o KEY -------------------------- LOAD SAVED SECNE" << endl;
-    cout << "p KEY -------------------------- SAVE SECNE INTO FILE" << endl;
+    cout << "CTRL l KEY -------------------------- LOAD SAVED SECNE" << endl;
+    cout << "CTRL s KEY -------------------------- SAVE SECNE INTO FILE" << endl;
     cout << "DELETE/BACKSPACE KEY -------------------------- RESET SECNE" << endl;
     cout << "q -------------------------- EXIT" << endl;
     cout << "" << endl;
@@ -454,6 +468,14 @@ int main(int argc, char** argv){
     cout << "3 KEY -------------------------- CONE" << endl;
     cout << "4 KEY -------------------------- TORUS" << endl;
     cout << "5 KEY -------------------------- TEAPOT" << endl;
+    cout << "" << endl;
+
+    cout << "-------------------------- CHANGE MATERIAL COMMANDS --------------------------" << endl;
+    cout << "0 KEY -------------------------- EMERALD" << endl;
+    cout << "9 KEY -------------------------- OBSIDIAN" << endl;
+    cout << "8 KEY -------------------------- RED PLASTIC" << endl;
+    cout << "7 KEY -------------------------- SILVER" << endl;
+    cout << "6 KEY -------------------------- YELLOW RUBBER" << endl;
     cout << "" << endl;
 
     cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
