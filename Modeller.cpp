@@ -132,34 +132,39 @@ Vector3D decrease3D(Vector3D v3){
 void transformationv3(char *transformation, Vector3D v3){
     NodeTransform *transform;
 
-    if(transformation == "Translate"){
+    if(transformation == "Translate")
         transform = new NodeTransform(Translate, v3);
-        SG->addTransformationToCurrentNode(transform);
-    }else if(transformation == "Scale"){
+    else if(transformation == "Scale")
         transform = new NodeTransform(Scale, v3);
-        SG->addTransformationToCurrentNode(transform);
-    }
-    //SG->insertChildNodeHere(transform);
-    //glutPostRedisplay();
-    //SG->addTransformationToCurrentNode(transform);
-    //SG->goToChild(SG->getSelectedNode());
+    SG->addTransformationToCurrentNode(transformation, transform);
 }
 
 void transformationv4(char *transformation, Vector4D v4){
     NodeTransform *transform;
 
-    if(transformation == "Rotate"){
+    if(transformation == "Rotate")
         transform = new NodeTransform(Rotate, v4);
-        SG->addTransformationToCurrentNode(transform);
-    }
-    //SG->insertChildNodeHere(transform);
-    //glutPostRedisplay();
-    //SG->goToChild(0);
+    SG->addTransformationToCurrentNode(transformation, transform);
 }
 void resetRotate(){
     v4R.x = 0;
     v4R.y = 0;
     v4R.z = 0;
+}
+
+void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
+
+    //Insert default Rotate node to scene graph
+    SG->insertChildNodeHere(rotate);
+    SG->goToChild(0);
+
+    //Insert default Translate node to scene graph
+    SG->insertChildNodeHere(translate);
+    SG->goToChild(0);
+
+    //Insert default Scale node to scene graph
+    SG->insertChildNodeHere(scale);
+    SG->goToChild(0);
 }
 
 /*  KeyBoardAction -- the GLUT keyboard function
@@ -233,21 +238,41 @@ void KeyBoardAction(unsigned char key, int x, int y){
             blue = increaseColour(blue);
     }
 
+    Vector3D v3s, v3t;
+    Vector4D v4r;
+
+    NodeTransform *rotate = new NodeTransform (Rotate, v4r);
+    NodeTransform *translate = new NodeTransform (Translate, v3t);
+    v3s.x = 1;
+    v3s.y = 1;
+    v3s.z = 1;
+    NodeTransform *scale = new NodeTransform (Scale, v3s);
+
     //Keys to draw a shpae
     if(key == '1'){//Cube
+        insertDefaultTransformations(rotate, translate, scale);
+
         DrawShape *drawCude = new DrawShape("Cube", red, green, blue);
         SG->insertChildNodeHere(drawCude);
         //cude = true;
     }else if(key == '2'){//Sphere
+        insertDefaultTransformations(rotate, translate, scale);
+
         DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
         SG->insertChildNodeHere(drawSphere);
     }else if(key == '3'){//Cone
+        insertDefaultTransformations(rotate, translate, scale);
+
         DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
         SG->insertChildNodeHere(drawCone);
     }else if(key == '4'){//Torus
+        insertDefaultTransformations(rotate, translate, scale);
+
         DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
         SG->insertChildNodeHere(drawTorus);
-    }else if(key == '5'){//Teapot
+   }else if(key == '5'){//Teapot
+        insertDefaultTransformations(rotate, translate, scale);
+
         DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
         SG->insertChildNodeHere(drawTeapot);
     }
@@ -291,14 +316,10 @@ void KeyBoardAction(unsigned char key, int x, int y){
     }
 
     Vector3D v3;
-    //Vector4D v4;
     //Keys for what type of transformation will be applied
     if(mod == 1){
         if(key == 'S'){
             v3S = increase3D(v3);
-            v3S.x = 1+v3S.x;
-            v3S.y = 1+v3S.y;
-            v3S.z = 1+v3S.z;
             transformationv3("Scale", v3S);
         }else if(key == 'R'){
             resetRotate();
@@ -318,9 +339,6 @@ void KeyBoardAction(unsigned char key, int x, int y){
     }else if(mod == 4){
         if(key == 's'){
             v3S = decrease3D(v3);
-            v3S.x = 1+v3S.x;
-            v3S.y = 1+v3S.y;
-            v3S.z = 1+v3S.z;
             transformationv3("Scale", v3S);
         }else if(key == 'r'){
             resetRotate();
