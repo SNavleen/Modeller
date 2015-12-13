@@ -94,7 +94,7 @@ void Display(){
     SG->draw();
     //printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
     //printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-    //printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+    printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
     /* SG->drawRay(); */
     glutSwapBuffers();
@@ -152,7 +152,9 @@ void resetRotate(){
     v4R.x = 0;
     v4R.y = 0;
     v4R.z = 0;
-    v4R.w = 0;
+    if(blnAngle)
+        v4R.w = 0;
+
 }
 
 void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
@@ -243,7 +245,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     Vector3D v3s = Vector3D(1,1,1), v3t = Vector3D(0,0,0);
     Vector4D v4r = {0,0,0,0};
-    printf("v4r: (%f,%f,%f,%f)\n",v4r.x,v4r.y,v4r.z,v4r.w);
+    //printf("v4r: (%f,%f,%f,%f)\n",v4r.x,v4r.y,v4r.z,v4r.w);
 
     NodeTransform *rotate = new NodeTransform (Rotate, v4r);
     NodeTransform *translate = new NodeTransform (Translate, v3t);
