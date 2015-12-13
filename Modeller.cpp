@@ -468,62 +468,65 @@ void init(void){
     SG = new SceneGraph();
 }
 
+void printStuff(){
+  cout << "-------------------------- MENU COMMANDS --------------------------" << endl;
+  cout << "RIGHT CLICK ------------------------------- DELETE SELECTED NODE" << endl;
+  cout << "ARROW KEYS -------------------------------- ROTATE CAMERA" << endl;
+  cout << "END KEY ----------------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
+  cout << "HOME KEY ---------------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
+  cout << "u KEY ------------------------------------- MOVE LIGHTS UP" << endl;
+  cout << "j KEY ------------------------------------- MOVE LIGHTS DOWN" << endl;
+  cout << "k KEY ------------------------------------- MOVE LIGHTS RIGHT" << endl;
+  cout << "h KEY ------------------------------------- MOVE LIGHTS LEFT" << endl;
+  cout << ", ----------------------------------------- SELECT THE COLOUR/MATERIAL RED" << endl;
+  cout << ". ----------------------------------------- SELECT THE COLOUR/MATERIAL GREEN" << endl;
+  cout << "/ ----------------------------------------- SELECT THE COLOUR/MATERIAL BLUE" << endl;
+  cout << "- ----------------------------------------- DECREASE THE SELECTED COLOUR/MATERIAL" << endl;
+  cout << "= ----------------------------------------- INCREASE THE SELECTED COLOUR/MATERIAL" << endl;
+  cout << "w KEY --------------------------------------TOGGLE LIGHTING AND MATERIAL" << endl;
+  cout << "CTRL l KEY -------------------------------- LOAD SAVED SECNE" << endl;
+  cout << "CTRL s KEY -------------------------------- SAVE SECNE INTO FILE" << endl;
+  cout << "DELETE/BACKSPACE KEY ---------------------- RESET SECNE" << endl;
+  cout << "q ----------------------------------------- EXIT" << endl;
+
+  cout << endl;
+  cout << "-------------------------- DRAWING SHAPE COMMANDS --------------------------" << endl;
+  cout << "1 KEY -------------------------- CUBE" << endl;
+  cout << "2 KEY -------------------------- SPHERE" << endl;
+  cout << "3 KEY -------------------------- CONE" << endl;
+  cout << "4 KEY -------------------------- TORUS" << endl;
+  cout << "5 KEY -------------------------- TEAPOT" << endl;
+
+  cout << endl;
+  cout << "-------------------------- CHANGE MATERIAL COMMANDS --------------------------" << endl;
+  cout << "0 KEY -------------------------- EMERALD" << endl;
+  cout << "9 KEY -------------------------- OBSIDIAN" << endl;
+  cout << "8 KEY -------------------------- RED PLASTIC" << endl;
+  cout << "7 KEY -------------------------- SILVER" << endl;
+  cout << "6 KEY -------------------------- YELLOW RUBBER" << endl;
+
+  cout << endl;
+  cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
+  cout << "z KEY ------------------------------- SELECT Z AXIS" << endl;
+  cout << "x KEY ------------------------------- SELECT X AXIS" << endl;
+  cout << "y KEY ------------------------------- SELECT Y AXIS" << endl;
+  cout << "a KEY ------------------------------- SELECT THE ANGLE" << endl;
+  cout << "SHIFT z KEY ------------------------- SELECT X AND Y AXIS" << endl;
+  cout << "SHIFT x KEY ------------------------- SELECT Z AND Y AXIS" << endl;
+  cout << "SHIFT y KEY ------------------------- SELECT X AND Z AXIS" << endl;
+  cout << "ALT s KEY --------------------------- DECREASE SCALE" << endl;
+  cout << "ALT r KEY --------------------------- DECREASE ROTATE" << endl;
+  cout << "ALT t KEY --------------------------- DECREASE TRANSLATE" << endl;
+  cout << "SHIFT s KEY ------------------------- INCREASE SCALE" << endl;
+  cout << "SHIFT r KEY ------------------------- INCREASE ROTATE" << endl;
+  cout << "SHIFT t KEY ------------------------- INCREASE TRANSLATE" << endl;
+}
 int main(int argc, char** argv){
     //glut initialization stuff:
     // set the window size, display mode, and create the window
     glutInit(&argc, argv);
 
-    cout << "-------------------------- MENU COMMANDS --------------------------" << endl;
-    cout << "RIGHT CLICK -------------------------- DELETE SELECTED NODE" << endl;
-    cout << "ARROW KEYS -------------------------- ROTATE CAMERA" << endl;
-    cout << "END KEY -------------------------- DECREASE THE HIGHT OF THE CAMERA" << endl;
-    cout << "HOME KEY -------------------------- INCREASE THE HIGHT OF THE CAMERA" << endl;
-    cout << "u KEY -------------------------- MOVE LIGHTS UP" << endl;
-    cout << "j KEY -------------------------- MOVE LIGHTS DOWN" << endl;
-    cout << "k KEY -------------------------- MOVE LIGHTS RIGHT" << endl;
-    cout << "h KEY -------------------------- MOVE LIGHTS LEFT" << endl;
-    cout << ", -------------------------- SELECT THE COLOUR/MATERIAL RED" << endl;
-    cout << ". -------------------------- SELECT THE COLOUR/MATERIAL GREEN" << endl;
-    cout << "/ -------------------------- SELECT THE COLOUR/MATERIAL BLUE" << endl;
-    cout << "- -------------------------- DECREASE THE SELECTED COLOUR/MATERIAL" << endl;
-    cout << "= -------------------------- INCREASE THE SELECTED COLOUR/MATERIAL" << endl;
-    cout << "w KEY -------------------------- TOGGLE LIGHTING AND MATERIAL" << endl;
-    cout << "CTRL l KEY -------------------------- LOAD SAVED SECNE" << endl;
-    cout << "CTRL s KEY -------------------------- SAVE SECNE INTO FILE" << endl;
-    cout << "DELETE/BACKSPACE KEY -------------------------- RESET SECNE" << endl;
-    cout << "q -------------------------- EXIT" << endl;
-    cout << "" << endl;
-
-    cout << "-------------------------- DRAWING SHAPE COMMANDS --------------------------" << endl;
-    cout << "1 KEY -------------------------- CUBE" << endl;
-    cout << "2 KEY -------------------------- SPHERE" << endl;
-    cout << "3 KEY -------------------------- CONE" << endl;
-    cout << "4 KEY -------------------------- TORUS" << endl;
-    cout << "5 KEY -------------------------- TEAPOT" << endl;
-    cout << "" << endl;
-
-    cout << "-------------------------- CHANGE MATERIAL COMMANDS --------------------------" << endl;
-    cout << "0 KEY -------------------------- EMERALD" << endl;
-    cout << "9 KEY -------------------------- OBSIDIAN" << endl;
-    cout << "8 KEY -------------------------- RED PLASTIC" << endl;
-    cout << "7 KEY -------------------------- SILVER" << endl;
-    cout << "6 KEY -------------------------- YELLOW RUBBER" << endl;
-    cout << "" << endl;
-
-    cout << "-------------------------- SHAPE MODIFICATION COMMANDS --------------------------" << endl;
-    cout << "z KEY -------------------------- SELECT Z AXIS" << endl;
-    cout << "x KEY -------------------------- SELECT X AXIS" << endl;
-    cout << "y KEY -------------------------- SELECT Y AXIS" << endl;
-    cout << "a KEY -------------------------- SELECT THE ANGLE" << endl;
-    cout << "SHIFT z KEY -------------------------- SELECT X AND Y AXIS" << endl;
-    cout << "SHIFT x KEY -------------------------- SELECT Z AND Y AXIS" << endl;
-    cout << "SHIFT y KEY -------------------------- SELECT X AND Z AXIS" << endl;
-    cout << "ALT s KEY -------------------------- DECREASE SCALE" << endl;
-    cout << "ALT r KEY -------------------------- DECREASE ROTATE" << endl;
-    cout << "ALT t KEY -------------------------- DECREASE TRANSLATE" << endl;
-    cout << "SHIFT s KEY -------------------------- INCREASE SCALE" << endl;
-    cout << "SHIFT r KEY -------------------------- INCREASE ROTATE" << endl;
-    cout << "SHIFT t KEY -------------------------- INCREASE TRANSLATE" << endl;
+    printStuff();
 
     CreateDisplayWindow(600, 600);
     //Creates the Terrain window
