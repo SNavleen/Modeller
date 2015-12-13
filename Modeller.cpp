@@ -290,16 +290,19 @@ void KeyBoardAction(unsigned char key, int x, int y){
         DrawShape *drawSphere = new DrawShape("Sphere", red, green, blue);
         SG->insertChildNodeHere(drawSphere);
     }else if(key == '3'){//Cone
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawCone = new DrawShape("Cone", red, green, blue);
         SG->insertChildNodeHere(drawCone);
     }else if(key == '4'){//Torus
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
         SG->insertChildNodeHere(drawTorus);
     }else if(key == '5'){//Teapot
+        SG->goToRoot();
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
