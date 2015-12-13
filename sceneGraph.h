@@ -27,7 +27,7 @@ class SceneGraph{
     void selectFirstnode();
     void useCustomSettings();
     Node* getSelectedNode();
-    void addTransformationToCurrentNode(Node * transform);
+    void addTransformationToCurrentNode(char *transformation, Node * transform);
 
   private:
     Vector3D * startRayD;
