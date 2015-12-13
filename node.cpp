@@ -93,29 +93,29 @@ void Node::drawWireFrame(){}
 
 // handle the ray intersection
 void Node::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx,int my){
-  printf("inside a node that is not a draw node, going to the children\n");
-  printf("going to print the matrix before down\n");
-  printModelMatrix();
+  /* printf("inside a node that is not a draw node, going to the children\n"); */
+  /* printf("going to print the matrix before down\n"); */
+  /* printModelMatrix(); */
 
   /* printf("  inside the ray intersection for the node. going to run it for all the children\n"); */
   this->nodeSpecificCodeDown();
-  printf("going to print the matrix after down\n");
-  printModelMatrix();
+  /* printf("going to print the matrix after down\n"); */
+  /* printModelMatrix(); */
 
   for(int i =0; i < this->children->size(); i++){
-    printf("going through the loop at i:%i\n",i);
+    /* printf("going through the loop at i:%i\n",i); */
     this->children->at(i)->rayIntersection(listOfnodes, listOfDistances,mx,my);
   }
 
-  printf("just came back, going to print the model matrix\n");
-  printModelMatrix();
+  /* printf("just came back, going to print the model matrix\n"); */
+  /* printModelMatrix(); */
 
   this->nodeSpecificCodeUp();
-  printf("printing model matrix after the code up\n");
-  printModelMatrix();
+  /* printf("printing model matrix after the code up\n"); */
+  /* printModelMatrix(); */
 
 
-  printf("going up a node\n");
+  /* printf("going up a node\n"); */
   /* if(this->children->size()==0) printf("  there are no children\n"); */
   /* printf("  done for this node, going up the scene graph\n"); */
 }

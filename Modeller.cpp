@@ -110,7 +110,7 @@ void Display(){
     SG->draw();
     //printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
     //printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-    printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+    /* printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w); */
 
     /* SG->drawRay(); */
     glutSwapBuffers();
@@ -349,46 +349,48 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
     Vector3D v3;
     //Keys for what type of transformation will be applied
-    if(mod == 1){
+    if(SG->isSelectednodeNull()) printf("please select an object before trying to modify it\n");
+    else{
+      if(mod == 1){
         if(key == 'S'){
-            v3S = increase3D(v3);
-            transformationv3("Scale", v3S);
+          v3S = increase3D(v3);
+          transformationv3("Scale", v3S);
         }else if(key == 'R'){
-            resetRotate();
-            if(blnZ)
-                v4R.z+=1;
-            if(blnX)
-                v4R.x+=1;
-            if(blnY)
-                v4R.y+=1;
-            if(blnAngle)
-                v4R.w+=1;
-            transformationv4("Rotate", v4R);
+          resetRotate();
+          if(blnZ)
+            v4R.z+=1;
+          if(blnX)
+            v4R.x+=1;
+          if(blnY)
+            v4R.y+=1;
+          if(blnAngle)
+            v4R.w+=1;
+          transformationv4("Rotate", v4R);
         }else if(key == 'T'){
-            v3T = increase3D(v3);
-            transformationv3("Translate", v3T);
+          v3T = increase3D(v3);
+          transformationv3("Translate", v3T);
         }
-    }else if(mod == 4){
+      }else if(mod == 4){
         if(key == 's'){
-            v3S = decrease3D(v3);
-            transformationv3("Scale", v3S);
+          v3S = decrease3D(v3);
+          transformationv3("Scale", v3S);
         }else if(key == 'r'){
-            resetRotate();
-            if(blnZ)
-                v4R.z-=1;
-            if(blnX)
-                v4R.x-=1;
-            if(blnY)
-                v4R.y-=1;
-            if(blnAngle)
-                v4R.w-=1;
-            transformationv4("Rotate", v4R);
+          resetRotate();
+          if(blnZ)
+            v4R.z-=1;
+          if(blnX)
+            v4R.x-=1;
+          if(blnY)
+            v4R.y-=1;
+          if(blnAngle)
+            v4R.w-=1;
+          transformationv4("Rotate", v4R);
         }else if(key == 't'){
-            v3T = decrease3D(v3);
-            transformationv3("Translate", v3T);
+          v3T = decrease3D(v3);
+          transformationv3("Translate", v3T);
         }
+      }
     }
-
     glutPostRedisplay();
 }
 

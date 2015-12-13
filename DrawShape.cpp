@@ -301,13 +301,13 @@ bool sphereIntersection(vector<double> *listOfDoubles, Vector3D rayStart, Vector
   double sq = B*B  - 4*A*C;
   double t0 = 0, t1 = 0;
   /* printf("sq: %f\n",sq); */
-  if(sq < 0) printf("no Intersection!!!\n");
+  if(sq < 0) ; //printf("no Intersection!!!\n");
   else{
     t0 = ((-1) * B + sqrt(sq))/(2*A);
     t1 = ((-1) * B - sqrt(sq))/(2*A);
     listOfDoubles->push_back((t0<t1)? t0:t1);
 
-    printf("Intersection at: t = %f, and t = %f\n", t0, t1);
+    /* printf("Intersection at: t = %f, and t = %f\n", t0, t1); */
   }
   // else returns false
   return (sq>=0);
@@ -391,14 +391,14 @@ bool DrawShape::planeIntersection(vector<Node*> *listOfnodes, vector<double> *li
 }
 
 void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *listOfDistances, int mx, int my){
-  printf("started the ray intersection for this draw node\n");
+  /* printf("started the ray intersection for this draw node\n"); */
   /* printf("calling the stupid plane intersection\n"); */
   /* planeIntersection(listOfDistances, Vector3D(),Vector3D(),Vector3D(),Vector3D(), Vector3D(), Vector3D()); */
   /* printf("done testing the plane intersection \n"); */
   Vector3D rayStart = Vector3D();
   Vector3D rayEnd = Vector3D();
   getMouseRay(mx,my,&rayStart,&rayEnd);
-  printf("drawshape rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z);
+  /* printf("drawshape rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z); */
 
   if(modelType =="Plane"){
     Vector3D p0 = Vector3D(0,1,0);
