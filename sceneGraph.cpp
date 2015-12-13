@@ -319,7 +319,7 @@ void SceneGraph::saveFile(ofstream *sceneFile){
     printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
     *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
   }
-  *sceneFile << " " << "\n";
+  *sceneFile << "\n";
 
   int indexOfSelectedNode;
   for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
@@ -333,15 +333,12 @@ void SceneGraph::loadFile(ifstream *sceneFile){
   if(*sceneFile){
     string line;
     while(getline(*sceneFile, line)){
-      string row;
-      stringstream streamRow(line);
-      while(getline(streamRow, row, ' ')){
         string cell;
-        stringstream streamCell(row);
+        stringstream streamCell(line);
         getline(streamCell, cell, ',');
         /* printf("%s\n", cell.c_str()); */
         if(cell == "root"){
-          goToRoot();
+          /* goToRoot(); */
         }else if(cell == "group"){
 
         }else if(cell == "transformation"){
@@ -396,7 +393,6 @@ void SceneGraph::loadFile(ifstream *sceneFile){
         }
         printf("starting\n\n");
         printScene();
-      }
     }
   }
 }
