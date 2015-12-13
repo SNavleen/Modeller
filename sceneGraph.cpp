@@ -228,7 +228,7 @@ void SceneGraph::saveFile(ofstream *sceneFile){
         DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
         printf("Shape: %s\n", drawShape->modelType);
         *sceneFile << drawShape->modelType << ",";
-        //printf("%i, %i, %i", &drawShape->red, &drawShape->green, &drawShape->blue);
+        printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
         *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
     }
     *sceneFile << " " << "\n";

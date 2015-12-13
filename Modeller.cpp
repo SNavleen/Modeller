@@ -93,7 +93,7 @@ void Display(){
     SG->draw();
     //printf("V3S: %f, %f, %f\n", v3S.x, v3S.y, v3S.z);
     //printf("V3T: %f, %f, %f\n", v3T.x, v3T.y, v3T.z);
-    //printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
+    printf("V3R: %f, %f, %f, %f\n", v4R.x, v4R.y, v4R.z, v4R.w);
 
     /* SG->drawRay(); */
     glutSwapBuffers();
