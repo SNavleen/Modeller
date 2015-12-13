@@ -2,6 +2,9 @@
 #define __SCENEGRAPH_H__
 
 #include "node.h"
+#include <iostream>
+#include <fstream>
+
 
 class SceneGraph{
   public:
@@ -15,7 +18,7 @@ class SceneGraph{
     void insertChildNodeHere(Node *node);
     void deleteThisNode();
     void resetScene();
-    void saveFile();
+    void saveFile(ofstream *sceneFile);
     void loadFile();
 
     //get the selected node

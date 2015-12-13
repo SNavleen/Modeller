@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
+#include <fstream>
 
 #include "structs.h"
 #include "vector3d.h"
@@ -39,6 +40,7 @@ int red = 1, green = 1, blue = 1, lightCounter = 1, lightX = 0, lightZ = 0;
 bool blnZ = false, blnX = false, blnY = false, blnAngle = false;
 Vector3D v3S, v3T;
 Vector4D v4R;
+ofstream sceneFile;
 
 //node ids
 int masterID = 0;
@@ -203,8 +205,9 @@ void KeyBoardAction(unsigned char key, int x, int y){
         SG->resetScene();
     }else if(mod == 2 && key == 19){
         SG->goToRoot();
-        SG->saveFile();
-        printf("\n");
+        sceneFile.open("Scene-Graph.csv");
+        SG->saveFile(&sceneFile);
+        sceneFile.close();
     }else if(mod == 2 && key == 15){
     }else if(key == 'w'){
         lightCounter++;
@@ -289,7 +292,7 @@ void KeyBoardAction(unsigned char key, int x, int y){
 
         DrawShape *drawTorus = new DrawShape("Torus", red, green, blue);
         SG->insertChildNodeHere(drawTorus);
-   }else if(key == '5'){//Teapot
+    }else if(key == '5'){//Teapot
         insertDefaultTransformations(rotate, translate, scale);
 
         DrawShape *drawTeapot = new DrawShape("Teapot", red, green, blue);
