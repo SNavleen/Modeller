@@ -1,4 +1,9 @@
+
+#include <sstream>
+#include <iostream>
+#include <fstream>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #ifdef __APPLE__
@@ -51,9 +56,11 @@ void DrawShape::drawAxis(){
 
 void DrawShape::nodeSpecificCodeDown(){}
 void DrawShape::drawSelf(){
+  printf("inside the self drawSelf from the draw object\n");
+  printf("modelType:-%s-\n", modelType);
   //
-  double matModelView[16];
-  glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);
+  /* double matModelView[16]; */
+  /* glGetDoublev(GL_MODELVIEW_MATRIX, matModelView); */
 
   /* printf("printing the modelview matrix in the draw shape\n"); */
   /* for(int i =0; i < 4; i++){ */
@@ -64,33 +71,21 @@ void DrawShape::drawSelf(){
   /* } */
   /* printf("\n"); */
 
-
-
-
   glColor3f(this->red,this->green,this->blue);
   material();
-  if(modelType == "Cube"){
-    drawCube();
-  }
-  if(modelType == "Sphere"){
-    drawSphere();
-  }
-  if(modelType == "Cone"){
-    drawCone();
-  }
-  if(modelType == "Torus"){
-    drawTorus();
-  }
-  if(modelType == "Teapot"){
-    drawTeapot();
-  }else if(modelType == "Plane"){
+  if(strcmp(modelType,"Cube")==0)        drawCube();
+  else if(strcmp(modelType,"Sphere")==0) drawSphere();
+  else if(strcmp(modelType,"Cone")==0)   drawCone();
+  else if(strcmp(modelType,"Torus")==0)  drawTorus();
+  else if(strcmp(modelType,"Teapot")==0) drawTeapot();
+  else if(strcmp(modelType,"Plane")==0){
     glBegin(GL_QUADS);
     glVertex3f(0,0,0);
     glVertex3f(1,0,0);
     glVertex3f(1,1,0);
     glVertex3f(0,1,0);
     glEnd();
-  }
+  }else{ printf("got nothing, modelType was none of the above\n");  }
   if(isSelected) drawWireFrame();
 }
 
@@ -475,7 +470,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   getMouseRay(mx,my,&rayStart,&rayEnd);
   /* printf("drawshape rayStart:(%f,%f,%f)  endRay:(%f,%f,%f)\n",rayStart.x, rayStart.y,rayStart.z,  rayEnd.x,rayEnd.y,rayEnd.z); */
 
-  if(modelType =="Plane"){
+  if(strcmp(modelType,"Plane")==0){
     Vector3D p0 = Vector3D(0,1,0);
     Vector3D p1 = Vector3D(1,1,0);
     Vector3D p2 = Vector3D(1,0,0);
@@ -485,7 +480,7 @@ void DrawShape::rayIntersection(vector<Node*> *listOfnodes, vector<double> *list
   }
 
   Vector3D rayVector = rayEnd;
-  if(modelType=="Sphere"){
+  if(strcmp(modelType,"Sphere")==0){
     if(sphereIntersection(listOfDistances, rayStart, rayEnd)){
       listOfnodes->push_back(this);;
     }

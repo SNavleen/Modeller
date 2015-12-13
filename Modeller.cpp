@@ -177,17 +177,14 @@ void resetRotate(){
 void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale){
     //Insert default Rotate node to scene graph
     SG->insertChildNodeHere(rotate);
-    /* SG->goToChild(0); */
     SG->goToMaxChild();
 
     //Insert default Translate node to scene graph
     SG->insertChildNodeHere(translate);
-    /* SG->goToChild(0); */
     SG->goToMaxChild();
 
     //Insert default Scale node to scene graph
     SG->insertChildNodeHere(scale);
-    /* SG->goToChild(0); */
     SG->goToMaxChild();
 }
 

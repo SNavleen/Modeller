@@ -42,22 +42,18 @@ void printModelMatrix(){
 //==================================================================
 //function which does all the heavy lifting
 void Node::draw(){
-  /* printf("going to print the matrix before\n"); */
-  /* printModelMatrix(); */
-
   nodeSpecificCodeDown();
 
-  /* printf("going to print the matrix after down\n"); */
-  /* printModelMatrix(); */
+  printf("got down tot he node\n");
 
-  /* printf("drawing self object\n"); */
+  printf("drawing self object\n");
   drawSelf();
 
   //recursively call our children
   const int numberOfChildren = children->size();
   if (numberOfChildren > 0){
     for (int i = 0; i < numberOfChildren; i++){
-      /* printf("going to node at %i so going down a node\n", i); */
+      printf("going to node at %i so going down a node\n", i);
       children->at(i)->draw();
     }
   }
@@ -66,9 +62,7 @@ void Node::draw(){
   //ie. pop matrix, etc.
   nodeSpecificCodeUp();
 
-  /* printf("printing matrix value when going up after pop\n"); */
-  /* printModelMatrix(); */
-  /* printf("going up a node\n"); */
+  printf("done node\n");
 }
 
 

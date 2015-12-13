@@ -2,6 +2,7 @@
 #define __SCENEGRAPH_H__
 
 #include "node.h"
+#include "nodeTransform.h"
 #include <iostream>
 #include <fstream>
 
@@ -34,6 +35,7 @@ class SceneGraph{
     void printScene();
     Node* getSelectedNode();
     void addTransformationToCurrentNode(char *transformation, Node * transform);
+    void insertDefaultTransformations(NodeTransform *rotate, NodeTransform *translate, NodeTransform *scale);
 
   private:
     Vector3D * startRayD;
