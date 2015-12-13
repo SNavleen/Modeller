@@ -2,6 +2,8 @@
 #include "node.h"
 #include "Vector3D.h"
 #include <stdio.h>
+#include <string.h>
+#include <sstream>
 #include <iostream>
 #include <fstream>
 
@@ -261,9 +263,10 @@ void SceneGraph::resetScene(){
 }
 
 void SceneGraph::saveFile(ofstream *sceneFile){
-    //printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
-    *sceneFile << currentNode->ID << ",";
+    printf("ID: %i\n", currentNode->ID);
+    //*sceneFile << currentNode->ID << ",";
     if(currentNode->nodeType == 0){
+        printf("root\n");
         *sceneFile << "root";
     }
     else if(currentNode->nodeType == 1){
@@ -272,23 +275,28 @@ void SceneGraph::saveFile(ofstream *sceneFile){
     else if(currentNode->nodeType == 2){
         *sceneFile << "transformation" << ",";
         NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
-        //printf("%i",nodeTransform->transformationType);
+        printf("%i\n",nodeTransform->transformationType);
         *sceneFile << nodeTransform->transformationType << ",";
         if(nodeTransform->transformationType == 0){
+            printf("Translate: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
             *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
         }else if(nodeTransform->transformationType == 1){
+             printf("Rotate: %f, %f, %f, %f\n", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
             *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
         }else if(nodeTransform->transformationType == 2){
+             printf("Scale: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
             *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
         }
     }
     else if(currentNode->nodeType == 3){
         *sceneFile << "model" << ",";
         DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
-        //printf("%s", drawShape->modelType);
-        *sceneFile << drawShape->modelType;
+        printf("Shape: %s\n", drawShape->modelType);
+        *sceneFile << drawShape->modelType << ",";
+        printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
+        *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
     }
-    *sceneFile << "\n";
+    *sceneFile << " " << "\n";
 
     int indexOfSelectedNode;
     for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
@@ -298,8 +306,76 @@ void SceneGraph::saveFile(ofstream *sceneFile){
     }
 }
 
-void SceneGraph::loadFile(){
+void SceneGraph::loadFile(ifstream *sceneFile){
+    if(*sceneFile){
+         string line;
+         while(getline(*sceneFile, line)){
+            string row;
+            stringstream streamRow(line);
+            while(getline(streamRow, row, ' ')){
+                string cell;
+                stringstream streamCell(row);
+                getline(streamCell, cell, ',');
+                /* printf("%s\n", cell.c_str()); */
+                if(cell == "root"){
 
+                }else if(cell == "group"){
+
+                }else if(cell == "transformation"){
+                    getline(streamCell, cell, ',');
+                    NodeTransform *transform;
+                    if(cell == "0"){
+                        Vector3D v3;
+                        getline(streamCell, cell, ',');
+                        v3.x = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v3.y = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v3.z = atof(cell.c_str());
+                        transform = new NodeTransform(Translate, v3);
+                    }else if(cell == "1"){
+                        Vector4D v4;
+                        getline(streamCell, cell, ',');
+                        v4.x = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v4.y = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v4.z = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v4.w = atof(cell.c_str());
+                        transform = new NodeTransform(Rotate, v4);
+
+                    }else if(cell == "2"){
+                        Vector3D v3;
+                        getline(streamCell, cell, ',');
+                        v3.x = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v3.y = atof(cell.c_str());
+                        getline(streamCell, cell, ',');
+                        v3.z = atof(cell.c_str());
+                        transform = new NodeTransform(Scale, v3);
+                    }
+                    insertChildNodeHere(transform);
+                    goToChild(0);
+                }else if(cell == "model"){
+                    int red, green, blue;
+                    char *model;
+                    getline(streamCell, cell, ',');
+                    model = new char[cell.length() + 1];
+                    strcpy(model, cell.c_str());
+                    getline(streamCell, cell, ',');
+                    red = atof(cell.c_str());
+                    getline(streamCell, cell, ',');
+                    green = atof(cell.c_str());
+                    getline(streamCell, cell, ',');
+                    blue = atof(cell.c_str());
+                    DrawShape *drawShape = new DrawShape(model, red, green, blue);
+                    insertChildNodeHere(drawShape);
+                }
+
+            }
+         }
+    }
 }
 
 //draw the scenegraph
