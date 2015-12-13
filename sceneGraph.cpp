@@ -68,7 +68,31 @@ void SceneGraph::printScene(){ this->printScene(rootNode, 0);  }
 void SceneGraph::printScene(Node * curNode, int depth){
   for(int i = 0; i < depth; i++) printf("  ");
   if(this->currentNode == curNode) printf("<current node> ");
-  printf("number of children:%li \n",curNode->children->size());
+
+  printf("number of children:%li type:%i, ",curNode->children->size(), curNode->nodeType);
+  if(currentNode->nodeType == 0){
+    printf("root\n");
+  }
+  else if(currentNode->nodeType == 1){
+    printf("group\n");
+  }
+  else if(currentNode->nodeType == 2){
+    NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
+    printf("transformationType:%i, ",nodeTransform->transformationType);
+    if(nodeTransform->transformationType == 0){
+      printf("Translate: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+    }else if(nodeTransform->transformationType == 1){
+      printf("Rotate: %f, %f, %f, %f\n", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
+    }else if(nodeTransform->transformationType == 2){
+      printf("Scale: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+    }
+  }
+  else if(currentNode->nodeType == 3){
+    DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
+    printf("Shape: %s, ", drawShape->modelType);
+    printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
+  }
+
   for(int i = 0;i < curNode->children->size(); i++){
     printScene(curNode->children->at(i), depth+1);
   }
@@ -90,9 +114,9 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("starting the for loop with all the children\n"); */
   // go to all the children checking if they had got the collision
   /* for(int i = 0; i < curnodeLocal->children->size(); i++){ */
-    /* printf("going to the child at i:%i\n",i); */
-    /* Node *node =  curnodeLocal->children->at(i); */
-    /* node->rayIntersection(&listOfnodes,&listOfIntersectionDistances); */
+  /* printf("going to the child at i:%i\n",i); */
+  /* Node *node =  curnodeLocal->children->at(i); */
+  /* node->rayIntersection(&listOfnodes,&listOfIntersectionDistances); */
   /* } */
   /* printf("done the selectnodeatpos\n\n"); */
 
@@ -107,7 +131,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   /* printf("===========OLDMATH============="); */
   /* glGetDoublev(GL_MODELVIEW_MATRIX, oldMat); */
   /* for(int i =0;i<16;i++){ */
-     /* printf("%f, ", oldMat[i]); */
+  /* printf("%f, ", oldMat[i]); */
   /* } */
   /* glGetDoublev(GL_MODELVIEW_MATRIX, mat); */
   /* glLoadMatrixd(mat); */
@@ -126,7 +150,7 @@ void SceneGraph::selectnodeAtPos(int x, int y){
   } // if there are no elements then just end the function
   /* printf("Intersection detected\n"); */
   int minDistanceIndex = 0; // this is the index which points to the node that is the closest to the screen
-    /* printf("mindistance is %f for %i\n",listOfIntersectionDistances.at(0), 0); */
+  /* printf("mindistance is %f for %i\n",listOfIntersectionDistances.at(0), 0); */
   for(int i = 1; i < listOfIntersectionDistances.size();i++){
     /* printf("mindistance is %f for %i\n",listOfIntersectionDistances.at(i), i); */
     if(listOfIntersectionDistances.at(i) < listOfIntersectionDistances.at(minDistanceIndex) && listOfIntersectionDistances.at(i) > 0) minDistanceIndex = i;
@@ -263,119 +287,119 @@ void SceneGraph::resetScene(){
 }
 
 void SceneGraph::saveFile(ofstream *sceneFile){
-    printf("ID: %i\n", currentNode->ID);
-    //*sceneFile << currentNode->ID << ",";
-    if(currentNode->nodeType == 0){
-        printf("root\n");
-        *sceneFile << "root";
+  printf("ID: %i\n", currentNode->ID);
+  //*sceneFile << currentNode->ID << ",";
+  if(currentNode->nodeType == 0){
+    printf("root\n");
+    *sceneFile << "root";
+  }
+  else if(currentNode->nodeType == 1){
+    *sceneFile << "group";
+  }
+  else if(currentNode->nodeType == 2){
+    *sceneFile << "transformation" << ",";
+    NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
+    printf("%i\n",nodeTransform->transformationType);
+    *sceneFile << nodeTransform->transformationType << ",";
+    if(nodeTransform->transformationType == 0){
+      printf("Translate: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+      *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
+    }else if(nodeTransform->transformationType == 1){
+      printf("Rotate: %f, %f, %f, %f\n", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
+      *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
+    }else if(nodeTransform->transformationType == 2){
+      printf("Scale: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
+      *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
     }
-    else if(currentNode->nodeType == 1){
-        *sceneFile << "group";
-    }
-    else if(currentNode->nodeType == 2){
-        *sceneFile << "transformation" << ",";
-        NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
-        printf("%i\n",nodeTransform->transformationType);
-        *sceneFile << nodeTransform->transformationType << ",";
-        if(nodeTransform->transformationType == 0){
-            printf("Translate: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
-            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
-        }else if(nodeTransform->transformationType == 1){
-             printf("Rotate: %f, %f, %f, %f\n", nodeTransform->amount4.x, nodeTransform->amount4.y, nodeTransform->amount4.z, nodeTransform->amount4.w);
-            *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
-        }else if(nodeTransform->transformationType == 2){
-             printf("Scale: %f, %f, %f\n", nodeTransform->amount3.x, nodeTransform->amount3.y, nodeTransform->amount3.z);
-            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
-        }
-    }
-    else if(currentNode->nodeType == 3){
-        *sceneFile << "model" << ",";
-        DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
-        printf("Shape: %s\n", drawShape->modelType);
-        *sceneFile << drawShape->modelType << ",";
-        printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
-        *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
-    }
-    *sceneFile << " " << "\n";
+  }
+  else if(currentNode->nodeType == 3){
+    *sceneFile << "model" << ",";
+    DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
+    printf("Shape: %s\n", drawShape->modelType);
+    *sceneFile << drawShape->modelType << ",";
+    printf("Colour: %f, %f, %f\n", drawShape->red, drawShape->green, drawShape->blue);
+    *sceneFile << drawShape->red << "," << drawShape->green << "," << drawShape->blue;
+  }
+  *sceneFile << " " << "\n";
 
-    int indexOfSelectedNode;
-    for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
-        goToChild(indexOfSelectedNode);
-        saveFile(sceneFile);
-        goToParent();
-    }
+  int indexOfSelectedNode;
+  for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
+    goToChild(indexOfSelectedNode);
+    saveFile(sceneFile);
+    goToParent();
+  }
 }
 
 void SceneGraph::loadFile(ifstream *sceneFile){
-    if(*sceneFile){
-         string line;
-         while(getline(*sceneFile, line)){
-            string row;
-            stringstream streamRow(line);
-            while(getline(streamRow, row, ' ')){
-                string cell;
-                stringstream streamCell(row);
-                getline(streamCell, cell, ',');
-                /* printf("%s\n", cell.c_str()); */
-                if(cell == "root"){
+  if(*sceneFile){
+    string line;
+    while(getline(*sceneFile, line)){
+      string row;
+      stringstream streamRow(line);
+      while(getline(streamRow, row, ' ')){
+        string cell;
+        stringstream streamCell(row);
+        getline(streamCell, cell, ',');
+        /* printf("%s\n", cell.c_str()); */
+        if(cell == "root"){
 
-                }else if(cell == "group"){
+        }else if(cell == "group"){
 
-                }else if(cell == "transformation"){
-                    getline(streamCell, cell, ',');
-                    NodeTransform *transform;
-                    if(cell == "0"){
-                        Vector3D v3;
-                        getline(streamCell, cell, ',');
-                        v3.x = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v3.y = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v3.z = atof(cell.c_str());
-                        transform = new NodeTransform(Translate, v3);
-                    }else if(cell == "1"){
-                        Vector4D v4;
-                        getline(streamCell, cell, ',');
-                        v4.x = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v4.y = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v4.z = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v4.w = atof(cell.c_str());
-                        transform = new NodeTransform(Rotate, v4);
-
-                    }else if(cell == "2"){
-                        Vector3D v3;
-                        getline(streamCell, cell, ',');
-                        v3.x = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v3.y = atof(cell.c_str());
-                        getline(streamCell, cell, ',');
-                        v3.z = atof(cell.c_str());
-                        transform = new NodeTransform(Scale, v3);
-                    }
-                    insertChildNodeHere(transform);
-                    goToChild(0);
-                }else if(cell == "model"){
-                    int red, green, blue;
-                    char *model;
-                    getline(streamCell, cell, ',');
-                    model = new char[cell.length() + 1];
-                    strcpy(model, cell.c_str());
-                    getline(streamCell, cell, ',');
-                    red = atof(cell.c_str());
-                    getline(streamCell, cell, ',');
-                    green = atof(cell.c_str());
-                    getline(streamCell, cell, ',');
-                    blue = atof(cell.c_str());
-                    DrawShape *drawShape = new DrawShape(model, red, green, blue);
-                    insertChildNodeHere(drawShape);
-                }
-
-            }
-         }
+        }else if(cell == "transformation"){
+          getline(streamCell, cell, ',');
+          NodeTransform *transform;
+          if(cell == "0"){ // translate
+            Vector3D v3;
+            getline(streamCell, cell, ',');
+            v3.x = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v3.y = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v3.z = atof(cell.c_str());
+            transform = new NodeTransform(Translate, v3);
+          }else if(cell == "1"){ // rotate
+            Vector4D v4;
+            getline(streamCell, cell, ',');
+            v4.x = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v4.y = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v4.z = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v4.w = atof(cell.c_str());
+            transform = new NodeTransform(Rotate, v4);
+          }else if(cell == "2"){ // scale
+            Vector3D v3;
+            getline(streamCell, cell, ',');
+            v3.x = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v3.y = atof(cell.c_str());
+            getline(streamCell, cell, ',');
+            v3.z = atof(cell.c_str());
+            transform = new NodeTransform(Scale, v3);
+          }
+          insertChildNodeHere(transform);
+          goToChild(0);
+        }else if(cell == "model"){
+          int red, green, blue;
+          char *model;
+          getline(streamCell, cell, ',');
+          model = new char[cell.length() + 1];
+          strcpy(model, cell.c_str());
+          getline(streamCell, cell, ',');
+          red = atof(cell.c_str());
+          getline(streamCell, cell, ',');
+          green = atof(cell.c_str());
+          getline(streamCell, cell, ',');
+          blue = atof(cell.c_str());
+          DrawShape *drawShape = new DrawShape(model, red, green, blue);
+          insertChildNodeHere(drawShape);
+        }
+        printf("starting\n\n");
+        printScene();
+      }
     }
+  }
 }
 
 //draw the scenegraph
@@ -386,26 +410,26 @@ void SceneGraph::draw(){
 
 
 void SceneGraph::addTransformationToCurrentNode(char *transformation, Node * transform){
-    Vector3D v3;
-    Vector4D v4;
+  Vector3D v3;
+  Vector4D v4;
 
-    if(transformation == "Rotate"){
-        transformNode = selectedNode->parent->parent->parent;
-        static_cast<NodeTransform *>(transformNode)->amount4.x += static_cast<NodeTransform *>(transform)->amount4.x;
-        static_cast<NodeTransform *>(transformNode)->amount4.y += static_cast<NodeTransform *>(transform)->amount4.y;
-        static_cast<NodeTransform *>(transformNode)->amount4.z += static_cast<NodeTransform *>(transform)->amount4.z;
-        static_cast<NodeTransform *>(transformNode)->amount4.w += static_cast<NodeTransform *>(transform)->amount4.w;
-    }else if(transformation == "Translate"){
-        transformNode = selectedNode->parent->parent;
-        static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
-        static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
-        static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
-    }else if(transformation == "Scale"){
-        transformNode = selectedNode->parent;
-        static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
-        static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
-        static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
-    }
+  if(transformation == "Rotate"){
+    transformNode = selectedNode->parent->parent->parent;
+    static_cast<NodeTransform *>(transformNode)->amount4.x += static_cast<NodeTransform *>(transform)->amount4.x;
+    static_cast<NodeTransform *>(transformNode)->amount4.y += static_cast<NodeTransform *>(transform)->amount4.y;
+    static_cast<NodeTransform *>(transformNode)->amount4.z += static_cast<NodeTransform *>(transform)->amount4.z;
+    static_cast<NodeTransform *>(transformNode)->amount4.w += static_cast<NodeTransform *>(transform)->amount4.w;
+  }else if(transformation == "Translate"){
+    transformNode = selectedNode->parent->parent;
+    static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
+    static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
+    static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
+  }else if(transformation == "Scale"){
+    transformNode = selectedNode->parent;
+    static_cast<NodeTransform *>(transformNode)->amount3.x += static_cast<NodeTransform *>(transform)->amount3.x;
+    static_cast<NodeTransform *>(transformNode)->amount3.y += static_cast<NodeTransform *>(transform)->amount3.y;
+    static_cast<NodeTransform *>(transformNode)->amount3.z += static_cast<NodeTransform *>(transform)->amount3.z;
+  }
 }
 
 
