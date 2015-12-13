@@ -2,8 +2,9 @@
 #include "node.h"
 #include "Vector3D.h"
 #include <stdio.h>
-
 #include <iostream>
+#include <fstream>
+
 //temporary
 #include "nodeTransform.h"
 #include "DrawShape.h"
@@ -194,12 +195,40 @@ void SceneGraph::resetScene(){
   selectedNode = NULL;
 }
 
-void SceneGraph::saveFile(){
-    printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+void SceneGraph::saveFile(ofstream *sceneFile){
+    //printf("ID: %i, nodeType: %i ",currentNode->ID, currentNode->nodeType);
+    *sceneFile << currentNode->ID << ",";
+    if(currentNode->nodeType == 0){
+        *sceneFile << "root";
+    }
+    else if(currentNode->nodeType == 1){
+        *sceneFile << "group";
+    }
+    else if(currentNode->nodeType == 2){
+        *sceneFile << "transformation" << ",";
+        NodeTransform *nodeTransform = static_cast<NodeTransform *>(currentNode);
+        //printf("%i",nodeTransform->transformationType);
+        *sceneFile << nodeTransform->transformationType << ",";
+        if(nodeTransform->transformationType == 0){
+            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
+        }else if(nodeTransform->transformationType == 1){
+            *sceneFile << nodeTransform->amount4.x << "," << nodeTransform->amount4.y << "," << nodeTransform->amount4.z << "," << nodeTransform->amount4.w;
+        }else if(nodeTransform->transformationType == 2){
+            *sceneFile << nodeTransform->amount3.x << "," << nodeTransform->amount3.y << "," << nodeTransform->amount3.z;
+        }
+    }
+    else if(currentNode->nodeType == 3){
+        *sceneFile << "model" << ",";
+        DrawShape *drawShape = static_cast<DrawShape *>(currentNode);
+        //printf("%s", drawShape->modelType);
+        *sceneFile << drawShape->modelType;
+    }
+    *sceneFile << "\n";
+
     int indexOfSelectedNode;
     for(indexOfSelectedNode = 0; indexOfSelectedNode < currentNode->children->size(); indexOfSelectedNode++){
         goToChild(indexOfSelectedNode);
-        saveFile();
+        saveFile(sceneFile);
         goToParent();
     }
 }
