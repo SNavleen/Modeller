@@ -218,7 +218,6 @@ void SceneGraph::draw(){
 
 
 void SceneGraph::addTransformationToCurrentNode(char *transformation, Node * transform){
-
     Vector3D v3;
     Vector4D v4;
 
