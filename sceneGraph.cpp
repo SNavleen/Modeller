@@ -174,6 +174,7 @@ SceneGraph::SceneGraph(){
   /* for(int i =0; i< 16; i++) oldMat[i] = 0.0f; */
 }
 
+
 void SceneGraph::printModelMatrix(){
   double matModelView[16];
   glGetDoublev(GL_MODELVIEW_MATRIX, matModelView);

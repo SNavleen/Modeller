@@ -22,6 +22,10 @@ Node::Node(){//constructor
   currentChild = 0;
   isSelected = false;
 }
+Node::~Node(){
+  /* delete parent; */
+  /* delete children; */
+}
 
 void printModelMatrix(){
   double matModelView[16];

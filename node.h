@@ -22,6 +22,7 @@ enum NodeType{
 class Node{
   public:
     Node();	//constructor
+    ~Node();	//constructor
 
     NodeType nodeType;
     bool isDrawable;
